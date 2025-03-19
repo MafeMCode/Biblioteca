@@ -1,4 +1,7 @@
+import { useState } from "react";
+import { Eye, EyeOff, User, Lock, Mail, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,16 +53,18 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
                 onSuccess: () => {
                     queryClient.invalidateQueries({ queryKey: ["users"] });
 
-                    // Construct URL with page parameters
-                    let url = "/users";
-                    if (page) {
-                        url += `?page=${page}`;
-                        if (perPage) {
-                            url += `&per_page=${perPage}`;
-                        }
-                    }
+                    // // Construct URL with page parameters
+                    // let url = "/users";
+                    // if (page) {
+                    //     url += `?page=${page}`;
+                    //     if (perPage) {
+                    //         url += `&per_page=${perPage}`;
+                    //     }
+                    // }
 
-                    router.visit(url);
+                    // router.visit(url);
+
+
                 },
                 onError: (errors: Record<string, string>) => {
                     if (Object.keys(errors).length === 0) {
@@ -88,7 +93,12 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
         form.handleSubmit();
     };
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const accesoPermisos = false;
+
     return (
+
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {/* Name field */}
             <div>
@@ -107,7 +117,12 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
                 >
                     {(field) => (
                         <>
-                            <Label htmlFor={field.name}>{t("ui.users.fields.name")}</Label>
+                            <Label htmlFor={field.name}>
+                                <div className="flex items-center gap-1 mb-1">
+                                    <User color="grey" size={18}/>
+                                    {t("ui.users.fields.name")}
+                                </div>
+                            </Label>
                             <Input
                                 id={field.name}
                                 name={field.name}
@@ -142,7 +157,12 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
                 >
                     {(field) => (
                         <>
-                            <Label htmlFor={field.name}>{t("ui.users.fields.email")}</Label>
+                                    <Label htmlFor={field.name}>
+                                        <div className="flex items-center gap-1 mb-1">
+                                            <Mail color="grey" size={18}/>
+                                            {t("ui.users.fields.email")}
+                                        </div>
+                                    </Label>
                             <Input
                                 id={field.name}
                                 name={field.name}
@@ -178,33 +198,55 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
                         },
                     }}
                 >
-                    {(field) => (
-                        <>
-                            <Label htmlFor={field.name}>
-                                {initialData
-                                    ? t("ui.users.fields.password_optional")
-                                    : t("ui.users.fields.password")}
-                            </Label>
-                            <Input
-                                id={field.name}
-                                name={field.name}
-                                type="password"
-                                value={field.state.value}
-                                onChange={(e) => field.handleChange(e.target.value)}
-                                onBlur={field.handleBlur}
-                                placeholder={t("ui.users.placeholders.password")}
-                                disabled={form.state.isSubmitting}
-                                autoComplete="off"
-                                required={false}
-                            />
-                            <FieldInfo field={field} />
-                        </>
-                    )}
+                    {(field) => {
+
+                        return (
+                            <>
+                                <Label htmlFor={field.name}>
+                                    <div className="flex items-center gap-1 mb-1">
+                                        <Lock color="grey" size={18}/>
+                                        {initialData
+                                        ? t("ui.users.fields.password_optional")
+                                        : t("ui.users.fields.password")}
+                                    </div>
+                                </Label>
+
+                                {/* Input and Toggle Wrapper */}
+                                <div className="relative w-full">
+                                    <Input
+                                        id={field.name}
+                                        name={field.name}
+                                        type={showPassword ? "text" : "password"}
+                                        value={field.state.value}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                        onBlur={field.handleBlur}
+                                        placeholder={t("ui.users.placeholders.password")}
+                                        disabled={form.state.isSubmitting}
+                                        autoComplete="off"
+                                        required={false}
+                                        className="pr-10"
+                                    />
+
+                                    {/* Visibility Toggle Button */}
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                                    >
+                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
+
+                                <p className="mt-1 text-xs text-muted-foreground">{t("ui.users.placeholders.passRulings")}</p>
+
+                                <FieldInfo field={field} />
+                            </>
+                        );
+                    }}
                 </form.Field>
             </div>
-
             {/* Form buttons */}
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-center gap-100 mt-4">
                 <Button
                     type="button"
                     variant="outline"
@@ -220,23 +262,32 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
                     }}
                     disabled={form.state.isSubmitting}
                 >
+                    <X />
                     {t("ui.users.buttons.cancel")}
                 </Button>
 
-                <form.Subscribe
-                    selector={(state) => [state.canSubmit, state.isSubmitting]}
-                >
-                    {([canSubmit, isSubmitting]) => (
-                        <Button type="submit" disabled={!canSubmit}>
-                            {isSubmitting
-                                ? t("ui.users.buttons.saving")
-                                : initialData
-                                    ? t("ui.users.buttons.update")
-                                    : t("ui.users.buttons.save")}
-                        </Button>
-                    )}
-                </form.Subscribe>
+
+                    <form.Subscribe
+                        selector={(state) => [state.canSubmit, state.isSubmitting]}
+                    >
+                        {([canSubmit, isSubmitting]) => (
+                            <Button type="submit" disabled={!canSubmit}>
+                                <Save />
+                                {isSubmitting
+                                    ? t("ui.users.buttons.saving")
+                                    : initialData
+                                        ? t("ui.users.buttons.update")
+                                        : t("ui.users.buttons.save")}
+                            </Button>
+
+                        )}
+                    </form.Subscribe>
+
+
             </div>
+
+
         </form>
+
     );
 }

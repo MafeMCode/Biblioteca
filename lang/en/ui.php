@@ -114,6 +114,8 @@ return [
             'password_optional' => 'Password (optional)',
             'created_at' => 'Created at',
             'actions' => 'Actions',
+            'rolPpal' => 'Main Role',
+            'permisos' => 'Specific Permissions'
         ],
         'columns' => [
             'name' => 'Name',
@@ -121,16 +123,37 @@ return [
             'created_at' => 'Created at',
             'actions' => 'Actions',
         ],
+        'gridelements' => [
+            'users' => 'Users',
+            'products' => 'Products',
+            'reports' => 'Reports',
+            'configurations' => 'Configuration',
+        ],
+        'roles' => [
+            'default' => 'Select a Role',
+            'admin' => 'Administrator',
+            'advanced' => 'Advanced User',
+            'basic' => 'Basic User'
+        ],
         'filters' => [
             'search' => 'Search',
             'name' => 'User name',
             'email' => 'User email',
         ],
         'placeholders' => [
-            'name' => 'User name',
-            'email' => 'User email',
-            'password' => 'User password',
+            'name' => 'Complete user name',
+            'email' => 'email@example.com',
+            'password' => 'Secure user password',
             'search' => 'Search users...',
+            'passRulings' => 'The password must be at least 8 characters long, including nubers and letters'
+        ],
+        'tabs' => [
+            'userForm' => 'Basic Information',
+            'permissionsForm' => 'Roles and Permissions'
+        ],
+        'cards' => [
+            'title' => 'Crear Nuevo Usuario',
+            'description' => 'Ingresa la información para crear un nuevo usuario en el sistema'
         ],
         'buttons' => [
             'new' => 'New User',
