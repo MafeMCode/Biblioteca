@@ -3,7 +3,8 @@
 namespace App\Users\Controllers;
 
 use App\Core\Controllers\Controller;
-
+use Domain\Permissions\Models\Permission;
+use Domain\Roles\Models\Role;
 use Domain\Users\Actions\UserDestroyAction;
 use Domain\Users\Actions\UserIndexAction;
 use Domain\Users\Actions\UserStoreAction;
@@ -24,7 +25,10 @@ class UserController extends Controller
 
     public function create()
     {
-        return Inertia::render('users/Create');
+        $allRolesInDatabase = Role::all();
+        $roles = $allRolesInDatabase->pluck('name');
+        $permisos = Permission::all()->pluck('name');
+        return Inertia::render('users/Create', ['roles' => $roles, 'permisos' => $permisos]);
     }
 
     public function store(Request $request, UserStoreAction $action)
@@ -75,7 +79,7 @@ class UserController extends Controller
         $action($user, $validator->validated());
 
         $redirectUrl = route('users.index');
-        
+
         // Añadir parámetros de página a la redirección si existen
         if ($request->has('page')) {
             $redirectUrl .= "?page=" . $request->query('page');

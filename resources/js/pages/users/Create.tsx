@@ -1,53 +1,44 @@
-import { UserForm } from "@/pages/users/components/UserForm";
-import { PermissionForm } from "@/pages/users/components/PermissionForm"
-import { UserLayout } from "@/layouts/users/UserLayout";
-import { User } from "lucide-react";
-import { useTranslations } from "@/hooks/use-translations";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
+import { UserLayout } from '@/layouts/users/UserLayout';
+import { UserForm } from '@/pages/users/components/UserForm';
+import { User } from 'lucide-react';
 
+interface UserFormProps {
+    initialData?: {
+        id: string;
+        name: string;
+        email: string;
+    };
+    page?: string;
+    perPage?: string;
+    roles?: string[];
+    permisos?: string[];
+}
 
-export default function CreateUser() {
-  const { t } = useTranslations();
+export default function CreateUser({ roles, permisos }: UserFormProps) {
+    const { t } = useTranslations();
 
-
-
-  return (
-    <UserLayout title={t("ui.users.create")}>
-        <div className="max-w-screen flex items-center self-center">
-        <Card className="w-100% shadow-lg dark:shadow-white dark:shadow-xs p-4 m-4">
-            <CardHeader>
-                <CardTitle>
-                    <div className="flex items-center gap-1">
-                        <User color="#2762c2"/>{t("ui.users.cards.title")}
-                    </div>
-                </CardTitle>
-                <CardDescription>{t("ui.users.cards.description")}</CardDescription>
-            </CardHeader>
-            <Separator />
-            <CardContent>
-                    <div>
-        <Tabs defaultValue="userForm">
-                            <TabsList className="w-full">
-                                <TabsTrigger value="userForm" className="w-1/2">{t("ui.users.tabs.userForm")}</TabsTrigger>
-                                <TabsTrigger value="permissionsForm" className="w-1/2">{t("ui.users.tabs.permissionsForm")}</TabsTrigger>
-                            </TabsList>
-                            <Separator />
-                            <TabsContent value="userForm" className="w-full">
-                                <UserForm />
-                                </TabsContent>
-                            <TabsContent value="permissionsForm" className="w-full">
-                                <PermissionForm />
-                            </TabsContent>
-                        </Tabs>
-
-                    </div>
-            </CardContent>
-        </Card>
-        </div>
-
-
-    </UserLayout>
-  );
+    return (
+        <UserLayout title={t('ui.users.create')}>
+            <div className="flex max-w-screen items-center self-center">
+                <Card className="w-100% m-4 p-4 shadow-lg dark:shadow-xs dark:shadow-white">
+                    <CardHeader>
+                        <CardTitle>
+                            <div className="flex items-center gap-1">
+                                <User color="#2762c2" />
+                                {t('ui.users.cards.title')}
+                            </div>
+                        </CardTitle>
+                        <CardDescription>{t('ui.users.cards.description')}</CardDescription>
+                    </CardHeader>
+                    <Separator />
+                    <CardContent>
+                        <UserForm roles={roles} permisos={permisos} />
+                    </CardContent>
+                </Card>
+            </div>
+        </UserLayout>
+    );
 }

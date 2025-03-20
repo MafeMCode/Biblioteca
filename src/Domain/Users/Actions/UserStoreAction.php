@@ -16,6 +16,8 @@ class UserStoreAction
             'password' => Hash::make($data['password']),
         ]);
 
+        // $user->givePermission
+
         return UserResource::fromModel($user);
     }
 }
