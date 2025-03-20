@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Eye, EyeOff, User, Lock, Mail, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,19 +49,25 @@ export function UserForm({ initialData, page, perPage }: UserFormProps) {
         },
         onSubmit: async ({ value }) => {
             const options = {
+                // preserveState:true,
                 onSuccess: () => {
+
+                    console.log("Usuario creado con éxito.")
+
                     queryClient.invalidateQueries({ queryKey: ["users"] });
 
-                    // // Construct URL with page parameters
-                    // let url = "/users";
-                    // if (page) {
-                    //     url += `?page=${page}`;
-                    //     if (perPage) {
-                    //         url += `&per_page=${perPage}`;
-                    //     }
-                    // }
+                    // Construct URL with page parameters
+                    let url = "/users";
+                    if (page) {
+                        url += `?page=${page}`;
+                        if (perPage) {
+                            url += `&per_page=${perPage}`;
+                        }
+                    }
 
-                    // router.visit(url);
+                    router.visit(url);
+
+
 
 
                 },

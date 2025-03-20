@@ -4,7 +4,7 @@ import { UserLayout } from "@/layouts/users/UserLayout";
 import { User } from "lucide-react";
 import { useTranslations } from "@/hooks/use-translations";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator";
 
 
@@ -28,7 +28,6 @@ export default function CreateUser() {
             <Separator />
             <CardContent>
                     <div>
-                    <div>
         <Tabs defaultValue="userForm">
                             <TabsList className="w-full">
                                 <TabsTrigger value="userForm" className="w-1/2">{t("ui.users.tabs.userForm")}</TabsTrigger>
@@ -43,7 +42,6 @@ export default function CreateUser() {
                             </TabsContent>
                         </Tabs>
 
-                        </div>
                     </div>
             </CardContent>
         </Card>

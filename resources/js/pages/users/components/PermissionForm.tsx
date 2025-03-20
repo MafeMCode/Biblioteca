@@ -3,10 +3,9 @@ import { Shield, Save, X, Users, Bolt, PackageOpen, FileText, Nut } from "lucide
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
 import { Separator } from "@/components/ui/separator";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { router } from "@inertiajs/react";
 import { toast } from "sonner";
 import { useTranslations } from "@/hooks/use-translations";
@@ -18,19 +17,6 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue, } from "@/components/ui/select";
-
-    // ----------------------------------------------------
-
-    const items = [
-        {
-          id: "recents",
-          label: "Recents",
-        }
-      ] as const
-
-
-
-    // ----------------------------------------------------
 
 interface PermissionFormProps {
     initialData?: {
@@ -114,10 +100,6 @@ export function PermissionForm({ initialData, page, perPage }: PermissionFormPro
         form.handleSubmit();
     };
 
-    const [showPassword, setShowPassword] = useState(false);
-
-    const accesoPermisos = false;
-
     return (
 
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -167,8 +149,7 @@ export function PermissionForm({ initialData, page, perPage }: PermissionFormPro
                                     {t("ui.users.fields.rolPpal")}
                                 </div>
                 <div className="grid grid-cols-2 mt-2 gap-4 flex">
-                    <div id="usersCard" className="grow">
-                        <Card>
+                        <Card  className="grow">
                         <CardHeader>
                             <div className="flex gap-1">
                                 <Users color="#2762c2" size={18}/>
@@ -177,54 +158,52 @@ export function PermissionForm({ initialData, page, perPage }: PermissionFormPro
                         </CardHeader>
                         <CardContent>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="showUser" />
+                                <Checkbox className="border-blue-500" id="users.view" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="showUser"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.showUser")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="createUser" />
+                                <Checkbox className="border-blue-500" id="users.create" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="createUser"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.createUser")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="editUser" />
+                                <Checkbox className="border-blue-500" id="users.edit" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="editUser"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.editUser")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="deleteUser" />
+                                <Checkbox className="border-blue-500" id="users.delete" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="deleteUser"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.deleteUser")}
                                     </label>
                                 </div>
                             </div>
                         </CardContent>
                         </Card>
-                    </div>
-                    <div id="productsCard" className="grow">
-                        <Card>
+                        <Card className="grow">
                         <CardHeader>
 
                         <div className="flex gap-1">
@@ -234,54 +213,52 @@ export function PermissionForm({ initialData, page, perPage }: PermissionFormPro
                         </CardHeader>
                         <CardContent>
                         <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="showProduct" />
+                                <Checkbox className="border-blue-500" id="products.view" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="showProduct"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.showProduct")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="createProduct" />
+                                <Checkbox className="border-blue-500" id="products.create" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="createProduct"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.createProduct")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="editProduct" />
+                                <Checkbox className="border-blue-500" id="products.edit" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="editProduct"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.editProduct")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="deleteProduct" />
+                                <Checkbox className="border-blue-500" id="products.delete" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="deleteProduct"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.deleteProduct")}
                                     </label>
                                 </div>
                             </div>
                         </CardContent>
                         </Card>
-                    </div>
-                    <div id="reportsCard" className="grow">
-                        <Card>
+                        <Card className="grow">
                         <CardHeader>
 
                         <div className="flex gap-1">
@@ -291,43 +268,41 @@ export function PermissionForm({ initialData, page, perPage }: PermissionFormPro
                         </CardHeader>
                         <CardContent>
                         <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="showReport" />
+                                <Checkbox className="border-blue-500" id="reports.view" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="showReport"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.showReport")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="exportReport" />
+                                <Checkbox className="border-blue-500" id="reports.export" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="exportReport"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.exportReport")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="printReport" />
+                                <Checkbox className="border-blue-500" id="reports.print" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="printReport"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.printReport")}
                                     </label>
                                 </div>
                             </div>
                         </CardContent>
                         </Card>
-                    </div>
-                    <div id="configCard" className="grow">
-                        <Card>
+                        <Card className="grow">
                         <CardHeader>
                             <div className="flex gap-1">
                                 <Bolt color="#2762c2" size={18}/>
@@ -336,30 +311,29 @@ export function PermissionForm({ initialData, page, perPage }: PermissionFormPro
                         </CardHeader>
                         <CardContent>
                         <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="accessConfig" />
+                                <Checkbox className="border-blue-500" id="config.access" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="accessConfig"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.accessConfig")}
                                     </label>
                                 </div>
                             </div>
                             <div className="items-top flex space-x-2">
-                                <Checkbox className="accent-blue" id="modifyConfig" />
+                                <Checkbox className="border-blue-500" id="config.modify" />
                                 <div className="grid gap-1.5 leading-none m-1">
                                     <label
-                                    htmlFor="verusuarios"
+                                    htmlFor="modifyConfig"
                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                    Elemento
+                                    {t("ui.users.gridelements.modifyConfig")}
                                     </label>
                                 </div>
                             </div>
                         </CardContent>
                         </Card>
-                    </div>
                 </div>
             </div>
 
