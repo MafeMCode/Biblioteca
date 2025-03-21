@@ -124,30 +124,57 @@ return [
             'actions' => 'Actions',
         ],
         'gridelements' => [
+            'users' => 'Usuarios',
+            'products' => 'Productos',
+            'reports' => 'Reportes',
+            'configurations' => 'Configuración',
+        ],
+        'permisos' => [
+            'Users' => [
+                'users' => [
+                    'view' => 'View users',
+                    'create' => 'Create users',
+                    'edit' => 'Edit users',
+                    'delete' => 'Delete users'
+                ],
+            ],
+            'Products' => [
+                'products' => [
+                    'view' => 'View products',
+                    'create' => 'Create products',
+                    'edit' => 'Edit products',
+                    'delete' => 'Delete products'
+                ],
+
+            ],
+            'Reports' => [
+                'reports' => [
+                    'view' => 'View reports',
+                    'export' => 'Export reports',
+                    'print' => 'Print reports'
+                ],
+
+            ],
+            'Config' => [
+                'config' => [
+                    'access' => 'Access configuration',
+                    'modify' => 'Modify configuration'
+                ],
+
+            ],
+        ],
+        'gridelements' => [
             'users' => 'Users',
             'products' => 'Products',
             'reports' => 'Reports',
             'configurations' => 'Configuration',
-            'showUser' => 'View users',
-            'createUser' => 'Create users',
-            'editUser' => 'Edit users',
-            'deleteUser' => 'Delete users',
-            'showReport' => 'View reports',
-            'exportReport' => 'Export reports',
-            'printReport' => 'Print reports',
-            'showProduct' => 'View products',
-            'createProduct' => 'Create products',
-            'editProduct' => 'Edit products',
-            'deleteProduct' => 'Delete products',
-            'accessConfig' => 'Access configuration',
-            'modifyConfig' => 'Modify configuration',
 
         ],
         'roles' => [
             'default' => 'Select a Role',
             'admin' => 'Administrator',
             'advanced' => 'Advanced User',
-            'basic' => 'Basic User'
+            'usuario' => 'Basic User'
         ],
         'filters' => [
             'search' => 'Search',

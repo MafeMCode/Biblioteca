@@ -27,8 +27,18 @@ class UserController extends Controller
     {
         $allRolesInDatabase = Role::all();
         $roles = $allRolesInDatabase->pluck('name');
+
         $permisos = Permission::all()->pluck('name');
-        return Inertia::render('users/Create', ['roles' => $roles, 'permisos' => $permisos]);
+
+        $permisosAgrupados = $permisos->groupBy(fn($p) => explode('.', $p)[0])->map->toArray();
+
+        $rolesConPermisos = Role::with('permissions')->get();
+
+        $relacionRolesPermisos = $rolesConPermisos->mapWithKeys(function ($role) {
+            return [$role->name => $role->permissions->pluck('name')];
+        });
+
+        return Inertia::render('users/Create', ['roles' => $roles, 'rolesConPermisos' => $relacionRolesPermisos, 'permisos' => $permisos, 'permisosAgrupados' => $permisosAgrupados]);
     }
 
     public function store(Request $request, UserStoreAction $action)
@@ -37,6 +47,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
+            'permisos' => ['nullable'],
         ]);
 
         if ($validator->fails()) {

@@ -129,25 +129,46 @@ return [
             'products' => 'Productos',
             'reports' => 'Reportes',
             'configurations' => 'Configuración',
-            'showUser' => 'Ver usuarios',
-            'createUser' => 'Crear usuarios',
-            'editUser' => 'Editar usuarios',
-            'deleteUser' => 'Eliminar usuarios',
-            'showReport' => 'Ver reportes',
-            'exportReport' => 'Exportar reportes',
-            'printReport' => 'Imprimir reportes',
-            'showProduct' => 'Ver productos',
-            'createProduct' => 'Crear productos',
-            'editProduct' => 'Editar productos',
-            'deleteProduct' => 'Eliminar productos',
-            'accessConfig' => 'Acceso a configuración',
-            'modifyConfig' => 'Modificar configuración',
+        ],
+        'permisos' => [
+            'Users' => [
+                'users' => [
+                    'view' => 'Ver usuarios',
+                    'create' => 'Crear usuarios',
+                    'edit' => 'Editar usuarios',
+                    'delete' => 'Eliminar usuarios'
+                ],
+            ],
+            'Products' => [
+                'products' => [
+                    'view' => 'Ver productos',
+                    'create' => 'Crear productos',
+                    'edit' => 'Editar productos',
+                    'delete' => 'Eliminar productos'
+                ],
+
+            ],
+            'Reports' => [
+                'reports' => [
+                    'view' => 'Ver reportes',
+                    'export' => 'Exportar reportes',
+                    'print' => 'Imprimir reportes'
+                ],
+
+            ],
+            'Config' => [
+                'config' => [
+                    'access' => 'Acceso a configuración',
+                    'modify' => 'Modificar configuración'
+                ],
+
+            ],
         ],
         'roles' => [
             'default' => 'Selecciona un Rol',
             'admin' => 'Administrador',
             'advanced' => 'Usuario Avanzado',
-            'basic' => 'Usuario Básico'
+            'usuario' => 'Usuario Básico'
         ],
         'filters' => [
             'search' => 'Buscar',

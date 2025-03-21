@@ -16,7 +16,7 @@ class UserStoreAction
             'password' => Hash::make($data['password']),
         ]);
 
-        // $user->givePermission
+        $user->syncPermissions($data['permisos']);
 
         return UserResource::fromModel($user);
     }
