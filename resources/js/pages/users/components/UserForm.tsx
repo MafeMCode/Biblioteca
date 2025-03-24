@@ -120,21 +120,50 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
         },
     });
 
+    // Manejador de dependencias
+
+    function comprobadorDependencias(permiso: string, parent: string) {
+        if (permiso == 'users.view' || permiso == 'products.view' || permiso == 'reports.view' || permiso == 'config.access') {
+            return false;
+        } else {
+            return !permisosUsuarioFinal.includes(parent);
+        }
+    }
+
     // Manejador de checkboxes
 
     function togglePermiso(permiso: string) {
         if (permisosUsuarioFinal.includes(permiso)) {
+            switch (permiso){
+                case 'users.view':
+                    permisosUsuarioFinal = permisosUsuarioFinal.filter(
+                        (permiso) => !['users.edit', 'users.delete', 'users.create'].includes(permiso)
+                    );
+                case 'products.view':
+                    permisosUsuarioFinal = permisosUsuarioFinal.filter(
+                        (permiso) => !['products.edit', 'products.delete', 'products.create'].includes(permiso)
+                    );
+                case 'reports.view':
+                    permisosUsuarioFinal = permisosUsuarioFinal.filter(
+                        (permiso) => !['reports.print', 'reports.export'].includes(permiso)
+                    );
+                case 'config.access':
+                    permisosUsuarioFinal = permisosUsuarioFinal.filter(
+                        (permiso) => !['config.modify'].includes(permiso)
+                    );
+
+            }
             permisosUsuarioFinal = permisosUsuarioFinal.filter((element) => element !== permiso);
             setArrayPermisosState(permisosUsuarioFinal);
         } else {
             permisosUsuarioFinal = [...permisosUsuarioFinal, permiso];
             setArrayPermisosState(permisosUsuarioFinal);
         }
+
+        console.log(permisosUsuarioFinal);
     }
 
     // Manejador del select
-
-    // rolesConPermisos?: Record<string, string[]>;
 
     function roleSelector(role: string) {
         const permisosDelRol = rolesConPermisos[role];
@@ -352,6 +381,7 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
                             <div className="mt-2 flex grid grid-cols-2 gap-4">
                                 {categorias.map((categoria) => {
                                     const permisosCat = permisosAgrupados[categoria.perms];
+                                    const permisoPadre = permisosCat[0];
 
                                     const catKey = categoria.icon;
 
@@ -376,6 +406,7 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
                                                             onCheckedChange={() => {
                                                                 togglePermiso(permiso);
                                                             }}
+                                                            disabled={comprobadorDependencias(permiso, permisoPadre)}
                                                         />
                                                         <div className="m-1 grid gap-1.5 leading-none">
                                                             <label
