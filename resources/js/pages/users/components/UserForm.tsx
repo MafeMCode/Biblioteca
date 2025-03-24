@@ -139,14 +139,18 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
                     permisosUsuarioFinal = permisosUsuarioFinal.filter(
                         (permiso) => !['users.edit', 'users.delete', 'users.create'].includes(permiso),
                     );
+                    break;
                 case 'products.view':
                     permisosUsuarioFinal = permisosUsuarioFinal.filter(
                         (permiso) => !['products.edit', 'products.delete', 'products.create'].includes(permiso),
                     );
+                    break;
                 case 'reports.view':
                     permisosUsuarioFinal = permisosUsuarioFinal.filter((permiso) => !['reports.print', 'reports.export'].includes(permiso));
+                    break;
                 case 'config.access':
                     permisosUsuarioFinal = permisosUsuarioFinal.filter((permiso) => !['config.modify'].includes(permiso));
+                    break;
             }
             permisosUsuarioFinal = permisosUsuarioFinal.filter((element) => element !== permiso);
             setArrayPermisosState(permisosUsuarioFinal);
