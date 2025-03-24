@@ -7,6 +7,7 @@ return [
         'items' => [
             'dashboard' => 'Panel',
             'users' => 'Usuarios',
+            'floors' => 'Pisos',
             'repository' => 'Repositorio',
             'documentation' => 'Documentación',
         ],

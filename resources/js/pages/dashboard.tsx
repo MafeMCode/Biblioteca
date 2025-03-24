@@ -1,5 +1,5 @@
 import { DashboardCard } from '@/components/dashboard/DashboardCard';
-import { Users, User } from 'lucide-react';
+import { Users, User, ChartColumnStacked } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
@@ -24,6 +24,13 @@ export default function Dashboard() {
                     description="Gestiona los usuarios del sistema"
                     href="/users"
                     icon={Users}
+                />
+
+                <DashboardCard
+                    title="Pisos"
+                    description="Gestiona los pisos y secciones del sistema"
+                    href="/users"
+                    icon={ChartColumnStacked}
                 />
 
                 <CardFlip
