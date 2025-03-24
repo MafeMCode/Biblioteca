@@ -134,24 +134,19 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
 
     function togglePermiso(permiso: string) {
         if (permisosUsuarioFinal.includes(permiso)) {
-            switch (permiso){
+            switch (permiso) {
                 case 'users.view':
                     permisosUsuarioFinal = permisosUsuarioFinal.filter(
-                        (permiso) => !['users.edit', 'users.delete', 'users.create'].includes(permiso)
+                        (permiso) => !['users.edit', 'users.delete', 'users.create'].includes(permiso),
                     );
                 case 'products.view':
                     permisosUsuarioFinal = permisosUsuarioFinal.filter(
-                        (permiso) => !['products.edit', 'products.delete', 'products.create'].includes(permiso)
+                        (permiso) => !['products.edit', 'products.delete', 'products.create'].includes(permiso),
                     );
                 case 'reports.view':
-                    permisosUsuarioFinal = permisosUsuarioFinal.filter(
-                        (permiso) => !['reports.print', 'reports.export'].includes(permiso)
-                    );
+                    permisosUsuarioFinal = permisosUsuarioFinal.filter((permiso) => !['reports.print', 'reports.export'].includes(permiso));
                 case 'config.access':
-                    permisosUsuarioFinal = permisosUsuarioFinal.filter(
-                        (permiso) => !['config.modify'].includes(permiso)
-                    );
-
+                    permisosUsuarioFinal = permisosUsuarioFinal.filter((permiso) => !['config.modify'].includes(permiso));
             }
             permisosUsuarioFinal = permisosUsuarioFinal.filter((element) => element !== permiso);
             setArrayPermisosState(permisosUsuarioFinal);

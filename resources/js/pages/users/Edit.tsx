@@ -21,7 +21,7 @@ interface EditUserProps extends PageProps {
     permisosDelUsuario?: string[];
 }
 
-export default function EditUser({ user, page, perPage, roles, rolesConPermisos, permisos, permisosAgrupados, permisosDelUsuario}:EditUserProps) {
+export default function EditUser({ user, page, perPage, roles, rolesConPermisos, permisos, permisosAgrupados, permisosDelUsuario }: EditUserProps) {
     const { t } = useTranslations();
 
     return (
@@ -40,14 +40,15 @@ export default function EditUser({ user, page, perPage, roles, rolesConPermisos,
                     <Separator />
                     <CardContent>
                         <UserForm
-                        initialData={user}
-                        page={page}
-                        perPage={perPage}
-                        roles={roles}
-                        rolesConPermisos={rolesConPermisos}
-                        permisos={permisos}
-                        permisosAgrupados={permisosAgrupados}
-                        permisosDelUsuario={permisosDelUsuario}/>
+                            initialData={user}
+                            page={page}
+                            perPage={perPage}
+                            roles={roles}
+                            rolesConPermisos={rolesConPermisos}
+                            permisos={permisos}
+                            permisosAgrupados={permisosAgrupados}
+                            permisosDelUsuario={permisosDelUsuario}
+                        />
                     </CardContent>
                 </Card>
             </div>

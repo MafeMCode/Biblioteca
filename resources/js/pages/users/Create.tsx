@@ -19,7 +19,7 @@ interface UserFormProps {
     permisosAgrupados: Record<string, string[]>;
 }
 
-export default function CreateUser({ roles, rolesConPermisos, permisos, permisosAgrupados}: UserFormProps) {
+export default function CreateUser({ roles, rolesConPermisos, permisos, permisosAgrupados }: UserFormProps) {
     const { t } = useTranslations();
 
     return (
@@ -37,11 +37,7 @@ export default function CreateUser({ roles, rolesConPermisos, permisos, permisos
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <UserForm
-                        roles={roles}
-                        rolesConPermisos={rolesConPermisos}
-                        permisos={permisos}
-                        permisosAgrupados={permisosAgrupados}/>
+                        <UserForm roles={roles} rolesConPermisos={rolesConPermisos} permisos={permisos} permisosAgrupados={permisosAgrupados} />
                     </CardContent>
                 </Card>
             </div>
