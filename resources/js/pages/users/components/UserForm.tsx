@@ -12,7 +12,7 @@ import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { Bolt, Eye, EyeOff, FileText, Lock, Mail, PackageOpen, Save, Shield, User, Users, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 interface UserFormProps {
@@ -27,6 +27,7 @@ interface UserFormProps {
     rolesConPermisos: Record<string, string[]>;
     permisos?: string[];
     permisosAgrupados: Record<string, string[]>;
+    permisosDelUsuario?: string[];
 }
 
 // Field error display component
@@ -55,12 +56,22 @@ const categorias = [
     { id: 4, icon: 'Config', label: 'configurations', perms: 'config' },
 ];
 
-var permisosUsuarioFinal :string[] = [];
+var permisosUsuarioFinal: string[] = [];
 
-export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, permisosAgrupados }: UserFormProps) {
+export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, permisosAgrupados, permisosDelUsuario }: UserFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
-    const [arrayPermisosState, setArrayPermisosState]=useState(permisosUsuarioFinal);
+    const [arrayPermisosState, setArrayPermisosState] = useState(permisosUsuarioFinal);
+
+    useEffect(() => {
+        if (permisosDelUsuario && initialData) {
+            permisosUsuarioFinal = permisosDelUsuario;
+            setArrayPermisosState(permisosDelUsuario);
+        } else {
+            permisosUsuarioFinal = [];
+            setArrayPermisosState(permisosUsuarioFinal);
+        }
+    }, [permisosDelUsuario]);
 
     // TanStack Form setup
     const form = useForm({
@@ -70,7 +81,6 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
             password: '',
         },
         onSubmit: async ({ value }) => {
-
             const userData = {
                 ...value,
                 permisos: arrayPermisosState,
@@ -114,21 +124,19 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
 
     function togglePermiso(permiso: string) {
         if (permisosUsuarioFinal.includes(permiso)) {
-            permisosUsuarioFinal = permisosUsuarioFinal.filter(element => element !== permiso);
+            permisosUsuarioFinal = permisosUsuarioFinal.filter((element) => element !== permiso);
             setArrayPermisosState(permisosUsuarioFinal);
         } else {
-            permisosUsuarioFinal=[...permisosUsuarioFinal, permiso];
+            permisosUsuarioFinal = [...permisosUsuarioFinal, permiso];
             setArrayPermisosState(permisosUsuarioFinal);
         }
-
     }
 
     // Manejador del select
 
     // rolesConPermisos?: Record<string, string[]>;
 
-    function roleSelector(role : string){
-
+    function roleSelector(role: string) {
         const permisosDelRol = rolesConPermisos[role];
 
         permisosUsuarioFinal = [];
@@ -137,7 +145,6 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
         permisosDelRol.forEach((permiso) => {
             togglePermiso(permiso);
         });
-
     }
 
     // Form submission handler
@@ -319,19 +326,14 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
                                     {t('ui.users.fields.rolPpal')}
                                 </div>
                             </Label>
-                            <Select
-                            onValueChange={(value) => roleSelector(value)}
-                            >
+                            <Select onValueChange={(value) => roleSelector(value)}>
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder={t('ui.users.roles.default')}/>
+                                    <SelectValue placeholder={t('ui.users.roles.default')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {/* <SelectItem value="default">{t('ui.users.roles.default')}</SelectItem> */}
                                     {roles?.map((role) => (
-                                        <SelectItem
-                                            key={String(role)}
-                                            value={String(role)}
-                                            >
+                                        <SelectItem key={String(role)} value={String(role)}>
                                             {t('ui.users.roles.' + role)}
                                         </SelectItem>
                                     ))}
@@ -371,8 +373,10 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
                                                             id={String(permiso)}
                                                             value={String(permiso)}
                                                             checked={arrayPermisosState.includes(permiso)}
-                                                            onCheckedChange={() => {togglePermiso(permiso)}}
-                                                            />
+                                                            onCheckedChange={() => {
+                                                                togglePermiso(permiso);
+                                                            }}
+                                                        />
                                                         <div className="m-1 grid gap-1.5 leading-none">
                                                             <label
                                                                 htmlFor={String(permiso)}
