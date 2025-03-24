@@ -193,8 +193,8 @@ return [
             'permissionsForm' => 'Roles and Permissions'
         ],
         'cards' => [
-            'title' => 'Crear Nuevo Usuario',
-            'description' => 'Ingresa la información para crear un nuevo usuario en el sistema'
+            'title' => 'Create New User',
+            'description' => 'Input the information to create a new user in the system.'
         ],
         'buttons' => [
             'new' => 'New User',
