@@ -7,9 +7,20 @@ return [
             'dashboard' => 'Dashboard',
             'users' => 'Users',
             'floors' => 'Floors',
+            'books' => 'Books',
             'repository' => 'Repository',
             'documentation' => 'Documentation',
         ],
+    ],
+    'dashboard' => [
+        'users' => 'Users',
+        'floors' => 'Floors',
+        'books' => 'Books',
+        'description' => [
+            'users' => 'Manage all users in the system',
+            'floors' => 'Manage all floors and sections in the system',
+            'books' => 'Manage all books in the system',
+        ]
     ],
     'user_menu' => [
         'settings' => 'Settings',

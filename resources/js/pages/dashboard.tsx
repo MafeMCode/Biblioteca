@@ -1,7 +1,8 @@
 import { DashboardCard } from '@/components/dashboard/DashboardCard';
-import { Users, User, ChartColumnStacked } from 'lucide-react';
+import { Users, User, ChartColumnStacked, BookMarked } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
+import { useTranslations } from '@/hooks/use-translations';
 import { Head } from '@inertiajs/react';
 import CardFlip from "@/components/ui/card-flip";
 import { Icon } from '@/components/icon';
@@ -15,24 +16,32 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard() {
+    const { t } = useTranslations();
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="grid gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
                 <DashboardCard
-                    title="Usuarios"
-                    description="Gestiona los usuarios del sistema"
+                    title={t('ui.dashboard.users')}
+                    description={t('ui.dashboard.description.users')}
                     href="/users"
                     icon={Users}
                 />
 
                 <DashboardCard
-                    title="Pisos"
-                    description="Gestiona los pisos y secciones del sistema"
+                    title={t('ui.dashboard.floors')}
+                    description={t('ui.dashboard.description.floors')}
                     href="/users"
                     icon={ChartColumnStacked}
                 />
 
+                <DashboardCard
+                    title={t('ui.dashboard.books')}
+                    description={t('ui.dashboard.description.books')}
+                    href="/users"
+                    icon={BookMarked}
+                />
                 <CardFlip
                     contentFront={
                         <div className="flex items-center gap-4">

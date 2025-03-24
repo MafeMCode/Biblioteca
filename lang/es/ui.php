@@ -8,9 +8,20 @@ return [
             'dashboard' => 'Panel',
             'users' => 'Usuarios',
             'floors' => 'Pisos',
+            'books' => 'Libros',
             'repository' => 'Repositorio',
             'documentation' => 'Documentación',
         ],
+    ],
+    'dashboard' => [
+        'users' => 'Usuarios',
+        'floors' => 'Pisos',
+        'books' => 'Libros',
+        'description' => [
+            'users' => 'Gestiona los usuarios del sistema',
+            'floors' => 'Gestiona los pisos y secciones del sistema',
+            'books' => 'Gestiona los libros del sistema',
+        ]
     ],
     'user_menu' => [
         'settings' => 'Configuración',
