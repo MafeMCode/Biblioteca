@@ -158,8 +158,6 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
             permisosUsuarioFinal = [...permisosUsuarioFinal, permiso];
             setArrayPermisosState(permisosUsuarioFinal);
         }
-
-        console.log(permisosUsuarioFinal);
     }
 
     // Manejador del select
