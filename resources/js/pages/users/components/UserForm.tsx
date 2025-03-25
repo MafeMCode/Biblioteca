@@ -24,6 +24,7 @@ interface UserFormProps {
     page?: string;
     perPage?: string;
     roles?: string[];
+    emails: string[];
     rolesConPermisos: Record<string, string[]>;
     permisos?: string[];
     permisosAgrupados: Record<string, string[]>;
@@ -58,7 +59,7 @@ const categorias = [
 
 var permisosUsuarioFinal: string[] = [];
 
-export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, permisosAgrupados, permisosDelUsuario }: UserFormProps) {
+export function UserForm({ initialData, page, perPage, roles, emails, rolesConPermisos, permisosAgrupados, permisosDelUsuario }: UserFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
     const [arrayPermisosState, setArrayPermisosState] = useState(permisosUsuarioFinal);
@@ -247,8 +248,8 @@ export function UserForm({ initialData, page, perPage, roles, rolesConPermisos, 
                                         return !value
                                             ? t('ui.validation.required', { attribute: t('ui.users.fields.email').toLowerCase() })
                                             : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-                                              ? t('ui.validation.email', { attribute: t('ui.users.fields.email').toLowerCase() })
-                                              : undefined;
+                                            ? t('ui.validation.email', { attribute: t('ui.users.fields.email').toLowerCase() })
+                                            : undefined;
                                     },
                                 }}
                             >

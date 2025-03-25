@@ -38,7 +38,9 @@ class UserController extends Controller
             return [$role->name => $role->permissions->pluck('name')];
         });
 
-        return Inertia::render('users/Create', ['roles' => $roles, 'rolesConPermisos' => $relacionRolesPermisos, 'permisos' => $permisos, 'permisosAgrupados' => $permisosAgrupados]);
+        $emails = User::with('roles.permissions')->pluck('email');
+
+        return Inertia::render('users/Create', ['roles' => $roles, 'emails' => $emails, 'rolesConPermisos' => $relacionRolesPermisos, 'permisos' => $permisos, 'permisosAgrupados' => $permisosAgrupados]);
     }
 
     public function store(Request $request, UserStoreAction $action)
@@ -78,11 +80,14 @@ class UserController extends Controller
 
         $permisosDelUsuario = $user->getPermissionNames();
 
+        $emails = User::all()->pluck('email');
+
         return Inertia::render('users/Edit', [
             'user' => $user,
             'page' => $request->query('page'),
             'perPage' => $request->query('perPage'),
             'roles' => $roles,
+            'emails' => $emails,
             'rolesConPermisos' => $relacionRolesPermisos,
             'permisos' => $permisos,
             'permisosAgrupados' => $permisosAgrupados,
