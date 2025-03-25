@@ -250,6 +250,7 @@ export function UserForm({ initialData, page, perPage, roles, emails, rolesConPe
                                             : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
                                             ? t('ui.validation.email', { attribute: t('ui.users.fields.email').toLowerCase() })
                                             : undefined;
+
                                     },
                                 }}
                             >
