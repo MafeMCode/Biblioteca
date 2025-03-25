@@ -4,6 +4,7 @@ namespace App\Floors\Controllers;
 
 use App\Core\Controllers\Controller;
 use Domain\Floors\Models\Floor;
+use Domain\Genres\Models\Genre;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,8 +15,9 @@ class FloorController extends Controller
      */
     public function index()
     {
+        $genres = Genre::all()->pluck('name')->toJson();
         $floors = Floor::all();
-        return Inertia::render('floors/Index', ['floors' => $floors]);
+        return Inertia::render('floors/Index', ['floors' => $floors, 'genres' => $genres]);
     }
 
     /**
