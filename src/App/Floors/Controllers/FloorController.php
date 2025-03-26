@@ -16,7 +16,20 @@ class FloorController extends Controller
     public function index()
     {
         $genres = Genre::all()->pluck('name')->toJson();
-        $floors = Floor::all();
+        // $floors = Floor::orderBy('story')->get();
+
+        $floors = Floor::with(['zones' => fn($query) => $query->orderBy('number')])
+            ->withCount('zones')
+            ->orderBy('story')
+            ->get()
+            ->map(fn(Floor $floor) => [
+                'id' => $floor->id,
+                'story' => $floor->story,
+                'capacity' => $floor->capacity,
+                'count' => $floor->zones_count,
+                'zones' => $floor->zones,
+            ])->toArray();
+
         return Inertia::render('floors/Index', ['floors' => $floors, 'genres' => $genres]);
     }
 

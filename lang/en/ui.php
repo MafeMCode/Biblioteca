@@ -115,6 +115,24 @@ return [
         'per_page' => 'Per page',
         'no_results' => 'No results',
     ],
+    'floors' => [
+        'title' => 'Floors',
+        'create' => 'Create Floor',
+        'buttons' => [
+            'new' => 'New Floor',
+        ],
+    ],
+    'zones' => [
+        'title' => 'Zones',
+        'create' => 'Create Zone',
+        'buttons' => [
+            'new' => 'New Zone',
+        ],
+        'create' => [
+            'title' => 'title',
+            'desc' => 'desc'
+        ],
+    ],
     'users' => [
         'title' => 'Users',
         'create' => 'Create User',

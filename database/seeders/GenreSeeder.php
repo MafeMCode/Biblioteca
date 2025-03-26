@@ -31,5 +31,7 @@ class GenreSeeder extends Seeder
         Genre::create(['name' => 'Cyberpunk']);
         Genre::create(['name' => 'Poetry']);
 
+
+
     }
 }

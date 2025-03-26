@@ -116,6 +116,24 @@ return [
         'per_page' => 'Por página',
         'no_results' => 'No hay resultados',
     ],
+    'floors' => [
+        'title' => 'Pisos',
+        'create' => 'Crear Piso',
+        'buttons' => [
+            'new' => 'Crear Piso',
+        ],
+    ],
+    'zones' => [
+        'title' => 'Zonas',
+        'create' => 'Crear Zona',
+        'buttons' => [
+            'new' => 'Crear Zona',
+        ],
+        'create' => [
+            'title' => 'titulo',
+            'desc' => 'desc'
+        ],
+    ],
     'users' => [
         'title' => 'Usuarios',
         'create' => 'Crear Usuario',

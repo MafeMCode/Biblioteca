@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('bookcases', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
+            $table->integer('number');
             $table->integer('capacity');
-            $table->foreignUuid('zone')->constrained(table:'zones', indexName:'id')->cascadeOnDelete();
+            $table->foreignUuid('zone_id')->constrained(table:'zones', indexName:'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

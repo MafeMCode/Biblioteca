@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('author');
             $table->integer('length');
             $table->string('editor');
-            $table->foreignUuid('bookcase')->constrained(table:'bookcases', indexName:'id')->cascadeOnDelete();
+            $table->foreignUuid('bookcase_id')->constrained(table:'bookcases', indexName:'id')->cascadeOnDelete();
             $table->timestamps();
         });
     }

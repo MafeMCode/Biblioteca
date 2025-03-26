@@ -21,12 +21,12 @@ const mainNavItems = (t: (key: string) => string): NavItem[] => [
     },
     {
         title: t('ui.navigation.items.floors'),
-        url: '/users',
+        url: '/floors',
         icon: ChartColumnStacked,
     },
     {
         title: t('ui.navigation.items.books'),
-        url: '/users',
+        url: '/books',
         icon: BookMarked,
     },
 ];

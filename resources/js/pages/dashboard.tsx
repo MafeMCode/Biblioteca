@@ -32,14 +32,14 @@ export default function Dashboard() {
                 <DashboardCard
                     title={t('ui.dashboard.floors')}
                     description={t('ui.dashboard.description.floors')}
-                    href="/users"
+                    href="/floors"
                     icon={ChartColumnStacked}
                 />
 
                 <DashboardCard
                     title={t('ui.dashboard.books')}
                     description={t('ui.dashboard.description.books')}
-                    href="/users"
+                    href="/books"
                     icon={BookMarked}
                 />
                 <CardFlip
