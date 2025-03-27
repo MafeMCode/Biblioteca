@@ -1,5 +1,5 @@
 import { DashboardCard } from '@/components/dashboard/DashboardCard';
-import { Users, User, ChartColumnStacked, BookMarked } from 'lucide-react';
+import { Users, User, ChartColumnStacked, BookMarked, LandPlot, Layers } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { useTranslations } from '@/hooks/use-translations';
@@ -29,20 +29,7 @@ export default function Dashboard() {
                     icon={Users}
                 />
 
-                <DashboardCard
-                    title={t('ui.dashboard.floors')}
-                    description={t('ui.dashboard.description.floors')}
-                    href="/floors"
-                    icon={ChartColumnStacked}
-                />
-
-                <DashboardCard
-                    title={t('ui.dashboard.books')}
-                    description={t('ui.dashboard.description.books')}
-                    href="/books"
-                    icon={BookMarked}
-                />
-                <CardFlip
+                {/* <CardFlip
                     contentFront={
                         <div className="flex items-center gap-4">
                             <div className="rounded-lg bg-primary/10 p-2">
@@ -66,6 +53,34 @@ export default function Dashboard() {
                             </div>
                         </div>
                     }
+                /> */}
+
+                <DashboardCard
+                    title={t('ui.dashboard.floors')}
+                    description={t('ui.dashboard.description.floors')}
+                    href="/floors"
+                    icon={Layers}
+                />
+
+                <DashboardCard
+                    title={t('ui.dashboard.zones')}
+                    description={t('ui.dashboard.description.zones')}
+                    href="/zones"
+                    icon={LandPlot}
+                />
+
+                <DashboardCard
+                    title={t('ui.dashboard.bookcases')}
+                    description={t('ui.dashboard.description.bookcases')}
+                    href="/bookcases"
+                    icon={ChartColumnStacked}
+                />
+
+                <DashboardCard
+                    title={t('ui.dashboard.books')}
+                    description={t('ui.dashboard.description.books')}
+                    href="/books"
+                    icon={BookMarked}
                 />
 
             </div>

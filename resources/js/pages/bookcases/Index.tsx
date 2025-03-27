@@ -8,7 +8,7 @@ import { PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
-import { FloorForm } from './components/FloorForm';
+import { BookcaseForm } from './components/BookcaseForm';
 
 interface Floor {
     id: number;
@@ -26,7 +26,7 @@ export default function FloorsIndex({ floors}: IndexFloorProps) {
     const { url } = usePage();
 
     return (
-        <FloorLayout title={t('ui.floors.title')}>
+        <FloorLayout title={t('ui.bookcases.title')}>
         </FloorLayout>
     );
 }

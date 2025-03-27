@@ -4,6 +4,7 @@ namespace App\Bookcases\Controllers;
 
 use App\Core\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class BookcaseController extends Controller
 {
@@ -12,7 +13,7 @@ class BookcaseController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('bookcases/Index', []);
     }
 
     /**

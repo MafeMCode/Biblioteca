@@ -17,10 +17,14 @@ return [
         'users' => 'Usuarios',
         'floors' => 'Pisos',
         'books' => 'Libros',
+        'zones' => 'Zonas',
+        'bookcases' => 'Estanterías',
         'description' => [
             'users' => 'Gestiona los usuarios del sistema',
             'floors' => 'Gestiona los pisos y secciones del sistema',
             'books' => 'Gestiona los libros del sistema',
+            'zones' => 'Gestiona las zonas del sistema',
+            'bookcases' => 'Gestiona las estanterías del sistema',
         ]
     ],
     'user_menu' => [

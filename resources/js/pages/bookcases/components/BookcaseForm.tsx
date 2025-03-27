@@ -1,6 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 
-interface ZoneFormProps {
+interface BookcaseForm {
     initialData?: {
         id: string;
         name: string;
@@ -8,8 +8,10 @@ interface ZoneFormProps {
     };
 }
 
-    // TanStack Form setup
-    const form = useForm({
+
+export function BookcaseForm() {
+     // TanStack Form setup
+     const form = useForm({
         defaultValues: {
             // name: initialData?.name ?? '',
             // email: initialData?.email ?? '',
@@ -50,8 +52,6 @@ interface ZoneFormProps {
             // }
         },
     });
-
-export function ZoneForm() {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

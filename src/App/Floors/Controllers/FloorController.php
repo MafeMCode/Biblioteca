@@ -3,6 +3,7 @@
 namespace App\Floors\Controllers;
 
 use App\Core\Controllers\Controller;
+use Domain\Floors\Actions\FloorDestroyAction;
 use Domain\Floors\Models\Floor;
 use Domain\Genres\Models\Genre;
 use Illuminate\Http\Request;
@@ -18,8 +19,7 @@ class FloorController extends Controller
         $genres = Genre::all()->pluck('name')->toJson();
         // $floors = Floor::orderBy('story')->get();
 
-        $floors = Floor::with(['zones' => fn($query) => $query->orderBy('number')])
-            ->withCount('zones')
+        $floors = Floor::withCount('zones')
             ->orderBy('story')
             ->get()
             ->map(fn(Floor $floor) => [
@@ -27,10 +27,9 @@ class FloorController extends Controller
                 'story' => $floor->story,
                 'capacity' => $floor->capacity,
                 'count' => $floor->zones_count,
-                'zones' => $floor->zones,
             ])->toArray();
 
-        return Inertia::render('floors/Index', ['floors' => $floors, 'genres' => $genres]);
+        return Inertia::render('floors/Index', ['floors' => $floors]);
     }
 
     /**
@@ -76,8 +75,9 @@ class FloorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Floor $floor, FloorDestroyAction $action)
     {
-        //
+        // $action($floor);
+
     }
 }

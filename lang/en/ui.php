@@ -16,10 +16,14 @@ return [
         'users' => 'Users',
         'floors' => 'Floors',
         'books' => 'Books',
+        'zones' => 'Zones',
+        'bookcases' => 'Bookcases',
         'description' => [
             'users' => 'Manage all users in the system',
             'floors' => 'Manage all floors and sections in the system',
             'books' => 'Manage all books in the system',
+            'zones' => 'Manage all zones in the system',
+            'bookcases' => 'Manage all bookcases in the system',
         ]
     ],
     'user_menu' => [
@@ -120,6 +124,20 @@ return [
         'create' => 'Create Floor',
         'buttons' => [
             'new' => 'New Floor',
+        ],
+    ],
+    'bookcases' => [
+        'title' => 'Bookcases',
+        'create' => 'Create Bookcase',
+        'buttons' => [
+            'new' => 'New Bookcase',
+        ],
+    ],
+    'books' => [
+        'title' => 'Books',
+        'create' => 'Create Book',
+        'buttons' => [
+            'new' => 'New Book',
         ],
     ],
     'zones' => [
