@@ -1,14 +1,14 @@
 <?php
 
-namespace Domain\Users\Actions;
+namespace Domain\Books\Actions;
 
-use Domain\Users\Data\Resources\UserResource;
-use Domain\Users\Models\User;
+use Domain\Books\Data\Resources\BookResource;
+use Domain\Books\Models\Book;
 use Illuminate\Support\Facades\Hash;
 
-class UserUpdateAction
+class BookUpdateAction
 {
-    public function __invoke(User $user, array $data): UserResource
+    public function __invoke(Book $book, array $data): BookResource
     {
         $updateData = [
             'name' => $data['name'],
@@ -19,10 +19,10 @@ class UserUpdateAction
             $updateData['password'] = Hash::make($data['password']);
         }
 
-        $user->syncPermissions($data['permisos']);
+        $book->syncPermissions($data['permisos']);
 
-        $user->update($updateData);
+        $book->update($updateData);
 
-        return UserResource::fromModel($user->fresh());
+        return BookResource::fromModel($book->fresh());
     }
 }

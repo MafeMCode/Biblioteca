@@ -17,7 +17,7 @@ class Zone extends Model
         'id',
         'genre',
         'capacity',
-        'floor',
+        'floor_id',
     ];
 
     public function bookcases(): HasMany
