@@ -9,10 +9,10 @@ class BookIndexAction
 {
     public function __invoke(?string $search = null, int $perPage = 10)
     {
+
         $books = Book::query()
             ->when($search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('author', 'like', "%{$search}%");
+                $query->where('author', 'ILIKE', "%{$search}%");
             })
             ->latest()
             ->paginate($perPage);

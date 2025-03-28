@@ -1,16 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "../../lib/axios";
 
-export interface Book {
+export interface Bookcase {
   id: string;
-  title: string;
-  genres: string;
-  author: string;
-  length: number;
-  editor: string;
-  bookcase_id: number;
-  zone_id: number;
-  floor_id: number;
+  number: number;
+  capacity: number;
+  zone_number: number;
+  floor_story: number;
   created_at: string;
 }
 
@@ -48,19 +44,19 @@ export interface PaginatedResponse<T> {
   };
 }
 
-interface UseBookParams {
-  author?: string;
+interface UseBookcaseParams {
+  search?: string;
   page?: number;
   perPage?: number;
 }
 
-export function useBooks({ author, page = 1, perPage = 10 }: UseBookParams = {}) {
+export function useBookcases({ search, page = 1, perPage = 10 }: UseBookcaseParams = {}) {
   return useQuery({
-    queryKey: ["books", { author, page, perPage }],
+    queryKey: ["bookcases", { search, page, perPage }],
     queryFn: async () => {
-      const { data: apiResponse } = await axios.get<ApiPaginatedResponse<Book>>("/api/books", {
+      const { data: apiResponse } = await axios.get<ApiPaginatedResponse<Bookcase>>("/api/bookcases", {
         params: {
-          author,
+          search,
           page,
           per_page: perPage,
         },
@@ -81,15 +77,15 @@ export function useBooks({ author, page = 1, perPage = 10 }: UseBookParams = {})
           to: apiResponse.to,
           total: apiResponse.total
         }
-      } as PaginatedResponse<Book>;
+      } as PaginatedResponse<Bookcase>;
     },
   });
 }
 
-export function useCreateBook() {
+export function useCreateBookcase() {
   return useMutation({
-    mutationFn: async (data: { title: string; genres: string; author: string ; length: number ; editor: string ; bookcase_id: string }) => {
-      const response = await axios.post("/api/books", data, {
+    mutationFn: async (data: { title: string; genres: string; author: string ; length: number ; editor: string ; bookcasecase_id: string }) => {
+      const response = await axios.post("/api/bookcases", data, {
         headers: {
           'Accept': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
@@ -100,10 +96,10 @@ export function useCreateBook() {
   });
 }
 
-export function useUpdateBook(bookId: string) {
+export function useUpdateBookcase(bookcaseId: string) {
   return useMutation({
-    mutationFn: async (data: { title: string; genres: string; author: string ; length: number ; editor: string ; bookcase_id: string }) => {
-      const response = await axios.put(`/api/books/${bookId}`, data, {
+    mutationFn: async (data: { title: string; genres: string; author: string ; length: number ; editor: string ; bookcasecase_id: string }) => {
+      const response = await axios.put(`/api/bookcases/${bookcaseId}`, data, {
         headers: {
           'Accept': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
@@ -114,10 +110,10 @@ export function useUpdateBook(bookId: string) {
   });
 }
 
-export function useDeleteBook() {
+export function useDeleteBookcase() {
   return useMutation({
-    mutationFn: async (bookId: string) => {
-      await axios.delete(`/api/books/${bookId}`, {
+    mutationFn: async (bookcaseId: string) => {
+      await axios.delete(`/api/bookcases/${bookcaseId}`, {
         headers: {
           'Accept': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'

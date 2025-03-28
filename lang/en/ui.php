@@ -272,8 +272,8 @@ return [
         'edit' => 'Edit Book',
         'fields' => [
             'title' => 'Title',
-            'email' => 'Email',
-            'password' => 'Contraseña',
+            'author' => 'Author',
+            'genres' => 'Genre/s',
             'password_optional' => 'Contraseña (opcional)',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
@@ -298,46 +298,6 @@ return [
             'reports' => 'Reportes',
             'configurations' => 'Configuración',
         ],
-        'permisos' => [
-            'Users' => [
-                'users' => [
-                    'view' => 'Ver usuarios',
-                    'create' => 'Crear usuarios',
-                    'edit' => 'Editar usuarios',
-                    'delete' => 'Eliminar usuarios'
-                ],
-            ],
-            'Products' => [
-                'products' => [
-                    'view' => 'Ver productos',
-                    'create' => 'Crear productos',
-                    'edit' => 'Editar productos',
-                    'delete' => 'Eliminar productos'
-                ],
-
-            ],
-            'Reports' => [
-                'reports' => [
-                    'view' => 'Ver reportes',
-                    'export' => 'Exportar reportes',
-                    'print' => 'Imprimir reportes'
-                ],
-
-            ],
-            'Config' => [
-                'config' => [
-                    'access' => 'Acceso a configuración',
-                    'modify' => 'Modificar configuración'
-                ],
-
-            ],
-        ],
-        'roles' => [
-            'default' => 'Selecciona un Rol',
-            'admin' => 'Administrador',
-            'advanced' => 'Usuario Avanzado',
-            'usuario' => 'Usuario Básico'
-        ],
         'filters' => [
             'search' => 'Buscar',
             'title' => "Book's Title...",
@@ -346,45 +306,47 @@ return [
         'placeholders' => [
             'title' => 'Title...',
             'author' => 'Author...',
-            'password' => 'Contraseña segura',
+            'genres' => 'Select the genre or genres...',
             'search' => 'Search books...',
             'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],
-        'tabs' => [
-            'userForm' => 'Información Básica',
-            'permissionsForm' => 'Roles y Permisos'
-        ],
         'cards' => [
-            'title' => 'Crear Nuevo Usuario',
-            'description' => 'Ingresa la información para crear un nuevo usuario en el sistema'
+            'create' => [
+                'title' => 'Create New Book',
+                'description' => 'Enter the information to create a new book in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Book',
+                'description' => 'Enter the new information to edit this book'
+            ]
         ],
         'buttons' => [
-            'new' => 'Nuevo Usuario',
-            'edit' => 'Editar',
-            'save' => 'Guardar',
-            'update' => 'Actualizar',
-            'cancel' => 'Cancelar',
-            'delete' => 'Eliminar',
-            'deleting' => 'Eliminando...',
-            'saving' => 'Guardando...',
-            'retry' => 'Reintentar',
+            'new' => 'New Book',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
         ],
         'delete' => [
-            'title' => '¿Estás seguro?',
+            'title' => 'Are you sure?',
             'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
         ],
         'delete_dialog' => [
-            'title' => '¿Estás seguro?',
+            'title' => 'Are you sure?',
             'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
-            'success' => 'Eliminado correctamente ;)',
+            'success' => 'Deleted successfully ;)',
         ],
-        'deleted_error' => 'Error al eliminar el usuario',
-        'no_results' => 'No hay resultados.',
-        'error_loading' => 'Error al cargar los usuarios. Por favor, inténtalo de nuevo.',
-        'showing_results' => 'Mostrando :from a :to de :total resultados',
+        'deleted_error' => 'Error trying to delete the book',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading books. Please, try again.',
+        'showing_results' => 'showing :from to :to from :total results',
         'pagination' => [
-            'previous' => 'Anterior',
-            'next' => 'Siguiente',
+            'previous' => 'Last',
+            'next' => 'Next',
         ],
     ],
 ];

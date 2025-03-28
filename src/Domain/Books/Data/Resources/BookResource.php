@@ -25,7 +25,6 @@ class BookResource extends Data
     ) {
     }
 
-
     public static function fromModel(Book $book): self
     {
         $estante = Bookcase::find($book->bookcase_id);

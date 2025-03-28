@@ -35,5 +35,30 @@ class FloorSeeder extends Seeder
             'story' => 5,
         ]);
 
+        Floor::create([
+            'capacity' => 6,
+            'story' => 6,
+        ]);
+
+        Floor::create([
+            'capacity' => 6,
+            'story' => 7,
+        ]);
+
+        Floor::create([
+            'capacity' => 6,
+            'story' => 8,
+        ]);
+
+        Floor::create([
+            'capacity' => 6,
+            'story' => 9,
+        ]);
+
+        Floor::create([
+            'capacity' => 6,
+            'story' => 10,
+        ]);
+
     }
 }

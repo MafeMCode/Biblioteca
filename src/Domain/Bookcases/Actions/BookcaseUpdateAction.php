@@ -1,14 +1,14 @@
 <?php
 
-namespace Domain\Users\Actions;
+namespace Domain\Bookcases\Actions;
 
-use Domain\Users\Data\Resources\UserResource;
-use Domain\Users\Models\User;
+use Domain\Bookcases\Data\Resources\BookcaseResource;
+use Domain\Bookcases\Models\Bookcase;
 use Illuminate\Support\Facades\Hash;
 
-class UserUpdateAction
+class BookcaseUpdateAction
 {
-    public function __invoke(User $user, array $data): UserResource
+    public function __invoke(Bookcase $user, array $data): BookcaseResource
     {
         $updateData = [
             'name' => $data['name'],
@@ -23,6 +23,6 @@ class UserUpdateAction
 
         $user->update($updateData);
 
-        return UserResource::fromModel($user->fresh());
+        return BookcaseResource::fromModel($user->fresh());
     }
 }

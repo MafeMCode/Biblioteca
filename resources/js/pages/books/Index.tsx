@@ -15,7 +15,11 @@ import { FiltersTable, FilterConfig } from "@/components/stack-table/FiltersTabl
 import { toast } from "sonner";
 import { ColumnDef, Row } from "@tanstack/react-table";
 
-export default function BooksIndex() {
+interface BookIndexProps {
+    authors: {value: string, label: string}[];
+}
+
+export default function BooksIndex({authors}:BookIndexProps) {
   const { t } = useTranslations();
   const { url } = usePage();
 
@@ -27,23 +31,24 @@ export default function BooksIndex() {
   // Inicializar el estado con los valores de la URL o los valores predeterminados
   const [currentPage, setCurrentPage] = useState(pageParam ? parseInt(pageParam) : 1);
   const [perPage, setPerPage] = useState(perPageParam ? parseInt(perPageParam) : 10);
-  const [filters, setFilters] = useState<Record<string, any>>({});
-  // Combine name and email filters into a single search string if they exist
-  const combinedSearch = [
-    filters.search,
-    filters.title ? `title:${filters.title}` : null,
-    filters.author ? `email:${filters.author}` : null
-  ].filter(Boolean).join(' ');
-
+  const [filters, setFilters] = useState<Record<string, any>>({
+    author: {label: "Loading labels", value: "loading values"},
+  });
   const { data: books, isLoading, isError, refetch } = useBooks({
-    search: combinedSearch,
+    author: filters.author,
     page: currentPage,
     perPage: perPage,
   });
+
   const deleteBookMutation = useDeleteBook();
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const handleFilterChange = (newFilters: Record<string, any>) => {
+    setFilters(newFilters);
+    console.log('Filters changed:', newFilters);
   };
 
   const handlePerPageChange = (newPerPage: number) => {
@@ -152,34 +157,25 @@ export default function BooksIndex() {
                       <FiltersTable
                           filters={
                               [
-                                  {
-                                      id: 'search',
-                                      label: t('ui.books.filters.search') || 'Buscar',
-                                      type: 'text',
-                                      placeholder: t('ui.books.placeholders.search') || 'Buscar...',
-                                  },
-                                  {
-                                      id: 'title',
-                                      label: t('ui.books.filters.title') || 'Titulo',
-                                      type: 'text',
-                                      placeholder: t('ui.books.placeholders.title') || 'Titulo...',
-                                  },
-                                  {
-                                      id: 'author',
-                                      label: t('ui.books.filters.author') || 'Autor',
-                                      type: 'text',
-                                      placeholder: t('ui.books.placeholders.author') || 'Autor...',
-                                  },
+                                //   {
+                                //     id: "author",
+                                //     label: t('ui.books.filters.author') || 'Author',
+                                //     type: "select",
+                                //     options: authors.map((author) => ({
+                                //         value: author.value,
+                                //         label: author.label,
+                                //       }))
+                                //   },
                               ] as FilterConfig[]
                           }
-                          onFilterChange={setFilters}
+                          onFilterChange={handleFilterChange}
                           initialValues={filters}
                       />
                   </div>
 
                   <div className="w-full overflow-hidden">
                       {isLoading ? (
-                          <TableSkeleton columns={4} rows={10} />
+                          <TableSkeleton columns={10} rows={10} />
                       ) : isError ? (
                           <div className="p-4 text-center">
                               <div className="mb-4 text-red-500">{t('ui.books.error_loading')}</div>

@@ -259,8 +259,8 @@ return [
         'edit' => 'Editar Libro',
         'fields' => [
             'title' => 'Titulo',
-            'email' => 'Email',
-            'password' => 'Contraseña',
+            'author' => 'Autor',
+            'genres' => 'Género/s',
             'password_optional' => 'Contraseña (opcional)',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
@@ -285,46 +285,6 @@ return [
             'reports' => 'Reportes',
             'configurations' => 'Configuración',
         ],
-        'permisos' => [
-            'Users' => [
-                'users' => [
-                    'view' => 'Ver usuarios',
-                    'create' => 'Crear usuarios',
-                    'edit' => 'Editar usuarios',
-                    'delete' => 'Eliminar usuarios'
-                ],
-            ],
-            'Products' => [
-                'products' => [
-                    'view' => 'Ver productos',
-                    'create' => 'Crear productos',
-                    'edit' => 'Editar productos',
-                    'delete' => 'Eliminar productos'
-                ],
-
-            ],
-            'Reports' => [
-                'reports' => [
-                    'view' => 'Ver reportes',
-                    'export' => 'Exportar reportes',
-                    'print' => 'Imprimir reportes'
-                ],
-
-            ],
-            'Config' => [
-                'config' => [
-                    'access' => 'Acceso a configuración',
-                    'modify' => 'Modificar configuración'
-                ],
-
-            ],
-        ],
-        'roles' => [
-            'default' => 'Selecciona un Rol',
-            'admin' => 'Administrador',
-            'advanced' => 'Usuario Avanzado',
-            'usuario' => 'Usuario Básico'
-        ],
         'filters' => [
             'search' => 'Buscar',
             'title' => 'Título del Libro',
@@ -333,7 +293,7 @@ return [
         'placeholders' => [
             'title' => 'Titulo...',
             'author' => 'Autor...',
-            'password' => 'Contraseña segura',
+            'genres' => 'Seleccione el/los generos...',
             'search' => 'Buscar libros...',
             'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],
@@ -342,11 +302,17 @@ return [
             'permissionsForm' => 'Roles y Permisos'
         ],
         'cards' => [
-            'title' => 'Crear Nuevo Usuario',
-            'description' => 'Ingresa la información para crear un nuevo usuario en el sistema'
+            'create' => [
+                'title' => 'Crear Nuevo Libro',
+                'description' => 'Ingresa la información para crear un nuevo usuario en el sistema'
+            ],
+            'edit' => [
+                'title' => 'Editar Libro',
+                'description' => 'Ingresa la nueva información para editar el libro'
+            ]
         ],
         'buttons' => [
-            'new' => 'Nuevo Usuario',
+            'new' => 'Nuevo Libro',
             'edit' => 'Editar',
             'save' => 'Guardar',
             'update' => 'Actualizar',

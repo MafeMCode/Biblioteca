@@ -16,10 +16,11 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             FloorSeeder::class,
-            ZoneSeeder::class,
             GenreSeeder::class,
+            ZoneSeeder::class,
             BookcaseSeeder::class,
             BookSeeder::class,
+            bookgenresSeeder::class,
         ]);
 
         //migrar pulse database

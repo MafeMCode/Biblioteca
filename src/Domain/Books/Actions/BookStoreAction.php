@@ -16,8 +16,6 @@ class BookStoreAction
             'password' => Hash::make($data['password']),
         ]);
 
-        $book->syncPermissions($data['permisos']);
-
         return BookResource::fromModel($book);
     }
 }

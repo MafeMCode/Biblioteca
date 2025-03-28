@@ -1,9 +1,13 @@
 <?php
+namespace Database\Factories;
 
+use Domain\Floors\Models\Floor;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FloorFactory extends Factory
 {
+    protected $model = Floor::class;
+
     public function definition()
     {
         return [

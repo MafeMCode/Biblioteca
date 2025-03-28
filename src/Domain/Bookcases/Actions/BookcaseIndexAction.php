@@ -1,15 +1,15 @@
 <?php
 
-namespace Domain\Users\Actions;
+namespace Domain\Bookcases\Actions;
 
-use Domain\Users\Data\Resources\UserResource;
-use Domain\Users\Models\User;
+use Domain\Bookcases\Data\Resources\BookcaseResource;
+use Domain\Bookcases\Models\Bookcase;
 
-class UserIndexAction
+class BookcaseIndexAction
 {
     public function __invoke(?string $search = null, int $perPage = 10)
     {
-        $users = User::query()
+        $users = Bookcase::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
@@ -17,6 +17,6 @@ class UserIndexAction
             ->latest()
             ->paginate($perPage);
 
-        return $users->through(fn ($user) => UserResource::fromModel($user));
+        return $users->through(fn ($user) => BookcaseResource::fromModel($user));
     }
 }

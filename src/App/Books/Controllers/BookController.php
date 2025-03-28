@@ -3,6 +3,7 @@
 namespace App\Books\Controllers;
 
 use App\Core\Controllers\Controller;
+use Domain\Books\Models\Book;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,6 +14,7 @@ class BookController extends Controller
      */
     public function index()
     {
+
         return Inertia::render('books/Index');
     }
 
@@ -21,7 +23,15 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+
+        $authors = Book::all()->pluck('author')->unique()->map(function ($author) {
+            return [
+                'value' => strtolower(str_replace(' ', '_', $author)),
+                'label' => $author,
+            ];
+        })->values()->toArray();
+
+        return Inertia::render('books/Create', ['authors' => $authors]);
     }
 
     /**
@@ -43,9 +53,13 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, Book $book)
     {
-        //
+        return Inertia::render('books/Edit', [
+            'book' => $book,
+            'page' => $request->query('page'),
+            'perPage' => $request->query('perPage'),
+        ]);
     }
 
     /**
