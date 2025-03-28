@@ -1,15 +1,15 @@
 <?php
 
-namespace Domain\Users\Actions;
+namespace Domain\Zones\Actions;
 
-use Domain\Users\Data\Resources\UserResource;
-use Domain\Users\Models\User;
+use Domain\Zones\Data\Resources\ZoneResource;
+use Domain\Zones\Models\Zone;
 
-class UserIndexAction
+class ZoneIndexAction
 {
     public function __invoke(?string $search = null, int $perPage = 10)
     {
-        $users = User::query()
+        $zones = Zone::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
@@ -17,6 +17,6 @@ class UserIndexAction
             ->latest()
             ->paginate($perPage);
 
-        return $users->through(fn ($user) => UserResource::fromModel($user));
+        return $zones->through(fn ($zone) => ZoneResource::fromModel($zone));
     }
 }

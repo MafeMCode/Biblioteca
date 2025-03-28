@@ -1,28 +1,28 @@
 <?php
 
-namespace Domain\Users\Actions;
+namespace Domain\Zones\Actions;
 
-use Domain\Users\Data\Resources\UserResource;
+use Domain\Zones\Data\Resources\ZoneResource;
 use Domain\Zones\Models\Zone;
 use Illuminate\Support\Facades\Hash;
 
-// class UserUpdateAction
-// {
-//     public function __invoke(Zone $zone, array $data): UserResource
-//     {
-//         $updateData = [
-//             'name' => $data['name'],
-//             'email' => $data['email'],
-//         ];
+class ZoneUpdateAction
+{
+    public function __invoke(Zone $zone, array $data): ZoneResource
+    {
+        $updateData = [
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ];
 
-//         if (!empty($data['password'])) {
-//             $updateData['password'] = Hash::make($data['password']);
-//         }
+        if (!empty($data['password'])) {
+            $updateData['password'] = Hash::make($data['password']);
+        }
 
-//         $user->syncPermissions($data['permisos']);
+        $zone->syncPermissions($data['permisos']);
 
-//         $user->update($updateData);
+        $zone->update($updateData);
 
-//         return UserResource::fromModel($user->fresh());
-//     }
-// }
+        return ZoneResource::fromModel($zone->fresh());
+    }
+}

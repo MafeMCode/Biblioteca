@@ -2,6 +2,8 @@
 
 use App\Bookcases\Controllers\Api\BookcaseApiController;
 use App\Books\Controllers\Api\BookApiController;
+use App\Floors\Controllers\Api\FloorApiController;
+use App\Zones\Controllers\Api\ZoneApiController;
 use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +29,20 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/bookcases', [BookcaseApiController::class, 'store']);
     Route::put('/bookcases/{bookcase}', [BookcaseApiController::class, 'update']);
     Route::delete('/bookcases/{bookcase}', [BookcaseApiController::class, 'destroy']);
+});
+
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/zones', [ZoneApiController::class, 'index']);
+    Route::get('/zones/{zone}', [ZoneApiController::class, 'show']);
+    Route::post('/zones', [ZoneApiController::class, 'store']);
+    Route::put('/zones/{zone}', [ZoneApiController::class, 'update']);
+    Route::delete('/zones/{zone}', [ZoneApiController::class, 'destroy']);
+});
+
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/floors', [FloorApiController::class, 'index']);
+    Route::get('/floors/{floor}', [FloorApiController::class, 'show']);
+    Route::post('/floors', [FloorApiController::class, 'store']);
+    Route::put('/floors/{floor}', [FloorApiController::class, 'update']);
+    Route::delete('/floors/{floor}', [FloorApiController::class, 'destroy']);
 });

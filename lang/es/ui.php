@@ -120,13 +120,6 @@ return [
         'per_page' => 'Por página',
         'no_results' => 'No hay resultados',
     ],
-    'floors' => [
-        'title' => 'Pisos',
-        'create' => 'Crear Piso',
-        'buttons' => [
-            'new' => 'Crear Piso',
-        ],
-    ],
     'zones' => [
         'title' => 'Zonas',
         'create' => 'Crear Zona',
@@ -329,6 +322,73 @@ return [
         'delete_dialog' => [
             'title' => '¿Estás seguro?',
             'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'success' => 'Eliminado correctamente ;)',
+        ],
+        'deleted_error' => 'Error al eliminar el usuario',
+        'no_results' => 'No hay resultados.',
+        'error_loading' => 'Error al cargar los usuarios. Por favor, inténtalo de nuevo.',
+        'showing_results' => 'Mostrando :from a :to de :total resultados',
+        'pagination' => [
+            'previous' => 'Anterior',
+            'next' => 'Siguiente',
+        ],
+    ],
+    'floors' => [
+        'title' => 'Pisos',
+        'create' => 'Crear Piso',
+        'edit' => 'Editar Piso',
+        'fields' => [
+            'story' => 'Planta',
+            'capacity' => 'Capacidad',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+        ],
+        'columns' => [
+            'story' => 'Planta',
+            'capacity' => 'Capacidad',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+        ],
+        'filters' => [
+            'search' => 'Buscar',
+            'title' => 'Título del Libro',
+            'author' => 'Autor del Libro',
+        ],
+        'placeholders' => [
+            'title' => 'Titulo...',
+            'author' => 'Autor...',
+            'genres' => 'Seleccione el/los generos...',
+            'search' => 'Buscar libros...',
+            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Crear Nuevo Piso',
+                'description' => 'Ingresa la información para crear un nuevo piso en el sistema'
+            ],
+            'edit' => [
+                'title' => 'Editar Piso',
+                'description' => 'Ingresa la nueva información para editar el piso'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'Nuevo Piso',
+            'edit' => 'Editar',
+            'save' => 'Guardar',
+            'update' => 'Actualizar',
+            'cancel' => 'Cancelar',
+            'delete' => 'Eliminar',
+            'deleting' => 'Eliminando...',
+            'saving' => 'Guardando...',
+            'retry' => 'Reintentar',
+        ],
+        'delete' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
             'success' => 'Eliminado correctamente ;)',
         ],
         'deleted_error' => 'Error al eliminar el usuario',

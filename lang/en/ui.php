@@ -119,20 +119,6 @@ return [
         'per_page' => 'Per page',
         'no_results' => 'No results',
     ],
-    'floors' => [
-        'title' => 'Floors',
-        'create' => 'Create Floor',
-        'buttons' => [
-            'new' => 'New Floor',
-        ],
-    ],
-    'bookcases' => [
-        'title' => 'Bookcases',
-        'create' => 'Create Bookcase',
-        'buttons' => [
-            'new' => 'New Bookcase',
-        ],
-    ],
     'zones' => [
         'title' => 'Zones',
         'create' => 'Create Zone',
@@ -344,6 +330,156 @@ return [
         'no_results' => 'No results.',
         'error_loading' => 'Error loading books. Please, try again.',
         'showing_results' => 'showing :from to :to from :total results',
+        'pagination' => [
+            'previous' => 'Last',
+            'next' => 'Next',
+        ],
+    ],
+    'bookcases' => [
+        'title' => 'Books',
+        'create' => 'Create Book',
+        'edit' => 'Edit Book',
+        'fields' => [
+            'title' => 'Title',
+            'author' => 'Author',
+            'genres' => 'Genre/s',
+            'password_optional' => 'Contraseña (opcional)',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+            'rolPpal' => 'Rol Principal',
+            'permisos' => 'Permisos Específicos'
+        ],
+        'columns' => [
+            'title' => 'Title',
+            'author' => 'Author',
+            'capacity' => 'Capacity',
+            'number' => 'Number',
+            'length' => 'Pages',
+            'bookcase' => 'Bookcase',
+            'zone' => 'Zone',
+            'floor' => 'Floor',
+            'created_at' => 'Creation at',
+            'actions' => 'Actions',
+        ],
+        'gridelements' => [
+            'users' => 'Usuarios',
+            'products' => 'Productos',
+            'reports' => 'Reportes',
+            'configurations' => 'Configuración',
+        ],
+        'filters' => [
+            'search' => 'Buscar',
+            'title' => "Book's Title...",
+            'author' => "Book's Author...",
+        ],
+        'placeholders' => [
+            'title' => 'Title...',
+            'author' => 'Author...',
+            'genres' => 'Select the genre or genres...',
+            'search' => 'Search books...',
+            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Bookcase',
+                'description' => 'Enter the information to create a new bookcase in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Bookcae',
+                'description' => 'Enter the new information to edit this bookcase'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'New Bookcase',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'success' => 'Deleted successfully ;)',
+        ],
+        'deleted_error' => 'Error trying to delete the book',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading books. Please, try again.',
+        'showing_results' => 'showing :from to :to from :total results',
+        'pagination' => [
+            'previous' => 'Last',
+            'next' => 'Next',
+        ],
+    ],
+    'floors' => [
+        'title' => 'Floors',
+        'create' => 'Create Floor',
+        'edit' => 'Edit Floor',
+        'fields' => [
+            'story' => 'Story',
+            'capacity' => 'Capacity',
+            'created_at' => 'Created at',
+            'actions' => 'Actions',
+        ],
+        'columns' => [
+            'story' => 'Story',
+            'capacity' => 'Capacity',
+            'created_at' => 'Created at',
+            'actions' => 'Actions',
+        ],
+        'filters' => [
+            'search' => 'Search',
+            'title' => 'Título del Libro',
+            'author' => 'Autor del Libro',
+        ],
+        'placeholders' => [
+            'title' => 'Titulo...',
+            'author' => 'Autor...',
+            'genres' => 'Seleccione el/los generos...',
+            'search' => 'Buscar libros...',
+            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Floor',
+                'description' => 'Enter the information to create a new floor in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Floor',
+                'description' => 'Enter the new information to edit this floor'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'New Floor',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
+            'success' => 'Eliminado correctamente ;)',
+        ],
+        'deleted_error' => 'Error al eliminar el usuario',
+        'no_results' => 'No hay resultados.',
+        'error_loading' => 'Error al cargar los usuarios. Por favor, inténtalo de nuevo.',
+        'showing_results' => 'Mostrando :from a :to de :total resultados',
         'pagination' => [
             'previous' => 'Last',
             'next' => 'Next',

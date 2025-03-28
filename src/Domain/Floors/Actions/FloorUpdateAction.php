@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Users\Actions;
+namespace Domain\Floors\Actions;
 
 use Domain\Floors\Data\Resources\FloorResource;
 use Domain\Floors\Models\Floor;
