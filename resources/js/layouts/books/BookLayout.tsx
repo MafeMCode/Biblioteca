@@ -38,7 +38,7 @@ export function BookLayout({ title, children }: BookLayout) {
             href: '/dashboard',
         },
         {
-            title: 'Libros',
+            title: t('ui.books.title'),
             href: '/books',
         },
     ];

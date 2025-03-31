@@ -38,7 +38,7 @@ export function BookcaseLayout({ title, children }: BookcaseLayout) {
             href: '/dashboard',
         },
         {
-            title: 'Estanterías',
+            title: t('ui.bookcases.title'),
             href: '/bookcases',
         },
     ];

@@ -5,6 +5,8 @@ use App\Books\Controllers\Api\BookApiController;
 use App\Floors\Controllers\Api\FloorApiController;
 use App\Zones\Controllers\Api\ZoneApiController;
 use App\Http\Controllers\Api\UserApiController;
+use Domain\Zones\Models\Zone;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web', 'auth'])->group(function () {

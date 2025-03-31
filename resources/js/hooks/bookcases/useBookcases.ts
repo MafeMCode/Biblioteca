@@ -6,6 +6,7 @@ export interface Bookcase {
   number: number;
   capacity: number;
   zone_number: number;
+  zone_genre: string;
   floor_story: number;
   created_at: string;
 }

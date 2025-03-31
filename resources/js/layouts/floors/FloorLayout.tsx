@@ -38,7 +38,7 @@ export function FloorLayout({ title, children }: FloorLayout) {
             href: '/dashboard',
         },
         {
-            title: 'Pisos',
+            title: t('ui.floors.title'),
             href: '/floors',
         },
     ];

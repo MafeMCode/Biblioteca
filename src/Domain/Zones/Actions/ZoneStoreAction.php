@@ -2,6 +2,7 @@
 
 namespace Domain\Zones\Actions;
 
+use Domain\Genres\Models\Genre;
 use Domain\Zones\Data\Resources\ZoneResource;
 use Domain\Zones\Models\Zone;
 use Illuminate\Support\Facades\Hash;
@@ -10,13 +11,15 @@ class ZoneStoreAction
 {
     public function __invoke(array $data): ZoneResource
     {
-        $zone = Zone::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $genre = Genre::find($data['genre'])->name;
 
-        $zone->syncPermissions($data['permisos']);
+        $zone = Zone::create([
+            'number' => $data['number'],
+            'capacity' => $data['capacity'],
+            'floor_id' => $data['floor_id'],
+            'genre' => $data['genre'],
+            'genreName' => $genre,
+        ]);
 
         return ZoneResource::fromModel($zone);
     }

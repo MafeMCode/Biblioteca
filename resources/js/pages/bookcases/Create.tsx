@@ -1,44 +1,55 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/hooks/use-translations';
-import { ZoneLayout } from '@/layouts/zones/ZoneLayout';
-import { Book, LandPlot, Layers } from 'lucide-react';
-import { ZoneForm } from './components/ZoneForm';
+import { BookcaseLayout } from '@/layouts/bookcases/BookcaseLayout';
+import { Book, ChartColumnStacked, LandPlot, Layers } from 'lucide-react';
+import { BookcaseForm } from './components/BookcaseForm';
 
-interface ZoneFormProps {
+interface Zone {
+    id: string;
+    number: number;
+    genreName: string;
+    floor_id: string;
+}
+
+interface BookcaseFormProps {
     initialData?: {
         id: string;
         number: number;
         capacity: number;
         genre: string;
+        zone_id: string;
         floor_id: string;
     },
-    floors: { id: string; story: number }[];
-    genres: { id: string; name: string }[];
+    floors: { // Floors data passed as a prop
+        id: string;
+      story: number;
+    }[];
+    zones: Zone[];
 }
 
-export default function CreateZone({floors, genres}:ZoneFormProps) {
+export default function CreateBookcase({zones, floors}:BookcaseFormProps) {
     const { t } = useTranslations();
 
     return (
-        <ZoneLayout title={t('ui.zones.create')}>
+        <BookcaseLayout title={t('ui.bookcases.create')}>
             <div className="flex max-w-screen items-center self-center">
                 <Card className="w-100% m-4 p-4 shadow-lg dark:shadow-xs dark:shadow-white">
                     <CardHeader>
                         <CardTitle>
                             <div className="flex items-center gap-1">
-                                <LandPlot color="#2762c2" />
-                                {t('ui.zones.cards.create.title')}
+                                <ChartColumnStacked color="#2762c2" />
+                                {t('ui.bookcases.cards.create.title')}
                             </div>
                         </CardTitle>
-                        <CardDescription>{t('ui.zones.cards.create.description')}</CardDescription>
+                        <CardDescription>{t('ui.bookcases.cards.create.description')}</CardDescription>
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <ZoneForm floors={floors} genres={genres}/>
+                        <BookcaseForm floors={floors} zones={zones}/>
                     </CardContent>
                 </Card>
             </div>
-        </ZoneLayout>
+        </BookcaseLayout>
     );
 }

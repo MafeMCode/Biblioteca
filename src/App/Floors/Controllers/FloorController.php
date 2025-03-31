@@ -77,6 +77,7 @@ class FloorController extends Controller
      */
     public function edit(Request $request, Floor $floor)
     {
+
         return Inertia::render('floors/Edit', [
             'floor' => $floor,
             'page' => $request->query('page'),

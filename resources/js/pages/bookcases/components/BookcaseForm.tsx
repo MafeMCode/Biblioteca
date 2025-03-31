@@ -7,19 +7,31 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Book, BookCopy, Save, User, X } from 'lucide-react';
+import { Layers, Save, User, X } from 'lucide-react';
 import * as React from 'react';
+import { useEffect, useState } from 'react';
+
 import { toast } from 'sonner';
 
-interface BookFormProps {
+interface Zone {
+    id: string;
+    number: number;
+    genreName: string;
+    floor_id: string;
+}
+
+interface BookcaseFormProps {
     initialData?: {
         id: string;
-        title: string;
-        author: string;
-        genre: string;
+        number: number;
+        capacity: number;
+        zone_id: string;
     };
-    authors: { label: string; value: string }[];
-    genres: { id: string; name: string }[];
+    floors: {
+        id: string;
+        story: number;
+    }[];
+    zones: Zone[];
     page?: string;
     perPage?: string;
 }
@@ -36,33 +48,45 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-export function BookForm({ initialData, page, perPage, authors, genres }: BookFormProps) {
+export function BookcaseForm({ initialData, page, perPage, floors, zones }: BookcaseFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
-    //ComboBox Controls
+    const [selectedFloor, setSelectedFloor] = useState<string | undefined>(undefined);
+    const [selectedZone, setSelectedZone] = useState<string | undefined>(undefined);
 
-    const authorArray = authors;
-    const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState('');
+
+    function comprobantePiso() {
+        if (selectedFloor != undefined) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    const handleFloorChange = (floorId: string) => {
+        setSelectedFloor(floorId);
+    };
 
     // TanStack Form setup
     const form = useForm({
         defaultValues: {
-            title: initialData?.title ?? '',
-            author: initialData?.author ?? '',
-            genre: initialData?.genre ?? '',
+            // floor_id: initialData.floor_id
+            zone_id: initialData?.zone_id ?? '',
+            number: initialData?.number ?? '',
+            capacity: initialData?.capacity ?? '',
         },
         onSubmit: async ({ value }) => {
             const options = {
                 // preserveState:true,
                 onSuccess: () => {
-                    console.log('Libro creado con éxito.');
+                    console.log('Piso creado con éxito.');
 
-                    queryClient.invalidateQueries({ queryKey: ['books'] });
+                    queryClient.invalidateQueries({ queryKey: ['bookcases'] });
 
                     // Construct URL with page parameters
-                    let url = '/books';
+                    let url = '/bookcases';
                     if (page) {
                         url += `?page=${page}`;
                         if (perPage) {
@@ -74,16 +98,16 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
                 },
                 onError: (errors: Record<string, string>) => {
                     if (Object.keys(errors).length === 0) {
-                        toast.error(initialData ? t('messages.books.error.update') : t('messages.books.error.create'));
+                        toast.error(initialData ? t('messages.bookcases.error.update') : t('messages.bookcases.error.create'));
                     }
                 },
             };
 
             // Submit with Inertia
             if (initialData) {
-                router.put(`/books/${initialData.id}`, value, options);
+                router.put(`/bookcases/${initialData.id}`, value, options);
             } else {
-                router.post('/books', value, options);
+                router.post('/bookcases', value, options);
             }
         },
     });
@@ -98,36 +122,27 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
     return (
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
-                {/* Title field */}
+                {/* Number field */}
                 <div>
-                    <form.Field
-                        name="title"
-                        validators={{
-                            onChangeAsync: async ({ value }) => {
-                                await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value
-                                    ? t('ui.validation.required', { attribute: t('ui.books.fields.title').toLowerCase() })
-                                    : value.length < 2
-                                      ? t('ui.validation.min.string', { attribute: t('ui.books.fields.title').toLowerCase(), min: '2' })
-                                      : undefined;
-                            },
-                        }}
-                    >
+                    <form.Field name="number" validators={{}}>
                         {(field) => (
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <Book color="grey" size={18} />
-                                        {t('ui.books.fields.title')}
+                                        <User color="grey" size={18} />
+                                        {t('ui.bookcases.fields.number')}
                                     </div>
                                 </Label>
                                 <Input
                                     id={field.name}
                                     name={field.name}
+                                    type="number"
+                                    min="1"
+                                    step="1"
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(e.target.value)}
                                     onBlur={field.handleBlur}
-                                    placeholder={t('ui.books.placeholders.title')}
+                                    placeholder={t('ui.bookcases.placeholders.number')}
                                     disabled={form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
@@ -137,18 +152,74 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
                         )}
                     </form.Field>
                 </div>
-                {/* Author field */}
+
+                {/* Floor Select */}
+
+                <Label>
+                    <div className="mb-1 flex items-center gap-1">
+                        <Layers color="grey" size={18} />
+                        {t('ui.bookcases.fields.floors')}
+                    </div>
+                </Label>
+                <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder={t('ui.bookcases.fields.zones')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {floors.map((floor) => (
+                            <SelectItem key={floor.id} value={floor.id}>
+                                {t('ui.bookcases.fields.floor')} {floor.story}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+
+                {/* Zone field */}
                 <div>
                     <form.Field
-                        name="author"
+                        name="zone_id"
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value
-                                    ? t('ui.validation.required', { attribute: t('ui.books.fields.author').toLowerCase() })
-                                    : value.length < 2
-                                      ? t('ui.validation.min.string', { attribute: t('ui.books.fields.author').toLowerCase(), min: '2' })
-                                      : undefined;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.bookcases.fields.zone').toLowerCase() }) : null;
+                            },
+                        }}
+                    >
+                        {(field) => (
+                            <>
+                                <Label htmlFor={field.name}>
+                                    <div className="mb-1 flex items-center gap-1">
+                                        <Layers color="grey" size={18} />
+                                        {t('ui.bookcases.fields.zones')}
+                                    </div>
+                                </Label>
+                                <Select disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => field.handleChange(value)}>
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder={t('ui.bookcases.fields.zones')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {zones.filter(zone => zone.floor_id === selectedFloor).map((zone) => (
+                                                <SelectItem key={zone.id} value={zone.id}>
+                                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}
+                                                    {/* DIABLO */}
+                                                </SelectItem>
+                                            ))}
+                                    </SelectContent>
+                                </Select>
+                                <FieldInfo field={field} />
+                            </>
+                        )}
+                    </form.Field>
+                </div>
+
+                {/* Capacity field */}
+                <div>
+                    <form.Field
+                        name="capacity"
+                        validators={{
+                            onChangeAsync: async ({ value }) => {
+                                await new Promise((resolve) => setTimeout(resolve, 500));
+                                return !value ? t('ui.validation.required', { attribute: t('ui.bookcases.fields.capacity').toLowerCase() }) : null;
                             },
                         }}
                     >
@@ -157,16 +228,19 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
                                         <User color="grey" size={18} />
-                                        {t('ui.books.fields.author')}
+                                        {t('ui.bookcases.fields.capacity')}
                                     </div>
                                 </Label>
                                 <Input
                                     id={field.name}
                                     name={field.name}
+                                    type="number"
+                                    min="1"
+                                    step="1"
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(e.target.value)}
                                     onBlur={field.handleBlur}
-                                    placeholder={t('ui.books.placeholders.author')}
+                                    placeholder={t('ui.bookcases.placeholders.capacity')}
                                     disabled={form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
@@ -176,46 +250,14 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
                         )}
                     </form.Field>
                 </div>
-                {/* Genre 1 field */}
-                <div>
-                    <form.Field name="genre" validators={{
-                            onChangeAsync: async ({ value }) => {
-                                await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.books.fields.genre').toLowerCase() }) : null;
-                            },
-                        }}>
-                        {(field) => (
-                            <>
-                                <Label htmlFor={field.name}>
-                                    <div className="mb-1 flex items-center gap-1">
-                                        <BookCopy color="grey" size={18} />
-                                        {t('ui.zones.books.genres')}
-                                    </div>
-                                </Label>
-                                <Select required={true} value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.books.fields.genres')} />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {genres.map((genre) => (
-                                            <SelectItem key={genre.id} value={String(genre.id)}>
-                                                {genre.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FieldInfo field={field} />
-                            </>
-                        )}
-                    </form.Field>
-                </div>
+
                 {/* Form buttons */}
                 <div className="mt-3 mt-4 flex justify-center gap-100">
                     <Button
                         type="button"
                         variant="outline"
                         onClick={() => {
-                            let url = '/books';
+                            let url = '/bookcases';
                             if (page) {
                                 url += `?page=${page}`;
                                 if (perPage) {
@@ -227,7 +269,7 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
                         disabled={form.state.isSubmitting}
                     >
                         <X />
-                        {t('ui.books.buttons.cancel')}
+                        {t('ui.bookcases.buttons.cancel')}
                     </Button>
 
                     <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
@@ -235,10 +277,10 @@ export function BookForm({ initialData, page, perPage, authors, genres }: BookFo
                             <Button type="submit" disabled={!canSubmit}>
                                 <Save />
                                 {isSubmitting
-                                    ? t('ui.books.buttons.saving')
+                                    ? t('ui.bookcases.buttons.saving')
                                     : initialData
-                                      ? t('ui.books.buttons.update')
-                                      : t('ui.books.buttons.save')}
+                                      ? t('ui.bookcases.buttons.update')
+                                      : t('ui.bookcases.buttons.save')}
                             </Button>
                         )}
                     </form.Subscribe>

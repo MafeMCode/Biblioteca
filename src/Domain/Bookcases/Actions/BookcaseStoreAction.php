@@ -11,12 +11,10 @@ class BookcaseStoreAction
     public function __invoke(array $data): BookcaseResource
     {
         $user = Bookcase::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'number' => $data['number'],
+            'zone_id' => $data['zone_id'],
+            'capacity' => $data['capacity'],
         ]);
-
-        $user->syncPermissions($data['permisos']);
 
         return BookcaseResource::fromModel($user);
     }

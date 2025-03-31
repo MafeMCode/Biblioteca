@@ -29,6 +29,8 @@ class Zone extends Model
     protected $fillable = [
         'id',
         'genre',
+        'genreName',
+        'number',
         'capacity',
         'floor_id',
     ];

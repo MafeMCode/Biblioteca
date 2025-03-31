@@ -333,6 +333,87 @@ return [
             'next' => 'Siguiente',
         ],
     ],
+    'bookcases' => [
+        'title' => 'Estanterías',
+        'create' => 'Crear Estantería',
+        'edit' => 'Editar Estantería',
+        'fields' => [
+            'number' => 'Número',
+            'floors' => 'Piso',
+            'floor' => 'Piso',
+            'zones' => 'Zona',
+            'zone' => 'Zona',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+            'rolPpal' => 'Rol Principal',
+            'permisos' => 'Permisos Específicos'
+        ],
+        'columns' => [
+            'capacity' => 'Capacity',
+            'number' => 'Number',
+            'zoneGenre' => "Genre",
+            'zone' => 'Zone',
+            'floor' => 'Floor',
+            'created_at' => 'Creation at',
+            'actions' => 'Actions',
+        ],
+        'gridelements' => [
+            'users' => 'Usuarios',
+            'products' => 'Productos',
+            'reports' => 'Reportes',
+            'configurations' => 'Configuración',
+        ],
+        'filters' => [
+            'search' => 'Buscar',
+            'title' => "Book's Title...",
+            'author' => "Book's Author...",
+        ],
+        'placeholders' => [
+            'title' => 'Title...',
+            'author' => 'Author...',
+            'genres' => 'Select the genre or genres...',
+            'search' => 'Search books...',
+            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Bookcase',
+                'description' => 'Enter the information to create a new bookcase in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Bookcae',
+                'description' => 'Enter the new information to edit this bookcase'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'New Bookcase',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'success' => 'Deleted successfully ;)',
+        ],
+        'deleted_error' => 'Error trying to delete the book',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading books. Please, try again.',
+        'showing_results' => 'showing :from to :to from :total results',
+        'pagination' => [
+            'previous' => 'Last',
+            'next' => 'Next',
+        ],
+    ],
     'floors' => [
         'title' => 'Pisos',
         'create' => 'Crear Piso',
@@ -400,4 +481,29 @@ return [
             'next' => 'Siguiente',
         ],
     ],
+    'genres' => [
+        'names' => [
+            'Fantasy' => 'Fantasía',
+            'Drama' => 'Drama',
+            'Historical' => 'Histórico',
+            'Science Fiction' => 'Ciencia Ficción',
+            'Horror' => 'Terror',
+            'Mystery' => 'Misterio',
+            'Thriller' => 'Suspenso',
+            'Romance' => 'Romance',
+            'Adventure' => 'Aventura',
+            'Dystopian' => 'Distopía',
+            'Gothic' => 'Gótico',
+            'Magical Realism' => 'Realismo Mágico',
+            'Satire' => 'Sátira',
+            'Comedy' => 'Comedia',
+            'Tragedy' => 'Tragedia',
+            'Crime Fiction' => 'Ficción Criminal',
+            'Mythology' => 'Mitología',
+            'Western' => 'Occidental',
+            'Cyberpunk' => 'Cyberpunk',
+            'Poetry' => 'Poesía',
+        ]
+
+    ]
 ];

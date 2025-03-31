@@ -62,12 +62,12 @@ class BookcaseApiController extends Controller
         ]);
     }
 
-    public function destroy(Bookcase $book, BookcaseDestroyAction $action)
+    public function destroy(Bookcase $bookcase, BookcaseDestroyAction $action)
     {
-        $action($book);
+        $action($bookcase);
 
         return response()->json([
-            'message' => __('messages.books.deleted')
+            'message' => __('messages.bookcases.deleted')
         ]);
     }
 }

@@ -8,21 +8,16 @@ use Illuminate\Support\Facades\Hash;
 
 class BookcaseUpdateAction
 {
-    public function __invoke(Bookcase $user, array $data): BookcaseResource
+    public function __invoke(Bookcase $bookcase, array $data): BookcaseResource
     {
         $updateData = [
-            'name' => $data['name'],
-            'email' => $data['email'],
+            'number' => $data['number'],
+            'zone_id' => $data['zone_id'],
+            'capacity' => $data['capacity'],
         ];
 
-        if (!empty($data['password'])) {
-            $updateData['password'] = Hash::make($data['password']);
-        }
+        $bookcase->update($updateData);
 
-        $user->syncPermissions($data['permisos']);
-
-        $user->update($updateData);
-
-        return BookcaseResource::fromModel($user->fresh());
+        return BookcaseResource::fromModel($bookcase->fresh());
     }
 }

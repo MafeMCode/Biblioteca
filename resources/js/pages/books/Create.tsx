@@ -12,10 +12,11 @@ interface BookFormProps {
         email: string;
 
     },
+    genres: { id: string; name: string }[];
     authors: {value: string, label: string}[];
 }
 
-export default function CreateBook({authors}:BookFormProps) {
+export default function CreateBook({authors, genres}:BookFormProps) {
     const { t } = useTranslations();
 
     return (
@@ -33,7 +34,7 @@ export default function CreateBook({authors}:BookFormProps) {
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <BookForm authors={authors}/>
+                        <BookForm authors={authors} genres={genres}/>
                     </CardContent>
                 </Card>
             </div>

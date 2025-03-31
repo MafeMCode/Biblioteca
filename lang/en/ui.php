@@ -119,17 +119,6 @@ return [
         'per_page' => 'Per page',
         'no_results' => 'No results',
     ],
-    'zones' => [
-        'title' => 'Zones',
-        'create' => 'Create Zone',
-        'buttons' => [
-            'new' => 'New Zone',
-        ],
-        'create' => [
-            'title' => 'title',
-            'desc' => 'desc'
-        ],
-    ],
     'users' => [
         'title' => 'Users',
         'create' => 'Create User',
@@ -336,9 +325,9 @@ return [
         ],
     ],
     'bookcases' => [
-        'title' => 'Books',
-        'create' => 'Create Book',
-        'edit' => 'Edit Book',
+        'title' => 'Bookcases',
+        'create' => 'Create Bookcase',
+        'edit' => 'Edit Bookcase',
         'fields' => [
             'title' => 'Title',
             'author' => 'Author',
@@ -350,12 +339,9 @@ return [
             'permisos' => 'Permisos Específicos'
         ],
         'columns' => [
-            'title' => 'Title',
-            'author' => 'Author',
             'capacity' => 'Capacity',
             'number' => 'Number',
-            'length' => 'Pages',
-            'bookcase' => 'Bookcase',
+            'zoneGenre' => "Genre",
             'zone' => 'Zone',
             'floor' => 'Floor',
             'created_at' => 'Creation at',
@@ -485,4 +471,108 @@ return [
             'next' => 'Next',
         ],
     ],
+    'zones' => [
+        'title' => 'Zones',
+        'create' => 'Create Zone',
+        'edit' => 'Edit Zone',
+        'fields' => [
+            'title' => 'Title',
+            'author' => 'Author',
+            'genres' => 'Genre/s',
+            'password_optional' => 'Contraseña (opcional)',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+            'rolPpal' => 'Rol Principal',
+            'permisos' => 'Permisos Específicos'
+        ],
+        'columns' => [
+            'capacity' => 'Capacity',
+            'number' => 'Number',
+            'genre' => "Genre",
+            'zone' => 'Zone',
+            'floor' => 'Floor',
+            'created_at' => 'Creation at',
+            'actions' => 'Actions',
+        ],
+        'gridelements' => [
+            'users' => 'Usuarios',
+            'products' => 'Productos',
+            'reports' => 'Reportes',
+            'configurations' => 'Configuración',
+        ],
+        'filters' => [
+            'search' => 'Buscar',
+            'title' => "Book's Title...",
+            'author' => "Book's Author...",
+        ],
+        'placeholders' => [
+            'title' => 'Title...',
+            'author' => 'Author...',
+            'genres' => 'Select the genre or genres...',
+            'search' => 'Search books...',
+            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Zone',
+                'description' => 'Enter the information to create a new zone in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Zone',
+                'description' => 'Enter the new information to edit this zone'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'New Zone',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => 'Are you sure?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'success' => 'Deleted successfully ;)',
+        ],
+        'deleted_error' => 'Error trying to delete the book',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading books. Please, try again.',
+        'showing_results' => 'showing :from to :to from :total results',
+        'pagination' => [
+            'previous' => 'Last',
+            'next' => 'Next',
+        ],
+    ],
+    'genres' => [
+        'names' => [
+            'Fantasy' => 'Fantasy',
+            'Drama' => 'Drama',
+            'Historical' => 'Historical',
+            'Science Fiction' => 'Science Fiction',
+            'Horror' => 'Horror',
+            'Mystery' => 'Mystery',
+            'Thriller' => 'Thriller',
+            'Romance' => 'Romance',
+            'Adventure' => 'Adventure',
+            'Dystopian' => 'Dystopian',
+            'Gothic' => 'Gothic',
+            'Magical Realism' => 'Magical Realism',
+            'Satire' => 'Satire',
+            'Comedy' => 'Comedy',
+            'Tragedy' => 'Tragedy',
+            'Crime Fiction' => 'Crime Fiction',
+            'Mythology' => 'Mythology',
+            'Western' => 'Western',
+            'Cyberpunk' => 'Cyberpunk',
+            'Poetry' => 'Poetry',
+        ]
+    ]
 ];

@@ -1,0 +1,53 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
+import { BookcaseLayout } from '@/layouts/bookcases/BookcaseLayout';
+import { BookcaseForm } from '@/pages/bookcases/components/BookcaseForm';
+import { ChartColumnStacked, LandPlot, Layers } from 'lucide-react';
+
+interface Zone {
+    id: string;
+    number: number;
+    genreName: string;
+    floor_id: string;
+}
+
+interface BookcaseFormProps {
+    bookcase?: {
+        id: string;
+        number: number;
+        capacity: number;
+        zone_id: string;
+    },
+    floors: {
+        id: string;
+      story: number;
+    }[];
+    zones: Zone[];
+}
+
+export default function CreateBookcase({bookcase, floors, zones}:BookcaseFormProps) {
+    const { t } = useTranslations();
+
+    return (
+        <BookcaseLayout title={t('ui.bookcases.edit')}>
+            <div className="flex max-w-screen items-center self-center">
+                <Card className="w-100% m-4 p-4 shadow-lg dark:shadow-xs dark:shadow-white">
+                    <CardHeader>
+                        <CardTitle>
+                            <div className="flex items-center gap-1">
+                                <ChartColumnStacked color="#2762c2" />
+                                {t('ui.bookcases.cards.edit.title')}
+                            </div>
+                        </CardTitle>
+                        <CardDescription>{t('ui.bookcases.cards.edit.description')}</CardDescription>
+                    </CardHeader>
+                    <Separator />
+                    <CardContent>
+                        <BookcaseForm  initialData={bookcase} floors={floors} zones={zones}/>
+                    </CardContent>
+                </Card>
+            </div>
+        </BookcaseLayout>
+    );
+}

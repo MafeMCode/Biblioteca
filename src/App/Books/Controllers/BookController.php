@@ -4,6 +4,7 @@ namespace App\Books\Controllers;
 
 use App\Core\Controllers\Controller;
 use Domain\Books\Models\Book;
+use Domain\Genres\Models\Genre;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -23,6 +24,7 @@ class BookController extends Controller
      */
     public function create()
     {
+        $genres = Genre::select('id', 'name')->get()->toArray();
 
         $authors = Book::all()->pluck('author')->unique()->map(function ($author) {
             return [
@@ -31,7 +33,8 @@ class BookController extends Controller
             ];
         })->values()->toArray();
 
-        return Inertia::render('books/Create', ['authors' => $authors]);
+        return Inertia::render('books/Create', ['authors' => $authors,             'genres' => $genres,
+    ]);
     }
 
     /**

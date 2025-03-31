@@ -14,6 +14,7 @@ class BookcaseResource extends Data
         public readonly int $number,
         public readonly int $capacity,
         public readonly int $zone_number,
+        public readonly string $zone_genre,
         public readonly int $floor_story,
         public readonly string $created_at,
         public readonly string $updated_at,
@@ -26,6 +27,8 @@ class BookcaseResource extends Data
         $zona = Zone::find($bookcase->zone_id);
         $numeroZona = $zona->number;
 
+        $zone_genre = $zona->genreName;
+
         $piso = Floor::find($zona->floor_id);
         $story = $piso->story;
 
@@ -34,6 +37,7 @@ class BookcaseResource extends Data
             number: $bookcase->number,
             capacity: $bookcase->capacity,
             zone_number: $numeroZona,
+            zone_genre: $zone_genre,
             floor_story: $story,
             created_at: $bookcase->created_at->format('Y-m-d H:i:s'),
             updated_at: $bookcase->updated_at->format('Y-m-d H:i:s'),

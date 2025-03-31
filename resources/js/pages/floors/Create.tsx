@@ -5,7 +5,7 @@ import { FloorLayout } from '@/layouts/floors/FloorLayout';
 import { Book, Layers } from 'lucide-react';
 import { FloorForm } from './components/FloorForm';
 
-interface BookFormProps {
+interface FloorFormProps {
     initialData?: {
         id: string;
         name: string;
@@ -14,7 +14,7 @@ interface BookFormProps {
     },
 }
 
-export default function CreateBook() {
+export default function CreateFloor() {
     const { t } = useTranslations();
 
     return (

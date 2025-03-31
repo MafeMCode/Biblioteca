@@ -38,7 +38,7 @@ export function ZoneLayout({ title, children }: ZoneLayout) {
             href: '/dashboard',
         },
         {
-            title: 'Zonas',
+            title: t('ui.zones.title'),
             href: '/zones',
         },
     ];
