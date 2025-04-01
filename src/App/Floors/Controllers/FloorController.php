@@ -11,6 +11,7 @@ use Domain\Floors\Actions\FloorUpdateAction;
 use Domain\Users\Actions\UserStoreAction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class FloorController extends Controller
@@ -41,7 +42,9 @@ class FloorController extends Controller
      */
     public function create()
     {
-        return Inertia::render('floors/Create', []);
+        $storyList = Floor::all()->pluck('story');
+
+        return Inertia::render('floors/Create', ['storyList' => $storyList]);
     }
 
     /**
@@ -50,7 +53,12 @@ class FloorController extends Controller
     public function store(Request $request, FloorStoreAction $action)
     {
         $validator = Validator::make($request->all(), [
-            'story' => ['required', 'integer', 'unique:floors,story'],
+            'story' => [
+            'required',
+            'integer',
+            Rule::unique('floors')->where(fn ($query) =>
+                $query->where('story', $request->floor_id)
+            )->ignore($request->id)],
             'capacity' => ['required', 'integer'],
         ]);
 
@@ -78,8 +86,13 @@ class FloorController extends Controller
     public function edit(Request $request, Floor $floor)
     {
 
+        $storyList = Floor::all()->pluck('story');
+
+        // dd($storyList);
+
         return Inertia::render('floors/Edit', [
             'floor' => $floor,
+            'storyList' => $storyList,
             'page' => $request->query('page'),
             'perPage' => $request->query('perPage'),
         ]);
@@ -92,7 +105,12 @@ class FloorController extends Controller
     public function update(Request $request, Floor $floor, FloorUpdateAction $action)
     {
         $validator = Validator::make($request->all(), [
-            'story' => ['required', 'integer', 'unique:floors,story'],
+            'story' => [
+            'required',
+            'integer',
+            Rule::unique('floors')->where(fn ($query) =>
+                $query->where('story', $request->floor_id)
+            )->ignore($request->id)],
             'capacity' => ['required', 'integer'],
         ]);
 

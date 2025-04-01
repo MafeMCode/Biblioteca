@@ -29,7 +29,7 @@ class ZoneController extends Controller
      */
     public function create()
     {
-        $floors = Floor::select('id', 'story')->get()->toArray();
+        $floors = Floor::select('id', 'story', 'capacity')->orderBy('story', 'asc')->withCount('zones')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
 
         return Inertia::render('zones/Create', ['floors' => $floors, 'genres' => $genres]);
@@ -47,7 +47,7 @@ class ZoneController extends Controller
                 'integer',
                 Rule::unique('zones')->where(fn ($query) =>
                     $query->where('floor_id', $request->floor_id)
-                ),
+                )->ignore($request->id),
             ],
             'floor_id' => ['required', 'string'],
             'capacity' => ['required', 'integer'],
@@ -77,9 +77,8 @@ class ZoneController extends Controller
      */
     public function edit(Request $request, Zone $zone)
     {
-        $floors = Floor::select('id', 'story')->get()->toArray();
+        $floors = Floor::select('id', 'story', 'capacity')->orderBy('story', 'asc')->withCount('zones')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
-
         return Inertia::render('zones/Edit', [
             'zone' => $zone,
             'floors' => $floors,
@@ -97,11 +96,11 @@ class ZoneController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'number' => [
-            'required',
+            'required',-
             'integer',
             Rule::unique('zones')->where(fn ($query) =>
                 $query->where('floor_id', $request->floor_id)
-            ),
+            )->ignore($request->id),
     ],
             'floor_id' => ['required', 'string'],
             'capacity' => ['required', 'integer'],

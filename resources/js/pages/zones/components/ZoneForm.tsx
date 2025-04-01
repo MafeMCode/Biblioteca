@@ -19,7 +19,7 @@ interface ZoneFormProps {
         genre: string;
         floor_id: string;
     };
-    floors: { id: string; story: number }[];
+    floors: { id: string; story: number, capacity: number, zones_count: number }[];
     genres: { id: string; name: string }[];
     page?: string;
     perPage?: string;
@@ -157,8 +157,8 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                                     </SelectTrigger>
                                     <SelectContent>
                                         {floors.map((floor) => (
-                                            <SelectItem key={floor.id} value={String(floor.id)}>
-                                                {floor.story}
+                                            <SelectItem key={floor.id} value={String(floor.id)} disabled={floor.zones_count >= floor.capacity}>
+                                                {floor.story}{floor.zones_count >= floor.capacity ? "- Full" : "- Availible"}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

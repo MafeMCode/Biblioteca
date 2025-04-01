@@ -426,8 +426,8 @@ return [
             'author' => 'Autor del Libro',
         ],
         'placeholders' => [
-            'title' => 'Titulo...',
-            'author' => 'Autor...',
+            'story' => 'Enter the story number',
+            'capacity' => 'Enter zone capacity',
             'genres' => 'Seleccione el/los generos...',
             'search' => 'Buscar libros...',
             'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'

@@ -11,9 +11,10 @@ interface FloorFormProps {
         story: number;
         capacity: number;
     };
+    storyList: number[];
 }
 
-export default function CreateFloor({floor}:FloorFormProps) {
+export default function CreateFloor({floor, storyList}:FloorFormProps) {
     const { t } = useTranslations();
 
     return (
@@ -31,7 +32,7 @@ export default function CreateFloor({floor}:FloorFormProps) {
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <FloorForm  initialData={floor}/>
+                        <FloorForm storyList={storyList} initialData={floor}/>
                     </CardContent>
                 </Card>
             </div>

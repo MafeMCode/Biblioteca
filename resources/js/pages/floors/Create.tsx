@@ -12,9 +12,10 @@ interface FloorFormProps {
         email: string;
 
     },
+    storyList: number[];
 }
 
-export default function CreateFloor() {
+export default function CreateFloor({storyList} : FloorFormProps) {
     const { t } = useTranslations();
 
     return (
@@ -32,7 +33,7 @@ export default function CreateFloor() {
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <FloorForm/>
+                        <FloorForm storyList = {storyList}/>
                     </CardContent>
                 </Card>
             </div>

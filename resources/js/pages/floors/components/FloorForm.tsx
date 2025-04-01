@@ -16,6 +16,7 @@ interface FloorFormProps {
         story: number;
         capacity: number;
     };
+    storyList: number[];
     page?: string;
     perPage?: string;
 }
@@ -32,15 +33,15 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-export function FloorForm({ initialData, page, perPage }: FloorFormProps) {
+export function FloorForm({ initialData, page, perPage, storyList }: FloorFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
     // TanStack Form setup
     const form = useForm({
         defaultValues: {
-            story: initialData?.story ?? '',
-            capacity: initialData?.capacity ?? '',
+            story: initialData?.story ?? undefined,
+            capacity: initialData?.capacity ?? undefined,
         },
         onSubmit: async ({ value }) => {
             const options = {
@@ -94,8 +95,9 @@ export function FloorForm({ initialData, page, perPage }: FloorFormProps) {
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value
-                                    ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) : null;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) :
+                                storyList.includes(value) && value!=initialData?.story ? t('ui.validation.unique', { attribute: t('ui.floors.fields.story').toLowerCase() }) : undefined
+
 
                             },
                         }}
@@ -112,10 +114,9 @@ export function FloorForm({ initialData, page, perPage }: FloorFormProps) {
                                     id={field.name}
                                     name={field.name}
                                     type="number"
-                                    min="1"
                                     step="1"
                                     value={field.state.value}
-                                    onChange={(e) => field.handleChange(e.target.value)}
+                                    onChange={(e) => field.handleChange(parseInt(e.target.value))}
                                     onBlur={field.handleBlur}
                                     placeholder={t('ui.floors.placeholders.story')}
                                     disabled={form.state.isSubmitting}
@@ -135,7 +136,8 @@ export function FloorForm({ initialData, page, perPage }: FloorFormProps) {
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) : null;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
+                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.story').toLowerCase() }) : undefined
                             },
                         }}
                     >
@@ -154,7 +156,7 @@ export function FloorForm({ initialData, page, perPage }: FloorFormProps) {
                                     min="1"
                                     step="1"
                                     value={field.state.value}
-                                    onChange={(e) => field.handleChange(e.target.value)}
+                                    onChange={(e) => field.handleChange(parseInt(e.target.value))}
                                     onBlur={field.handleBlur}
                                     placeholder={t('ui.floors.placeholders.capacity')}
                                     disabled={form.state.isSubmitting}

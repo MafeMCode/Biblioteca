@@ -13,12 +13,13 @@ import { useEffect, useState } from 'react';
 
 import { toast } from 'sonner';
 
-interface Zone {
-    id: string;
-    number: number;
-    genreName: string;
-    floor_id: string;
-}
+// interface Zone {
+//     id: string;
+//     number: number;
+//     genreName: string;
+//     floor_id: string;
+//     bookcase_count: number;
+// }
 
 interface BookcaseFormProps {
     initialData?: {
@@ -31,7 +32,14 @@ interface BookcaseFormProps {
         id: string;
         story: number;
     }[];
-    zones: Zone[];
+    zones: {
+        id: string;
+        number: number;
+        genreName: string;
+        capacity: number;
+        floor_id: string;
+        bookcases_count: number;
+    }[];
     page?: string;
     perPage?: string;
 }
@@ -52,8 +60,14 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
-    const [selectedFloor, setSelectedFloor] = useState<string | undefined>(undefined);
-    const [selectedZone, setSelectedZone] = useState<string | undefined>(undefined);
+    let prePisoId = undefined;
+
+    if (initialData?.zone_id) {
+        prePisoId = zones.filter(zone => zone.id === initialData.zone_id)[0].floor_id;
+    }
+
+    const [selectedFloor, setSelectedFloor] = useState<string | undefined>(prePisoId);
+    const [selectedZone, setSelectedZone] = useState<string | undefined>(initialData?.zone_id);
 
 
     function comprobantePiso() {
@@ -72,7 +86,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
     // TanStack Form setup
     const form = useForm({
         defaultValues: {
-            // floor_id: initialData.floor_id
+            // floor_id: initialData.floor_id ?? '',
             zone_id: initialData?.zone_id ?? '',
             number: initialData?.number ?? '',
             capacity: initialData?.capacity ?? '',
@@ -163,7 +177,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                 </Label>
                 <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t('ui.bookcases.fields.zones')} />
+                        <SelectValue placeholder={t('ui.bookcases.fields.floor')} />
                     </SelectTrigger>
                     <SelectContent>
                         {floors.map((floor) => (
@@ -199,8 +213,8 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                                     </SelectTrigger>
                                     <SelectContent>
                                         {zones.filter(zone => zone.floor_id === selectedFloor).map((zone) => (
-                                                <SelectItem key={zone.id} value={zone.id}>
-                                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}
+                                                <SelectItem key={zone.id} value={zone.id} disabled={zone.bookcases_count >= zone.capacity}>
+                                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}{zone.bookcases_count >= zone.capacity ? "- Full" : "- Availible"}
                                                     {/* DIABLO */}
                                                 </SelectItem>
                                             ))}

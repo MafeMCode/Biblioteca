@@ -30,8 +30,8 @@ class BookcaseController extends Controller
      */
     public function create()
     {
-        $zones = Zone::all();
-        $floors = Floor::select('id', 'story')->get()->toArray();
+        $zones = Zone::withCount('bookcases')->get()->toArray();
+        $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
 
         return Inertia::render('bookcases/Create', ['floors' => $floors, 'zones' => $zones]);
     }
@@ -77,10 +77,11 @@ class BookcaseController extends Controller
      */
     public function edit(Request $request, Bookcase $bookcase)
     {
-        $zones = Zone::all();
-        $floors = Floor::select('id', 'story')->get()->toArray();
+        $zones = Zone::withCount('bookcases')->get()->toArray();
+        $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
 
+        dd($zones);
 
         return Inertia::render('bookcases/Edit', [
             'bookcase' => $bookcase,
@@ -104,7 +105,7 @@ class BookcaseController extends Controller
                 'integer',
                 Rule::unique('bookcases')->where(fn ($query) =>
                     $query->where('zone_id', $request->zone_id)
-                ),
+                )->ignore($request->id),
             ],
             'zone_id' => ['required', 'string'],
             'capacity' => ['required', 'integer'],

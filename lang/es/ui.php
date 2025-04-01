@@ -120,17 +120,6 @@ return [
         'per_page' => 'Por página',
         'no_results' => 'No hay resultados',
     ],
-    'zones' => [
-        'title' => 'Zonas',
-        'create' => 'Crear Zona',
-        'buttons' => [
-            'new' => 'Crear Zona',
-        ],
-        'create' => [
-            'title' => 'titulo',
-            'desc' => 'desc'
-        ],
-    ],
     'users' => [
         'title' => 'Usuarios',
         'create' => 'Crear Usuario',
@@ -377,41 +366,41 @@ return [
         ],
         'cards' => [
             'create' => [
-                'title' => 'Create New Bookcase',
-                'description' => 'Enter the information to create a new bookcase in the system'
+                'title' => 'Crear Nuevo Piso',
+                'description' => 'Ingresa la información para crear una nueva estantería en el sistema'
             ],
             'edit' => [
-                'title' => 'Edit Bookcae',
-                'description' => 'Enter the new information to edit this bookcase'
+                'title' => 'Editar Estantería',
+                'description' => 'Ingresa la nueva información para editar la estantería'
             ]
         ],
         'buttons' => [
-            'new' => 'New Bookcase',
-            'edit' => 'Edit',
-            'save' => 'Save',
-            'update' => 'Update',
-            'cancel' => 'Cancel',
-            'delete' => 'Delete',
-            'deleting' => 'Deleting...',
-            'saving' => 'Saving...',
-            'retry' => 'Retry',
+            'new' => 'Nueva Estantería',
+            'edit' => 'Editar',
+            'save' => 'Guardar',
+            'update' => 'Actualizar',
+            'cancel' => 'Cancelar',
+            'delete' => 'Eliminar',
+            'deleting' => 'Eliminando...',
+            'saving' => 'Guardando...',
+            'retry' => 'Reintentar',
         ],
         'delete' => [
-            'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la estantería del sistema.',
         ],
         'delete_dialog' => [
-            'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
-            'success' => 'Deleted successfully ;)',
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la estantería del sistema.',
+            'success' => 'Eliminado correctamente ;)',
         ],
-        'deleted_error' => 'Error trying to delete the book',
-        'no_results' => 'No results.',
-        'error_loading' => 'Error loading books. Please, try again.',
-        'showing_results' => 'showing :from to :to from :total results',
+        'deleted_error' => 'Error al eliminar la estantería',
+        'no_results' => 'No hay resultados.',
+        'error_loading' => 'Error al cargar las estanterías. Por favor, inténtalo de nuevo.',
+        'showing_results' => 'Mostrando :from a :to de :total resultados',
         'pagination' => [
-            'previous' => 'Last',
-            'next' => 'Next',
+            'previous' => 'Anterior',
+            'next' => 'Siguiente',
         ],
     ],
     'floors' => [
@@ -436,8 +425,8 @@ return [
             'author' => 'Autor del Libro',
         ],
         'placeholders' => [
-            'title' => 'Titulo...',
-            'author' => 'Autor...',
+            'story' => 'Ingrese el número de planta',
+            'capacity' => 'Ingrese el número máximo de zonas',
             'genres' => 'Seleccione el/los generos...',
             'search' => 'Buscar libros...',
             'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
@@ -472,9 +461,78 @@ return [
             'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
             'success' => 'Eliminado correctamente ;)',
         ],
-        'deleted_error' => 'Error al eliminar el usuario',
+        'deleted_error' => 'Error al eliminar el piso',
         'no_results' => 'No hay resultados.',
-        'error_loading' => 'Error al cargar los usuarios. Por favor, inténtalo de nuevo.',
+        'error_loading' => 'Error al cargar los pisos. Por favor, inténtalo de nuevo.',
+        'showing_results' => 'Mostrando :from a :to de :total resultados',
+        'pagination' => [
+            'previous' => 'Anterior',
+            'next' => 'Siguiente',
+        ],
+    ],
+    'zones' => [
+        'title' => 'Zonas',
+        'create' => 'Crear Zona',
+        'edit' => 'Editar Zona',
+        'fields' => [
+            'story' => 'Planta',
+            'capacity' => 'Capacidad',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+        ],
+        'columns' => [
+            'floor' => 'Piso',
+            'capacity' => 'Capacidad',
+            'number' => 'Número',
+            'genre' => 'Género',
+            'created_at' => 'Fecha de creación',
+            'actions' => 'Acciones',
+        ],
+        'filters' => [
+            'search' => 'Buscar',
+            'title' => 'Título de la Libro',
+            'author' => 'Autor de la Libro',
+        ],
+        'placeholders' => [
+            'story' => 'Ingrese el número de planta',
+            'capacity' => 'Ingrese el número máximo de zonas',
+            'genres' => 'Seleccione el/los generos...',
+            'search' => 'Buscar libros...',
+            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Crear Nueva Zona',
+                'description' => 'Ingresa la información para crear un nuevo piso en el sistema'
+            ],
+            'edit' => [
+                'title' => 'Editar Zona',
+                'description' => 'Ingresa la nueva información para editar la piso'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'Nueva Zona',
+            'edit' => 'Editar',
+            'save' => 'Guardar',
+            'update' => 'Actualizar',
+            'cancel' => 'Cancelar',
+            'delete' => 'Eliminar',
+            'deleting' => 'Eliminando...',
+            'saving' => 'Guardando...',
+            'retry' => 'Reintentar',
+        ],
+        'delete' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la piso del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la piso del sistema.',
+            'success' => 'Eliminado correctamente ;)',
+        ],
+        'deleted_error' => 'Error al eliminar la piso',
+        'no_results' => 'No hay resultados.',
+        'error_loading' => 'Error al cargar los pisos. Por favor, inténtalo de nuevo.',
         'showing_results' => 'Mostrando :from a :to de :total resultados',
         'pagination' => [
             'previous' => 'Anterior',

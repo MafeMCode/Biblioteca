@@ -13,7 +13,7 @@ interface ZoneFormProps {
         genre: string;
         floor_id: string;
     },
-    floors: { id: string; story: number }[];
+    floors: { id: string; story: number, capacity: number, zones_count: number}[];
     genres: { id: string; name: string }[];
 }
 

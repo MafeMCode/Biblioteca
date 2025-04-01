@@ -9,7 +9,9 @@ interface Zone {
     id: string;
     number: number;
     genreName: string;
+    capacity: number;
     floor_id: string;
+    bookcases_count: number;
 }
 
 interface BookcaseFormProps {

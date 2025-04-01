@@ -24,17 +24,13 @@ class BookController extends Controller
      */
     public function create()
     {
-        $genres = Genre::select('id', 'name')->get()->toArray();
-
-        $authors = Book::all()->pluck('author')->unique()->map(function ($author) {
+        $genres = Genre::select('name')->get()->map(function ($genre) {
             return [
-                'value' => strtolower(str_replace(' ', '_', $author)),
-                'label' => $author,
+                'value' => $genre->name,
             ];
-        })->values()->toArray();
+        })->toArray();
 
-        return Inertia::render('books/Create', ['authors' => $authors,             'genres' => $genres,
-    ]);
+        return Inertia::render('books/Create', ['genres' => $genres]);
     }
 
     /**
@@ -58,8 +54,18 @@ class BookController extends Controller
      */
     public function edit(Request $request, Book $book)
     {
+        $genres = Genre::select('name')->get()->map(function ($genre) {
+            return [
+                'value' => $genre->name,
+            ];
+        })->toArray();
+
+        $genresExplosion = explode(', ', $book->genres);
+
         return Inertia::render('books/Edit', [
             'book' => $book,
+            'genres' => $genres,
+            'explosion' => $genresExplosion,
             'page' => $request->query('page'),
             'perPage' => $request->query('perPage'),
         ]);
@@ -70,7 +76,7 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        dd($request);
     }
 
     /**
