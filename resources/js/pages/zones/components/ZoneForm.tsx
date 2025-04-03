@@ -7,7 +7,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Layers, Save, User, X } from 'lucide-react';
+import { ArrowBigLeftDash, BookMarked, Box, Hash, Layers, Lock, Save, User, X } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
@@ -45,9 +45,9 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
     const form = useForm({
         defaultValues: {
             floor_id: initialData?.floor_id ?? '',
-            number: initialData?.number ?? '',
+            number: initialData?.number ?? undefined,
             genre: initialData?.genre ?? '',
-            capacity: initialData?.capacity ?? '',
+            capacity: initialData?.capacity ?? undefined,
         },
         onSubmit: async ({ value }) => {
             const options = {
@@ -75,8 +75,6 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                 },
             };
 
-            console.log(value);
-
             // Submit with Inertia
             if (initialData) {
                 router.put(`/zones/${initialData.id}`, value, options);
@@ -96,42 +94,6 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
     return (
         <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
-                {/* Number field */}
-                <div>
-                    <form.Field
-                        name="number"
-                        validators={{
-                        }}
-
-
-                    >
-                        {(field) => (
-                            <>
-                                <Label htmlFor={field.name}>
-                                    <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
-                                        {t('ui.zones.fields.number')}
-                                    </div>
-                                </Label>
-                                <Input
-                                    id={field.name}
-                                    name={field.name}
-                                    type="number"
-                                    min="1"
-                                    step="1"
-                                    value={field.state.value}
-                                    onChange={(e) => field.handleChange(e.target.value)}
-                                    onBlur={field.handleBlur}
-                                    placeholder={t('ui.zones.placeholders.number')}
-                                    disabled={form.state.isSubmitting}
-                                    required={false}
-                                    autoComplete="off"
-                                />
-                                <FieldInfo field={field} />
-                            </>
-                        )}
-                    </form.Field>
-                </div>
                 {/* Floor field */}
                 <div>
                     <form.Field
@@ -153,16 +115,57 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                                 <Select
                         required={true} value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.zones.fields.floors')} />
+                                        <SelectValue placeholder={t('ui.zones.placeholders.floors')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {floors.map((floor) => (
-                                            <SelectItem key={floor.id} value={String(floor.id)} disabled={floor.zones_count >= floor.capacity}>
-                                                {floor.story}{floor.zones_count >= floor.capacity ? "- Full" : "- Availible"}
+                                            {floors.map((floor) => (
+                                            <SelectItem key={floor.id} value={String(floor.id)} disabled={floor.zones_count >= floor.capacity && floor.id!=initialData?.floor_id}>
+                                                {floor.story} - {floor.zones_count}/{floor.capacity}{floor.zones_count >= floor.capacity && floor.id!=initialData?.floor_id ? <Lock/> : ""}{floor.id==initialData?.floor_id ? <ArrowBigLeftDash/> : ""}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
+                                <FieldInfo field={field} />
+                            </>
+                        )}
+                    </form.Field>
+                </div>
+                {/* Number field */}
+                <div>
+                    <form.Field
+                        name="number"
+                        validators={{
+                            onChangeAsync: async ({ value }) => {
+                                await new Promise((resolve) => setTimeout(resolve, 500));
+                                return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
+                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) : undefined
+                            },
+                        }}
+
+
+                    >
+                        {(field) => (
+                            <>
+                                <Label htmlFor={field.name}>
+                                    <div className="mb-1 flex items-center gap-1">
+                                        <Hash color="grey" size={18} />
+                                        {t('ui.zones.fields.number')}
+                                    </div>
+                                </Label>
+                                <Input
+                                    id={field.name}
+                                    name={field.name}
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                    value={field.state.value}
+                                    onChange={(e) => field.handleChange(parseInt(e.target.value))}
+                                    onBlur={field.handleBlur}
+                                    placeholder={t('ui.zones.placeholders.number')}
+                                    disabled={form.state.isSubmitting}
+                                    required={false}
+                                    autoComplete="off"
+                                />
                                 <FieldInfo field={field} />
                             </>
                         )}
@@ -181,15 +184,15 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <Layers color="grey" size={18} />
+                                        <BookMarked color="grey" size={18} />
                                         {t('ui.zones.fields.genres')}
                                     </div>
                                 </Label>
                                 <Select required={true} value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.zones.fields.genres')} />
+                                    <SelectTrigger className="w-[220px]">
+                                        <SelectValue placeholder={t('ui.zones.placeholders.genres')} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="max-h-60 overflow-y-auto">
                                         {genres.map((genre) => (
                                             <SelectItem key={genre.id} value={String(genre.id)}>
                                                 {genre.name}
@@ -210,7 +213,8 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.zones.fields.capacity').toLowerCase() }) : null;
+                                return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
+                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) : undefined
                             },
                         }}
                     >
@@ -218,7 +222,7 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <Box color="grey" size={18} />
                                         {t('ui.zones.fields.capacity')}
                                     </div>
                                 </Label>
@@ -229,7 +233,7 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                                     min="1"
                                     step="1"
                                     value={field.state.value}
-                                    onChange={(e) => field.handleChange(e.target.value)}
+                                    onChange={(e) => field.handleChange(parseInt(e.target.value))}
                                     onBlur={field.handleBlur}
                                     placeholder={t('ui.zones.placeholders.capacity')}
                                     disabled={form.state.isSubmitting}

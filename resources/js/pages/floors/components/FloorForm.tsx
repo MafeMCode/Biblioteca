@@ -6,7 +6,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Save, User, X } from 'lucide-react';
+import { Box, Layers2, Save, User, X } from 'lucide-react';
 import * as React from 'react';
 import { toast } from 'sonner';
 
@@ -92,21 +92,20 @@ export function FloorForm({ initialData, page, perPage, storyList }: FloorFormPr
                 <div>
                     <form.Field
                         name="story"
-                        validators={{
-                            onChangeAsync: async ({ value }) => {
-                                await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) :
-                                storyList.includes(value) && value!=initialData?.story ? t('ui.validation.unique', { attribute: t('ui.floors.fields.story').toLowerCase() }) : undefined
-
-
-                            },
-                        }}
+                        // validators={{
+                        //     onChangeAsync: async ({ value }) => {
+                        //         await new Promise((resolve) => setTimeout(resolve, 500));
+                        //         return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) :
+                        //         storyList.includes(value) && value!=initialData?.story ? t('ui.validation.unique', { attribute: t('ui.floors.fields.story').toLowerCase() })
+                        //         : undefined
+                        //     },
+                        // }}
                     >
                         {(field) => (
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <Layers2 color="grey" size={18} />
                                         {t('ui.floors.fields.story')}
                                     </div>
                                 </Label>
@@ -136,8 +135,8 @@ export function FloorForm({ initialData, page, perPage, storyList }: FloorFormPr
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
-                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.story').toLowerCase() }) : undefined
+                                return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
+                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) : undefined
                             },
                         }}
                     >
@@ -145,7 +144,7 @@ export function FloorForm({ initialData, page, perPage, storyList }: FloorFormPr
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <Box color="grey" size={18} />
                                         {t('ui.floors.fields.capacity')}
                                     </div>
                                 </Label>

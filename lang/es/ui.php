@@ -96,6 +96,7 @@ return [
             ],
             'unique' => 'El campo :attribute ya ha sido tomado.',
             'confirmed' => 'El campo :attribute no coincide.',
+            'positive' => 'El campo :attribute debe ser positivo y mayor de 0.',
     ],
     'common' => [
         'buttons' => [
@@ -475,7 +476,9 @@ return [
         'create' => 'Crear Zona',
         'edit' => 'Editar Zona',
         'fields' => [
-            'story' => 'Planta',
+            'floors' => 'Piso',
+            'number' => 'Número',
+            'genres' => 'Género',
             'capacity' => 'Capacidad',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
@@ -494,9 +497,10 @@ return [
             'author' => 'Autor de la Libro',
         ],
         'placeholders' => [
-            'story' => 'Ingrese el número de planta',
-            'capacity' => 'Ingrese el número máximo de zonas',
-            'genres' => 'Seleccione el/los generos...',
+            'number' => 'Ingrese el número identificador de la zona',
+            'capacity' => 'Ingrese el número máximo de estanterías',
+            'genres' => 'Seleccione el género...',
+            'floors' => 'Seleccione el piso...',
             'search' => 'Buscar libros...',
             'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],
@@ -547,10 +551,10 @@ return [
             'Science Fiction' => 'Ciencia Ficción',
             'Horror' => 'Terror',
             'Mystery' => 'Misterio',
-            'Thriller' => 'Suspenso',
+            'Thriller' => 'Suspense',
             'Romance' => 'Romance',
             'Adventure' => 'Aventura',
-            'Dystopian' => 'Distopía',
+            'Dystopian' => 'Distópico',
             'Gothic' => 'Gótico',
             'Magical Realism' => 'Realismo Mágico',
             'Satire' => 'Sátira',

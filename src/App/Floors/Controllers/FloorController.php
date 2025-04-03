@@ -56,10 +56,8 @@ class FloorController extends Controller
             'story' => [
             'required',
             'integer',
-            Rule::unique('floors')->where(fn ($query) =>
-                $query->where('story', $request->floor_id)
-            )->ignore($request->id)],
-            'capacity' => ['required', 'integer'],
+            Rule::unique('floors', 'story')],
+            'capacity' => ['required', 'integer', 'min:1'],
         ]);
 
         if ($validator->fails()) {
@@ -108,10 +106,8 @@ class FloorController extends Controller
             'story' => [
             'required',
             'integer',
-            Rule::unique('floors')->where(fn ($query) =>
-                $query->where('story', $request->floor_id)
-            )->ignore($request->id)],
-            'capacity' => ['required', 'integer'],
+            Rule::unique('floors', 'story')->ignore($request->id)],
+            'capacity' => ['required', 'integer', 'min:1'],
         ]);
 
         if ($validator->fails()) {

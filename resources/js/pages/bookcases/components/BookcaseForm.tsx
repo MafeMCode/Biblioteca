@@ -7,7 +7,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Layers, Save, User, X } from 'lucide-react';
+import { Box, Hash, LandPlot, Layers, Save, User, X } from 'lucide-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -143,7 +143,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <Hash color="grey" size={18} />
                                         {t('ui.bookcases.fields.number')}
                                     </div>
                                 </Label>
@@ -203,7 +203,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <Layers color="grey" size={18} />
+                                        <LandPlot color="grey" size={18} />
                                         {t('ui.bookcases.fields.zones')}
                                     </div>
                                 </Label>
@@ -241,7 +241,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <Box color="grey" size={18} />
                                         {t('ui.bookcases.fields.capacity')}
                                     </div>
                                 </Label>

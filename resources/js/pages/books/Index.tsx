@@ -76,6 +76,23 @@ export default function BooksIndex({authors}:BookIndexProps) {
       id: "genres",
       header: t("ui.books.columns.genres") || "Genres",
       accessorKey: "genres",
+      format: (value)=>{
+        let aux;
+        let res : string[] = [];
+        if (value.includes(',')) {
+           aux = value.split(', ');
+           aux.map((genre) =>{
+            genre = t(`ui.genres.names.${genre}`)
+            res.push(genre);
+            console.log(genre);
+           })
+           console.log(res);
+           aux = res.join(', ');
+           return aux;
+        }else{
+            return t(`ui.genres.names.${value}`);
+        }
+    }
     }),
     createTextColumn<Book>({
       id: "author",

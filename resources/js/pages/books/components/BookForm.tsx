@@ -8,9 +8,9 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Book, BookCopy, BrainCircuit, Save, Skull, User, VenetianMask, X } from 'lucide-react';
+import { Book, ChartColumnStacked, FilePenLine, LandPlot, Layers, PencilRuler, Save, User, UserPen, X } from 'lucide-react';
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 interface BookFormProps {
@@ -20,8 +20,26 @@ interface BookFormProps {
         author: string;
         editor: string;
         length: number;
+        bookcase_id: string;
         genre: string;
     };
+    floors: {
+        id: string;
+        story: number;
+    }[];
+    zones: {
+        id: string;
+        number: number;
+        floor_id: string;
+        genreName: string;
+    }[];
+    bookcases: {
+        id: string;
+        number: number;
+        books_count: number;
+        capacity: number;
+        zone_id: string;
+    }[];
     genres: { value: string; label: string }[];
     page?: string;
     explosion?: string[];
@@ -30,8 +48,7 @@ interface BookFormProps {
 interface Genre {
     value: string;
     label?: string;
-  }
-
+}
 
 // Field error display component
 function FieldInfo({ field }: { field: AnyFieldApi }) {
@@ -46,34 +63,61 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 }
 var generosFinales: string[] = [];
 
-
-export function BookForm({ initialData, page, perPage, genres, explosion }: BookFormProps) {
+export function BookForm({ initialData, page, perPage, genres, explosion, floors, zones, bookcases }: BookFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
     // Function to transform the genres array and add 'label' field
     const transformGenres = (genres: Genre[]) => {
-        return genres.map(genre => ({
-          ...genre,
-          label: t(`ui.genres.names.${genre.value}`), // Create the translation key dynamically
+        return genres.map((genre) => ({
+            ...genre,
+            label: t(`ui.genres.names.${genre.value}`), // Create the translation key dynamically
         }));
-      };
+    };
 
-      const transformedGenres = transformGenres(genres);
+    const transformedGenres = transformGenres(genres);
+
+    let prePisoId = undefined;
 
     //ComboBox Controls
-    const [selectedGenres, setSelectedGenres] = useState<string[]>(explosion??[]);
+    const [selectedGenres, setSelectedGenres] = useState<string[]>(explosion ?? []);
+    const [selectedFloor, setSelectedFloor] = useState<string | undefined>(prePisoId);
+    const [selectedZone, setSelectedZone] = useState<string | undefined>(undefined);
+    const [selectedBookcase, setSelectedBookcase] = useState<string | undefined>(initialData?.bookcase_id);
+
+    const handleFloorChange = (floorId: string) => {
+        setSelectedFloor(floorId);
+    };
+
+    const handleZoneChange = (zoneId: string) => {
+        setSelectedZone(zoneId);
+    };
 
     useEffect(() => {
-            if (explosion && initialData) {
-                generosFinales = explosion;
-                setSelectedGenres(explosion);
-            } else {
-                generosFinales=[];
-                setSelectedGenres(generosFinales);
-            }
-        }, [explosion]);
+        if (explosion && initialData) {
+            generosFinales = explosion;
+            setSelectedGenres(explosion);
+        } else {
+            generosFinales = [];
+            setSelectedGenres(generosFinales);
+        }
+    }, [explosion]);
 
+    function comprobanteZona() {
+        if (selectedZone != undefined) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function comprobantePiso() {
+        if (selectedFloor != undefined) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     // TanStack Form setup
     const form = useForm({
         defaultValues: {
@@ -81,9 +125,9 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
             author: initialData?.author ?? '',
             editor: initialData?.editor ?? '',
             length: initialData?.length ?? undefined,
+            bookcase_id: initialData?.bookcase_id ?? undefined,
         },
         onSubmit: async ({ value }) => {
-
             const bookData = {
                 ...value,
                 generos: selectedGenres,
@@ -190,7 +234,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <UserPen color="grey" size={18} />
                                         {t('ui.books.fields.author')}
                                     </div>
                                 </Label>
@@ -230,7 +274,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <FilePenLine color="grey" size={18} />
                                         {t('ui.books.fields.editor')}
                                     </div>
                                 </Label>
@@ -251,7 +295,6 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
                     </form.Field>
                 </div>
 
-
                 {/* Pages field */}
                 <div>
                     <form.Field
@@ -259,9 +302,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value
-                                    ? t('ui.validation.required', { attribute: t('ui.books.fields.length').toLowerCase() })
-                                    :  undefined;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.books.fields.length').toLowerCase() }) : undefined;
                             },
                         }}
                     >
@@ -269,14 +310,14 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
                             <>
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
-                                        <User color="grey" size={18} />
+                                        <PencilRuler color="grey" size={18} />
                                         {t('ui.books.fields.length')}
                                     </div>
                                 </Label>
                                 <Input
                                     id={field.name}
                                     name={field.name}
-                                    type='number'
+                                    type="number"
                                     min={1}
                                     step={1}
                                     value={field.state.value}
@@ -307,13 +348,110 @@ export function BookForm({ initialData, page, perPage, genres, explosion }: Book
                         maxCount={3}
                     />
                     <div className="mt-4">
-                        <h2 className="text-xl font-semibold">Selected genres:</h2>
+                        <h2 className="text-xl font-semibold">{t('ui.books.fields.selgenres')}</h2>
                         <ul className="list-inside list-disc">
                             {selectedGenres.map((genre) => (
-                                <li key={genre}>{genre}</li>
+                                <li key={genre}>{t(`ui.genres.names.${genre}`)}</li>
                             ))}
                         </ul>
                     </div>
+                </div>
+
+                {/* Floor Select */}
+
+                <Label>
+                    <div className="mb-1 flex items-center gap-1">
+                        <Layers color="grey" size={18} />
+                        {t('ui.bookcases.fields.floors')}
+                    </div>
+                </Label>
+                <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder={t('ui.bookcases.fields.floor')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {floors.map((floor) => (
+                            <SelectItem key={floor.id} value={floor.id}>
+                                {t('ui.bookcases.fields.floor')} {floor.story}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+
+                {/* Zone Select */}
+
+                <Label>
+                    <div className="mb-1 flex items-center gap-1">
+                        <LandPlot color="grey" size={18} />
+                        {t('ui.bookcases.fields.zones')}
+                    </div>
+                </Label>
+                <Select
+                                    disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => handleZoneChange(value)}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder={t('ui.bookcases.fields.zone')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {zones
+                            .filter((zone) => zone.floor_id === selectedFloor)
+                            .filter((zone) => selectedGenres.includes(zone.genreName))
+                            .map((zone) => (
+                                <SelectItem key={zone.id} value={zone.id}>
+                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}
+                                    {/* DIABLO */}
+                                </SelectItem>
+                            ))}
+                    </SelectContent>
+                </Select>
+
+                {/* Bookcase field */}
+                <div>
+                    <form.Field
+                        name="bookcase_id"
+                        validators={{
+                            onChangeAsync: async ({ value }) => {
+                                await new Promise((resolve) => setTimeout(resolve, 500));
+                                return !value ? t('ui.validation.required', { attribute: t('ui.bookcases.fieldsbookcase').toLowerCase() }) : null;
+                            },
+                        }}
+                    >
+                        {(field) => (
+                            <>
+                                <Label htmlFor={field.name}>
+                                    <div className="mb-1 flex items-center gap-1">
+                                        <ChartColumnStacked color="grey" size={18} />
+                                        {t('ui.bookcases.fields.bookcases')}
+                                    </div>
+                                </Label>
+                                <Select
+                                    disabled={comprobanteZona()}
+                                    required={true}
+                                    value={selectedBookcase}
+                                    onValueChange={(value) => field.handleChange(value)}
+                                >
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder={t('ui.bookcases.fields.bookcases')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {bookcases
+                                            .filter((bookcase) => bookcase.zone_id === selectedZone)
+                                            .map((bookcase) => (
+                                                <SelectItem
+                                                    key={bookcase.id}
+                                                    value={bookcase.id}
+                                                    disabled={bookcase.books_count >= bookcase.capacity}
+                                                >
+                                                    {`${t(`ui.bookcases.fields.bookcase`)} ${bookcase.number} - ${bookcase.books_count}/${bookcase.capacity}`}
+                                                    {bookcase.books_count >= bookcase.capacity ? '- Full' : '- Availible'}
+                                                    {/* DIABLO */}
+                                                </SelectItem>
+                                            ))}
+                                    </SelectContent>
+                                </Select>
+                                <FieldInfo field={field} />
+                            </>
+                        )}
+                    </form.Field>
                 </div>
 
                 {/* Form buttons */}

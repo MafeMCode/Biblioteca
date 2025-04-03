@@ -45,12 +45,11 @@ class ZoneController extends Controller
             'number' => [
                 'required',
                 'integer',
-                Rule::unique('zones')->where(fn ($query) =>
-                    $query->where('floor_id', $request->floor_id)
-                )->ignore($request->id),
+                'min:1',
+                Rule::unique('zones', 'number')->where(fn($query) => $query->where('floor_id', $request->floor_id)),
             ],
             'floor_id' => ['required', 'string'],
-            'capacity' => ['required', 'integer'],
+            'capacity' => ['required', 'integer', 'min:1'],
             'genre' => ['required', 'string'],
         ]);
 
@@ -86,7 +85,6 @@ class ZoneController extends Controller
             'page' => $request->query('page'),
             'perPage' => $request->query('perPage'),
         ]);
-
     }
 
     /**
@@ -96,14 +94,13 @@ class ZoneController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'number' => [
-            'required',-
-            'integer',
-            Rule::unique('zones')->where(fn ($query) =>
-                $query->where('floor_id', $request->floor_id)
-            )->ignore($request->id),
-    ],
+                'required',
+                'integer',
+                'min:1',
+                Rule::unique('zones', 'number')->where(fn($query) => $query->where('floor_id', $request->floor_id))->ignore($zone->id),
+            ],
             'floor_id' => ['required', 'string'],
-            'capacity' => ['required', 'integer'],
+            'capacity' => ['required', 'integer', 'min:1'],
             'genre' => ['required', 'string'],
         ]);
 

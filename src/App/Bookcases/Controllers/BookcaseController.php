@@ -46,9 +46,9 @@ class BookcaseController extends Controller
             'number' => [
                 'required',
                 'integer',
-                Rule::unique('bookcases')->where(fn ($query) =>
-                    $query->where('zone_id', $request->zone_id)
-                ),
+                Rule::unique('bookcases', 'number')
+                    ->where(fn($query) => $query->where('zone_id', $request->zone_id))
+                    ->ignore($request->id),
             ],
             'zone_id' => ['required', 'string'],
             'capacity' => ['required', 'integer'],
@@ -81,7 +81,6 @@ class BookcaseController extends Controller
         $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
 
-        dd($zones);
 
         return Inertia::render('bookcases/Edit', [
             'bookcase' => $bookcase,
@@ -91,7 +90,6 @@ class BookcaseController extends Controller
             'page' => $request->query('page'),
             'perPage' => $request->query('perPage'),
         ]);
-
     }
 
     /**
@@ -103,9 +101,9 @@ class BookcaseController extends Controller
             'number' => [
                 'required',
                 'integer',
-                Rule::unique('bookcases')->where(fn ($query) =>
-                    $query->where('zone_id', $request->zone_id)
-                )->ignore($request->id),
+                Rule::unique('bookcases', 'number')
+                    ->where(fn($query) => $query->where('zone_id', $request->zone_id))
+                    ->ignore($request->id)
             ],
             'zone_id' => ['required', 'string'],
             'capacity' => ['required', 'integer'],

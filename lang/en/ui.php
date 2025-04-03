@@ -95,6 +95,7 @@ return [
             ],
             'unique' => 'The :attribute has already been taken.',
             'confirmed' => 'The :attribute confirmation does not match.',
+            'positive' => 'The :attribute must be positive and greater than 0.',
     ],
     'common' => [
         'buttons' => [
@@ -476,14 +477,13 @@ return [
         'create' => 'Create Zone',
         'edit' => 'Edit Zone',
         'fields' => [
-            'title' => 'Title',
-            'author' => 'Author',
-            'genres' => 'Genre/s',
+            'floors' => 'Floor',
+            'number' => 'Number',
+            'genres' => 'Genre',
+            'capacity' => 'Capacity',
             'password_optional' => 'Contraseña (opcional)',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
-            'rolPpal' => 'Rol Principal',
-            'permisos' => 'Permisos Específicos'
         ],
         'columns' => [
             'capacity' => 'Capacity',
@@ -506,9 +506,10 @@ return [
             'author' => "Book's Author...",
         ],
         'placeholders' => [
-            'title' => 'Title...',
-            'author' => 'Author...',
-            'genres' => 'Select the genre or genres...',
+            'number' => 'Enter the identifying number for the zone',
+            'floors' => 'Select the floor...',
+            'capacity' => 'Enter the maximum number of bookcases',
+            'genres' => 'Select the genre...',
             'search' => 'Search books...',
             'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],

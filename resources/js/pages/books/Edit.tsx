@@ -13,12 +13,30 @@ interface BookFormProps {
         editor: string;
         length: number;
         genre: string;
+        bookcase_id: string;
     };
+    floors: {
+        id: string;
+        story: number;
+    }[];
+    zones: {
+        id: string;
+        number: number;
+        genreName: string;
+        floor_id: string;
+    }[];
+    bookcases: {
+        id: string;
+        number: number;
+        capacity: number;
+        books_count: number;
+        zone_id: string;
+    }[];
     explosion: string[];
     genres: { value: string; label: string }[];
 }
 
-export default function CreateBook({book, genres, explosion}:BookFormProps) {
+export default function CreateBook({book, genres, explosion, floors, zones, bookcases}:BookFormProps) {
     const { t } = useTranslations();
 
     return (
@@ -36,7 +54,7 @@ export default function CreateBook({book, genres, explosion}:BookFormProps) {
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <BookForm  initialData={book} genres={genres} explosion={explosion}/>
+                        <BookForm  initialData={book} genres={genres} explosion={explosion} floors={floors} zones={zones} bookcases={bookcases}/>
                     </CardContent>
                 </Card>
             </div>
