@@ -13,5 +13,11 @@ class BookSeeder extends Seeder
 
         Book::factory(50)->create();
 
+        $books = Book::all();
+
+        foreach ($books as $book) {
+            $book->addMediaFromUrl('https://img.freepik.com/free-vector/abstract-elegant-winter-book-cover_23-2148798745.jpg')->toMediaCollection('media');
+        }
+
     }
 }

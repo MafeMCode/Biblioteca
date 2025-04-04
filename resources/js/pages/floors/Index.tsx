@@ -30,11 +30,9 @@ export default function FloorsIndex() {
   const [filters, setFilters] = useState<Record<string, any>>({});
   // Combine name and email filters into a single search string if they exist
   const combinedSearch = [
-    filters.search,
-    filters.title ? `title:${filters.title}` : null,
-    filters.author ? `author:${filters.author}` : null
-  ].filter(Boolean).join(' ');
-
+    filters.story ? filters.story : "null",
+    filters.capacity ? filters.capacity : "null",
+  ];
   const { data: floors, isLoading, isError, refetch } = useFloors({
     search: combinedSearch,
     page: currentPage,
@@ -123,22 +121,19 @@ export default function FloorsIndex() {
                           filters={
                               [
                                   {
-                                      id: 'search',
-                                      label: t('ui.floors.filters.search') || 'Buscar',
-                                      type: 'text',
-                                      placeholder: t('ui.floors.placeholders.search') || 'Buscar...',
+                                      id: 'story',
+                                      label: t('ui.floors.filters.story') || 'Piso',
+                                      type: 'number',
+                                      step: 1,
+                                      placeholder: t('ui.floors.placeholders.story') || 'Piso...',
                                   },
                                   {
-                                      id: 'title',
-                                      label: t('ui.floors.filters.title') || 'Titulo',
-                                      type: 'text',
-                                      placeholder: t('ui.floors.placeholders.title') || 'Titulo...',
-                                  },
-                                  {
-                                      id: 'author',
-                                      label: t('ui.floors.filters.author') || 'Autor',
-                                      type: 'text',
-                                      placeholder: t('ui.floors.placeholders.author') || 'Autor...',
+                                      id: 'capacity',
+                                      label: t('ui.floors.filters.capacity') || 'Autor',
+                                      type: 'number',
+                                      min: 1,
+                                      step: 1,
+                                      placeholder: t('ui.floors.placeholders.capacity') || 'Autor...',
                                   },
                               ] as FilterConfig[]
                           }

@@ -49,18 +49,18 @@ export interface PaginatedResponse<T> {
 }
 
 interface UseBookParams {
-  author?: string;
+  search?: any[];
   page?: number;
   perPage?: number;
 }
 
-export function useBooks({ author, page = 1, perPage = 10 }: UseBookParams = {}) {
+export function useBooks({ search, page = 1, perPage = 10 }: UseBookParams = {}) {
   return useQuery({
-    queryKey: ["books", { author, page, perPage }],
+    queryKey: ["books", { search, page, perPage }],
     queryFn: async () => {
       const { data: apiResponse } = await axios.get<ApiPaginatedResponse<Book>>("/api/books", {
         params: {
-          author,
+          search,
           page,
           per_page: perPage,
         },

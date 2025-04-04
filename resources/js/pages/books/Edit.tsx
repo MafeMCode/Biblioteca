@@ -34,9 +34,10 @@ interface BookFormProps {
     }[];
     explosion: string[];
     genres: { value: string; label: string }[];
+    imgPreviaUrl: string;
 }
 
-export default function CreateBook({book, genres, explosion, floors, zones, bookcases}:BookFormProps) {
+export default function CreateBook({book, genres, explosion, floors, zones, bookcases, imgPreviaUrl}:BookFormProps) {
     const { t } = useTranslations();
 
     return (
@@ -54,7 +55,7 @@ export default function CreateBook({book, genres, explosion, floors, zones, book
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <BookForm  initialData={book} genres={genres} explosion={explosion} floors={floors} zones={zones} bookcases={bookcases}/>
+                        <BookForm initialData={book} genres={genres} explosion={explosion} floors={floors} zones={zones} bookcases={bookcases} imgPreviaUrl={imgPreviaUrl}/>
                     </CardContent>
                 </Card>
             </div>

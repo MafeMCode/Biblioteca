@@ -29,6 +29,9 @@ class ZoneController extends Controller
      */
     public function create()
     {
+        $testWith = Floor::with('zones')->get();
+
+        dd($testWith);
         $floors = Floor::select('id', 'story', 'capacity')->orderBy('story', 'asc')->withCount('zones')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
 

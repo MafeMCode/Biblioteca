@@ -43,12 +43,13 @@ export interface PaginatedResponse<T> {
 }
 
 interface UseFloorParams {
-  search?: string;
+  search?: any[];
   page?: number;
   perPage?: number;
 }
 
 export function useFloors({ search, page = 1, perPage = 10 }: UseFloorParams = {}) {
+    console.log(search);
   return useQuery({
     queryKey: ["floors", { search, page, perPage }],
     queryFn: async () => {

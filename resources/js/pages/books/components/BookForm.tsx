@@ -8,7 +8,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Book, ChartColumnStacked, FilePenLine, LandPlot, Layers, PencilRuler, Save, User, UserPen, X } from 'lucide-react';
+import { Book, ChartColumnStacked, FilePenLine, LandPlot, Layers, PencilRuler, Save, UserPen, X } from 'lucide-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -44,6 +44,7 @@ interface BookFormProps {
     page?: string;
     explosion?: string[];
     perPage?: string;
+    imgPreviaUrl?: string;
 }
 interface Genre {
     value: string;
@@ -63,7 +64,7 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 }
 var generosFinales: string[] = [];
 
-export function BookForm({ initialData, page, perPage, genres, explosion, floors, zones, bookcases }: BookFormProps) {
+export function BookForm({ initialData, page, perPage, genres, explosion, floors, zones, bookcases, imgPreviaUrl }: BookFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
@@ -83,6 +84,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
     const [selectedGenres, setSelectedGenres] = useState<string[]>(explosion ?? []);
     const [selectedFloor, setSelectedFloor] = useState<string | undefined>(prePisoId);
     const [selectedZone, setSelectedZone] = useState<string | undefined>(undefined);
+    const [SelectedImage, setSelectedImage] = useState<File | undefined>(undefined);
     const [selectedBookcase, setSelectedBookcase] = useState<string | undefined>(initialData?.bookcase_id);
 
     const handleFloorChange = (floorId: string) => {
@@ -104,7 +106,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
     }, [explosion]);
 
     function comprobanteZona() {
-        if (selectedZone != undefined) {
+        if (selectedZone != undefined && selectedGenres.length != 0) {
             return false;
         } else {
             return true;
@@ -112,7 +114,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
     }
 
     function comprobantePiso() {
-        if (selectedFloor != undefined) {
+        if (selectedFloor != undefined && selectedGenres.length != 0) {
             return false;
         } else {
             return true;
@@ -126,8 +128,31 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
             editor: initialData?.editor ?? '',
             length: initialData?.length ?? undefined,
             bookcase_id: initialData?.bookcase_id ?? undefined,
+            genres: explosion ?? [],
         },
         onSubmit: async ({ value }) => {
+            const formData = new FormData();
+
+            formData.append('title', value.title);
+            formData.append('author', value.author);
+            formData.append('editor', value.editor);
+            formData.append('length', value.length);
+            formData.append('bookcase_id', value.bookcase_id);
+            formData.append('newImg', SelectedImage);
+            formData.append('_method', 'PUT');
+            let generosString = '';
+            if (selectedGenres.length > 0) {
+                generosString=selectedGenres[0];
+                if (selectedGenres.length>1) {
+                    for (let i=1; i < selectedGenres.length; i++) {
+                        generosString +=  ', ' + selectedGenres[i];
+                    };
+                }
+            } else {
+                generosString = selectedGenres[0];
+            }
+            formData.append('generos', generosString);
+
             const bookData = {
                 ...value,
                 generos: selectedGenres,
@@ -159,7 +184,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
 
             // Submit with Inertia
             if (initialData) {
-                router.put(`/books/${initialData.id}`, bookData, options);
+                router.post(`/books/${initialData.id}`, formData, options);
             } else {
                 router.post('/books', bookData, options);
             }
@@ -386,8 +411,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                         {t('ui.bookcases.fields.zones')}
                     </div>
                 </Label>
-                <Select
-                                    disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => handleZoneChange(value)}>
+                <Select disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => handleZoneChange(value)}>
                     <SelectTrigger className="w-[180px]">
                         <SelectValue placeholder={t('ui.bookcases.fields.zone')} />
                     </SelectTrigger>
@@ -453,6 +477,63 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                         )}
                     </form.Field>
                 </div>
+
+                {/* Image field */}
+                <div>
+                    <form.Field
+                        name="imagen"
+                        // validators={{
+                        //     onChangeAsync: async ({ value }) => {
+                        //         await new Promise((resolve) => setTimeout(resolve, 500));
+                        //         return !value
+                        //             ? t('ui.validation.required', { attribute: t('ui.books.fields.editor').toLowerCase() })
+                        //             : undefined;
+                        //     },
+                        // }}
+                    >
+                        {(field) => (
+                            <>
+                                <Label htmlFor={field.name}>
+                                    <div className="mb-1 flex items-center gap-1">
+                                        <FilePenLine color="grey" size={18} />
+                                        {t('ui.books.fields.image')}
+                                    </div>
+                                </Label>
+                                <Input
+                                    id={field.name}
+                                    type="file"
+                                    name={field.name}
+                                    // value={}
+                                    onChange={(e) => {
+                                        // console.log(e.target.files);
+                                        field.handleChange(e.target.files[0]);
+                                        // console.log(e.target.files);
+                                        setSelectedImage(e.target.files[0]);
+                                    }}
+                                    onBlur={field.handleBlur}
+                                    disabled={form.state.isSubmitting}
+                                    required={false}
+                                    autoComplete="off"
+                                />
+                                <FieldInfo field={field} />
+                            </>
+                        )}
+                    </form.Field>
+                </div>
+
+                {/* Image Preview */}
+
+                {SelectedImage && (
+                    <img src={URL.createObjectURL(SelectedImage)} alt="Preview" style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
+                )}
+
+                {/* Image Preview */}
+
+                {imgPreviaUrl && !SelectedImage && (
+                    <span>
+                        <img src={imgPreviaUrl} alt="Preview" style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
+                    </span>
+                )}
 
                 {/* Form buttons */}
                 <div className="mt-3 mt-4 flex justify-center gap-100">

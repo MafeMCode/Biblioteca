@@ -7,8 +7,9 @@ use Domain\Users\Models\User;
 
 class UserIndexAction
 {
-    public function __invoke(?string $search = null, int $perPage = 10)
+    public function __invoke(?array $search = null, int $perPage = 10)
     {
+
         $users = User::query()
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")

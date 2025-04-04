@@ -4,19 +4,26 @@ namespace Domain\Floors\Actions;
 
 use Domain\Floors\Data\Resources\FloorResource;
 use Domain\Floors\Models\Floor;
+use Illuminate\Support\Facades\Log;
 
 class FloorIndexAction
 {
-    public function __invoke(?string $search = null, int $perPage = 10)
+    public function __invoke(?array $search = null, int $perPage = 10)
     {
+        $story = $search[0];
+        $capacity = $search[1];
+
         $floor = Floor::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+            ->when($story !== "null", function ($query) use ($story) {
+
+                $query->where('story', '=', $story);
+            })
+            ->when($capacity !== "null", function ($query) use ($capacity) {
+                $query->where('capacity', '=', $capacity);
             })
             ->latest()
             ->paginate($perPage);
 
-        return $floor->through(fn ($floor) => FloorResource::fromModel($floor));
+        return $floor->through(fn($floor) => FloorResource::fromModel($floor));
     }
 }

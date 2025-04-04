@@ -7,6 +7,7 @@ use Domain\Books\Actions\BookStoreAction;
 use Domain\Books\Actions\BookUpdateAction;
 use Domain\Books\Models\Book;
 use Domain\Bookcases\Models\Bookcase;
+use Domain\Books\Actions\BookDestroyAction;
 use Domain\Floors\Models\Floor;
 use Domain\Genres\Models\Genre;
 use Domain\Zones\Models\Zone;
@@ -52,14 +53,14 @@ class BookController extends Controller
             'editor' => ['required', 'string'],
             'length' => ['required', 'integer', 'min:1'],
             'bookcase_id' => ['required', 'string'],
-            'generos' => ['required']
+            'generos' => ['required'],
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
 
-        $action($validator->validated());
+        $action($validator->validated(), $request->files);
 
         return redirect()->route('books.index')
             ->with('success', __('messages.books.created'));
@@ -86,15 +87,20 @@ class BookController extends Controller
 
         $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
         $zones = Zone::select('id', 'number', 'genreName', 'floor_id')->orderBy('genreName', 'asc')->get()->toArray();
-        $bookcases = Book::withCount('books')->get()->toArray();
+        $bookcases = Bookcase::withCount('books')->get()->toArray();
 
         $genresExplosion = explode(', ', $book->genres);
+
+        $imagen = $book->getMedia('media')[0]->getUrl();
+
+        // dd($imagen);
 
         return Inertia::render('books/Edit', [
             'book' => $book,
             'genres' => $genres,
             'floors' => $floors,
             'zones' => $zones,
+            'imgPreviaUrl' => $imagen,
             'bookcases' => $bookcases,
             'explosion' => $genresExplosion,
             'page' => $request->query('page'),
@@ -108,24 +114,19 @@ class BookController extends Controller
     public function update(Request $request, Book $book, BookUpdateAction $action)
     {
         $validator = Validator::make($request->all(), [
-            'number' => [
-                'required',
-                'integer',
-                Rule::unique('bookcases')->where(
-                    fn($query) =>
-                    $query->where('zone_id', $request->zone_id)
-                )->ignore($request->id),
-            ],
-            'zone_id' => ['required', 'string'],
-            'capacity' => ['required', 'integer'],
+            'title' => ['required', 'string'],
+            'author' => ['required', 'string'],
+            'editor' => ['required', 'string'],
+            'length' => ['required', 'integer', 'min:1'],
+            'bookcase_id' => ['required', 'string'],
+            'generos' => ['required'],
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
 
-        $action($book, $validator->validated());
-
+        $action($book, $validator->validated(), $request->files);
 
         $redirectUrl = route('books.index');
 
@@ -138,14 +139,17 @@ class BookController extends Controller
         }
 
         return redirect($redirectUrl)
-            ->with('success', __('messages.bookcases.updated'));
+            ->with('success', __('messages.books.updated'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Book $book, BookDestroyAction $action)
     {
-        //
+        $action($book);
+
+        return redirect()->route('books.index')
+            ->with('success', __('messages.books.deleted'));
     }
 }
