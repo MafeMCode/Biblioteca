@@ -4,14 +4,16 @@ import { FilterConfig, FiltersTable } from '@/components/stack-table/FiltersTabl
 import { Table } from '@/components/stack-table/Table';
 import { TableSkeleton } from '@/components/stack-table/TableSkeleton';
 import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Book, useBooks, useDeleteBook } from '@/hooks/books/useBooks';
 import { useTranslations } from '@/hooks/use-translations';
 import { BookLayout } from '@/layouts/books/BookLayout';
 import { Link, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
+
 
 export default function BooksIndex() {
     const { t } = useTranslations();
@@ -83,6 +85,33 @@ export default function BooksIndex() {
                     header: t('ui.books.columns.title') || 'Title',
                     accessorKey: 'title',
                 }),
+                createActionsColumn<Book>({
+                    id: 'imgUrl',
+                    header: t('ui.books.columns.image') || 'Image',
+                    accessorKey: 'imgUrl',
+                    renderActions(book) {
+                        return (
+                        <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <Image/>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+{/* Check if URL exists */}
+{book.imgUrl ? (
+              <img
+                src={book.imgUrl }
+                alt="Preview"
+                style={{ width: '200px', height: 'auto', marginTop: '10px' }}
+              />
+            ) : (
+              <span>{book.imgUrl }</span> // Fallback message or image
+            )}
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                )}
+                }),
                 createTextColumn<Book>({
                     id: 'genres',
                     header: t('ui.books.columns.genres') || 'Genres',
@@ -141,8 +170,11 @@ export default function BooksIndex() {
                 createActionsColumn<Book>({
                     id: 'actions',
                     header: t('ui.books.columns.actions') || 'Actions',
-                    renderActions: (book) => (
+                    renderActions: (book) => {
+
+                        return(
                         <>
+
                             <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
                                 <Button variant="outline" size="icon" title={t('ui.books.buttons.edit') || 'Edit book'}>
                                     <PencilIcon className="h-4 w-4" />
@@ -167,7 +199,7 @@ export default function BooksIndex() {
                                 }
                             />
                         </>
-                    ),
+                    )},
                 }),
             ] as ColumnDef<Book>[],
         [t, handleDeleteBook],
@@ -204,51 +236,51 @@ export default function BooksIndex() {
                                 */
                                     {
                                         id: 'title',
-                                        label: t('ui.bookcases.filters.title') || 'Titulo',
+                                        label: t('ui.books.filters.title') || 'Titulo',
                                         type: 'text',
-                                        placeholder: t('ui.bookcases.placeholders.title') || 'Titulo...',
+                                        placeholder: t('ui.books.placeholders.title') || 'Titulo...',
                                     },
                                     {
                                         id: 'genres',
-                                        label: t('ui.bookcases.filters.genres') || 'Géneros',
+                                        label: t('ui.books.filters.genres') || 'Géneros',
                                         type: 'text',
-                                        placeholder: t('ui.bookcases.placeholders.genres') || 'Géneros...',
+                                        placeholder: t('ui.books.placeholders.genres') || 'Géneros...',
                                     },
                                     {
                                         id: 'author',
-                                        label: t('ui.bookcases.filters.author') || 'Autor',
+                                        label: t('ui.books.filters.author') || 'Autor',
                                         type: 'text',
-                                        placeholder: t('ui.bookcases.placeholders.author') || 'Autor...',
+                                        placeholder: t('ui.books.placeholders.author') || 'Autor...',
                                     },
                                     {
                                         id: 'pages',
-                                        label: t('ui.bookcases.filters.pages') || 'Páginas',
+                                        label: t('ui.books.filters.pages') || 'Páginas',
                                         type: 'number',
-                                        placeholder: t('ui.bookcases.placeholders.pages') || 'Páginas...',
+                                        placeholder: t('ui.books.placeholders.pages') || 'Páginas...',
                                     },
                                     {
                                         id: 'publisher',
-                                        label: t('ui.bookcases.filters.publisher') || 'Editorial',
+                                        label: t('ui.books.filters.publisher') || 'Editorial',
                                         type: 'text',
-                                        placeholder: t('ui.bookcases.placeholders.publisher') || 'Editorial...',
+                                        placeholder: t('ui.books.placeholders.publisher') || 'Editorial...',
                                     },
                                     {
                                         id: 'floor',
-                                        label: t('ui.bookcases.filters.floor') || 'Piso',
+                                        label: t('ui.books.filters.floor') || 'Piso',
                                         type: 'number',
-                                        placeholder: t('ui.bookcases.placeholders.floor') || 'Piso...',
+                                        placeholder: t('ui.books.placeholders.floor') || 'Piso...',
                                     },
                                     {
                                         id: 'zone',
-                                        label: t('ui.bookcases.filters.zone') || 'Zona',
+                                        label: t('ui.books.filters.zone') || 'Zona',
                                         type: 'number',
-                                        placeholder: t('ui.bookcases.placeholders.zone') || 'Zona...',
+                                        placeholder: t('ui.books.placeholders.zone') || 'Zona...',
                                     },
                                     {
                                         id: 'bookcase',
-                                        label: t('ui.bookcases.filters.bookcase') || 'Estantería',
+                                        label: t('ui.books.filters.bookcase') || 'Estantería',
                                         type: 'number',
-                                        placeholder: t('ui.bookcases.placeholders.bookcase') || 'Estantería...',
+                                        placeholder: t('ui.books.placeholders.bookcase') || 'Estantería...',
                                     },
                                 ] as FilterConfig[]
                             }

@@ -17,9 +17,11 @@ class BookcaseIndexAction
         $zone = $search[3];
         $genre = $search[4];
 
-        $floor_id = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
+        $floorModel = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
             $query->where('story', '=', $floor);
-        })->first()->id;
+        })->first();
+
+        $floor_id = $floorModel ? $floorModel->id : null;
 
         $zones = Zone::query()->when($zone !== "null", function ($query) use ($zone) {
             $query->where('number', '=', $zone);

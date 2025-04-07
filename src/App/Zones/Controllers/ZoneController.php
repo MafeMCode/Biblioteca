@@ -29,13 +29,15 @@ class ZoneController extends Controller
      */
     public function create()
     {
-        $testWith = Floor::with('zones')->get();
-
-        dd($testWith);
+        $storyList = Floor::with('zones')->get()->groupBy('story')->map(function ($floors) {
+            return $floors->flatMap(function ($floor) {
+                return $floor->zones->pluck('number');
+            })->unique()->values();
+        });
         $floors = Floor::select('id', 'story', 'capacity')->orderBy('story', 'asc')->withCount('zones')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
 
-        return Inertia::render('zones/Create', ['floors' => $floors, 'genres' => $genres]);
+        return Inertia::render('zones/Create', ['floors' => $floors, 'genres' => $genres, 'storyList' => $storyList]);
     }
 
     /**

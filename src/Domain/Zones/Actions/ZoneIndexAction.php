@@ -15,9 +15,11 @@ class ZoneIndexAction
         $genre = $search[2];
         $floor = $search[3];
 
-        $floor_id = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
+        $floorModel = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
             $query->where('story', '=', $floor);
-        })->first()->id;
+        })->first();
+
+        $floor_id = $floorModel ? $floorModel->id : null;
 
         $zone = Zone::query()
             ->when($number !== "null", function ($query) use ($number) {

@@ -21,14 +21,16 @@ class BookIndexAction
         $zone = $search[6];
         $bookcase = $search[7];
 
-        $floor_id = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
+        $floorModel = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
             $query->where('story', '=', $floor);
-        })->first()->id;
+        })->first();
+
+        $floor_id = $floorModel ? $floorModel->id : null;
 
         $zones = Zone::query()->when($zone !== "null", function ($query) use ($zone) {
             $query->where('number', '=', $zone);
         })
-        ->when($floor !== "null" || $floor_id != null, function ($query) use ($floor_id) {
+        ->when($floor !== "null" || $floor_id !== null, function ($query) use ($floor_id) {
             $query->where('floor_id', '=', $floor_id);
         })->pluck('id');
 

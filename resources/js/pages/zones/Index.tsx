@@ -82,6 +82,11 @@ export default function ZonesIndex() {
                     id: 'genre_name',
                     header: t('ui.zones.columns.genre') || 'Genre',
                     accessorKey: 'genre_name',
+                    format: (value) => {
+
+                            return t(`ui.genres.names.${value}`);
+
+                    },
                 }),
                 createTextColumn<Zone>({
                     id: 'floor_story',

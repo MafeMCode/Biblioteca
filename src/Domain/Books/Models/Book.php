@@ -45,4 +45,9 @@ class Book extends Model implements HasMedia
     {
         return $this->belongsToMany(Book::class, 'book_genre', 'book_id', 'genre_id');
     }
+
+    public function loans(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'loan', 'book_id', 'user_id');
+    }
 }

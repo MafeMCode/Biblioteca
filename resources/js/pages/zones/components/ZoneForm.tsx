@@ -115,7 +115,7 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                                 <Select
                         required={true} value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.zones.placeholders.floors')} />
+                                        <SelectValue placeholder={t('ui.zones.placeholders.floor')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                             {floors.map((floor) => (
@@ -138,7 +138,10 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
                                 return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
-                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) : undefined
+                                value <= 0 ? t('ui.validation.positive', { attribute: t('ui.floors.fields.capacity').toLowerCase() }) :
+                                !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) :
+                                storyList.includes(value) && value!=initialData?.number ? t('ui.validation.unique', { attribute: t('ui.floors.fields.story').toLowerCase() })
+                                : undefined
                             },
                         }}
 
@@ -190,7 +193,7 @@ export function ZoneForm({ initialData, page, perPage, floors, genres }: ZoneFor
                                 </Label>
                                 <Select required={true} value={field.state.value} onValueChange={(value) => field.handleChange(value)}>
                                     <SelectTrigger className="w-[220px]">
-                                        <SelectValue placeholder={t('ui.zones.placeholders.genres')} />
+                                        <SelectValue placeholder={t('ui.zones.placeholders.genre')} />
                                     </SelectTrigger>
                                     <SelectContent className="max-h-60 overflow-y-auto">
                                         {genres.map((genre) => (

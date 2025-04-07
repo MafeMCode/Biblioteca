@@ -288,9 +288,9 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
                                 return !value
-                                    ? t('ui.validation.required', { attribute: t('ui.books.fields.editor').toLowerCase() })
+                                    ? t('ui.validation.required', { attribute: t('ui.books.fields.publisher').toLowerCase() })
                                     : value.length < 2
-                                      ? t('ui.validation.min.string', { attribute: t('ui.books.fields.editor').toLowerCase(), min: '2' })
+                                      ? t('ui.validation.min.string', { attribute: t('ui.books.fields.publisher').toLowerCase(), min: '2' })
                                       : undefined;
                             },
                         }}
@@ -309,7 +309,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(e.target.value)}
                                     onBlur={field.handleBlur}
-                                    placeholder={t('ui.books.placeholders.editor')}
+                                    placeholder={t('ui.books.placeholders.publisher')}
                                     disabled={form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
@@ -348,7 +348,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(parseInt(e.target.value))}
                                     onBlur={field.handleBlur}
-                                    placeholder={t('ui.books.placeholders.length')}
+                                    placeholder={t('ui.books.placeholders.pages')}
                                     disabled={form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
@@ -387,17 +387,17 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                 <Label>
                     <div className="mb-1 flex items-center gap-1">
                         <Layers color="grey" size={18} />
-                        {t('ui.bookcases.fields.floors')}
+                        {t('ui.books.fields.floor')}
                     </div>
                 </Label>
                 <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t('ui.bookcases.fields.floor')} />
+                        <SelectValue placeholder={t('ui.books.fields.floor')} />
                     </SelectTrigger>
                     <SelectContent>
                         {floors.map((floor) => (
                             <SelectItem key={floor.id} value={floor.id}>
-                                {t('ui.bookcases.fields.floor')} {floor.story}
+                                {t('ui.books.fields.floor')} {floor.story}
                             </SelectItem>
                         ))}
                     </SelectContent>
@@ -408,12 +408,12 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                 <Label>
                     <div className="mb-1 flex items-center gap-1">
                         <LandPlot color="grey" size={18} />
-                        {t('ui.bookcases.fields.zones')}
+                        {t('ui.books.fields.zone')}
                     </div>
                 </Label>
                 <Select disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => handleZoneChange(value)}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t('ui.bookcases.fields.zone')} />
+                        <SelectValue placeholder={t('ui.books.fields.zone')} />
                     </SelectTrigger>
                     <SelectContent>
                         {zones
@@ -421,7 +421,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                             .filter((zone) => selectedGenres.includes(zone.genreName))
                             .map((zone) => (
                                 <SelectItem key={zone.id} value={zone.id}>
-                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}
+                                    {`${t(`ui.books.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}
                                     {/* DIABLO */}
                                 </SelectItem>
                             ))}
@@ -435,7 +435,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.bookcases.fieldsbookcase').toLowerCase() }) : null;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.books.fieldsbookcase').toLowerCase() }) : null;
                             },
                         }}
                     >
@@ -444,7 +444,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
                                         <ChartColumnStacked color="grey" size={18} />
-                                        {t('ui.bookcases.fields.bookcases')}
+                                        {t('ui.books.fields.bookcase')}
                                     </div>
                                 </Label>
                                 <Select
@@ -454,7 +454,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                                     onValueChange={(value) => field.handleChange(value)}
                                 >
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.bookcases.fields.bookcases')} />
+                                        <SelectValue placeholder={t('ui.books.fields.bookcase')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {bookcases
@@ -465,7 +465,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                                                     value={bookcase.id}
                                                     disabled={bookcase.books_count >= bookcase.capacity}
                                                 >
-                                                    {`${t(`ui.bookcases.fields.bookcase`)} ${bookcase.number} - ${bookcase.books_count}/${bookcase.capacity}`}
+                                                    {`${t(`ui.books.fields.bookcase`)} ${bookcase.number} - ${bookcase.books_count}/${bookcase.capacity}`}
                                                     {bookcase.books_count >= bookcase.capacity ? '- Full' : '- Availible'}
                                                     {/* DIABLO */}
                                                 </SelectItem>

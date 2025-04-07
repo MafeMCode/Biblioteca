@@ -92,14 +92,14 @@ export function FloorForm({ initialData, page, perPage, storyList }: FloorFormPr
                 <div>
                     <form.Field
                         name="story"
-                        // validators={{
-                        //     onChangeAsync: async ({ value }) => {
-                        //         await new Promise((resolve) => setTimeout(resolve, 500));
-                        //         return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) :
-                        //         storyList.includes(value) && value!=initialData?.story ? t('ui.validation.unique', { attribute: t('ui.floors.fields.story').toLowerCase() })
-                        //         : undefined
-                        //     },
-                        // }}
+                        validators={{
+                            onChangeAsync: async ({ value }) => {
+                                await new Promise((resolve) => setTimeout(resolve, 500));
+                                return !value && value!=0 ? t('ui.validation.required', { attribute: t('ui.floors.fields.story').toLowerCase() }) :
+                                storyList.includes(value) && value!=initialData?.story ? t('ui.validation.unique', { attribute: t('ui.floors.fields.story').toLowerCase() })
+                                : undefined
+                            },
+                        }}
                     >
                         {(field) => (
                             <>

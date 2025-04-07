@@ -249,12 +249,16 @@ return [
         'fields' => [
             'title' => 'Title',
             'author' => 'Author',
-            'genres' => 'Genre/s',
-            'password_optional' => 'Contraseña (opcional)',
-            'created_at' => 'Fecha de creación',
-            'actions' => 'Acciones',
-            'rolPpal' => 'Rol Principal',
-            'permisos' => 'Permisos Específicos'
+            'genres' => 'Genres',
+            'editor' => 'Publisher',
+            'length' => 'Pages',
+            'bookcase' => 'Bookcase',
+            'zone' => 'Zone',
+            'floor' => 'Floor',
+            'image' => 'Image',
+            'created_at' => 'Creation at',
+            'actions' => 'Actions',
+            'selgenres' => 'Selected Genres'
         ],
         'columns' => [
             'title' => 'Title',
@@ -265,26 +269,29 @@ return [
             'bookcase' => 'Bookcase',
             'zone' => 'Zone',
             'floor' => 'Floor',
+            'image' => 'Image',
             'created_at' => 'Creation at',
             'actions' => 'Actions',
         ],
-        'gridelements' => [
-            'users' => 'Usuarios',
-            'products' => 'Productos',
-            'reports' => 'Reportes',
-            'configurations' => 'Configuración',
-        ],
         'filters' => [
-            'search' => 'Buscar',
-            'title' => "Book's Title...",
-            'author' => "Book's Author...",
+            'title' => 'Title',
+            'author' => 'Author',
+            'genres' => 'Genres',
+            'publisher' => 'Publisher',
+            'pages' => 'Pages',
+            'bookcase' => 'Bookcase',
+            'zone' => 'Zone',
+            'floor' => 'Floor',
         ],
         'placeholders' => [
-            'title' => 'Title...',
-            'author' => 'Author...',
-            'genres' => 'Select the genre or genres...',
-            'search' => 'Search books...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+            'title' => 'Enter the Title...',
+            'author' => 'Enter the Author...',
+            'genres' => 'Enter the Genre/s...',
+            'publisher' => 'Enter the Publisher...',
+            'pages' => 'Enter number of pages...',
+            'bookcase' => 'Enter the Bookcase...',
+            'zone' => 'Enter the Zone...',
+            'floor' => 'Enter the Floor...',
         ],
         'cards' => [
             'create' => [
@@ -330,17 +337,13 @@ return [
         'create' => 'Create Bookcase',
         'edit' => 'Edit Bookcase',
         'fields' => [
-            'title' => 'Title',
-            'author' => 'Author',
-            'genres' => 'Genre/s',
-            'password_optional' => 'Contraseña (opcional)',
-            'created_at' => 'Fecha de creación',
-            'actions' => 'Acciones',
-            'rolPpal' => 'Rol Principal',
-            'permisos' => 'Permisos Específicos'
+            'number' => 'Number',
+            'floors' => 'Floor',
+            'zones' => 'Zone',
+            'capacity' => 'Max Capacity',
         ],
         'columns' => [
-            'capacity' => 'Capacity',
+            'capacity' => 'Max Capacity',
             'number' => 'Number',
             'zoneGenre' => "Genre",
             'zone' => 'Zone',
@@ -348,23 +351,19 @@ return [
             'created_at' => 'Creation at',
             'actions' => 'Actions',
         ],
-        'gridelements' => [
-            'users' => 'Usuarios',
-            'products' => 'Productos',
-            'reports' => 'Reportes',
-            'configurations' => 'Configuración',
-        ],
         'filters' => [
-            'search' => 'Buscar',
-            'title' => "Book's Title...",
-            'author' => "Book's Author...",
+            'capacity' => 'Capacity',
+            'number' => 'Number',
+            'genre' => "Genre",
+            'zone' => 'Zone',
+            'floor' => 'Floor',
         ],
         'placeholders' => [
-            'title' => 'Title...',
-            'author' => 'Author...',
-            'genres' => 'Select the genre or genres...',
-            'search' => 'Search books...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+            'capacity' => 'Enter max capacity...',
+            'number' => 'Enter identifying number...',
+            'genre' => "Enter genre...",
+            'zone' => 'Enter zone number...',
+            'floor' => 'Enter floor...',
         ],
         'cards' => [
             'create' => [
@@ -417,21 +416,17 @@ return [
         ],
         'columns' => [
             'story' => 'Story',
-            'capacity' => 'Capacity',
+            'capacity' => 'Max Capacity',
             'created_at' => 'Created at',
             'actions' => 'Actions',
         ],
         'filters' => [
-            'search' => 'Search',
-            'title' => 'Título del Libro',
-            'author' => 'Autor del Libro',
+            'story' => 'Story',
+            'capacity' => 'Max Capacity',
         ],
         'placeholders' => [
             'story' => 'Enter the story number',
             'capacity' => 'Enter zone capacity',
-            'genres' => 'Seleccione el/los generos...',
-            'search' => 'Buscar libros...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],
         'cards' => [
             'create' => [
@@ -482,8 +477,6 @@ return [
             'genres' => 'Genre',
             'capacity' => 'Capacity',
             'password_optional' => 'Contraseña (opcional)',
-            'created_at' => 'Fecha de creación',
-            'actions' => 'Acciones',
         ],
         'columns' => [
             'capacity' => 'Capacity',
@@ -494,24 +487,18 @@ return [
             'created_at' => 'Creation at',
             'actions' => 'Actions',
         ],
-        'gridelements' => [
-            'users' => 'Usuarios',
-            'products' => 'Productos',
-            'reports' => 'Reportes',
-            'configurations' => 'Configuración',
-        ],
         'filters' => [
             'search' => 'Buscar',
-            'title' => "Book's Title...",
-            'author' => "Book's Author...",
+            'number' => "Number",
+            'capacity' => "Max Capacity",
+            'genre' => "Genre",
+            'floor' => "Floor",
         ],
         'placeholders' => [
             'number' => 'Enter the identifying number for the zone',
-            'floors' => 'Select the floor...',
-            'capacity' => 'Enter the maximum number of bookcases',
-            'genres' => 'Select the genre...',
-            'search' => 'Search books...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+            'floor' => 'Enter the floor...',
+            'capacity' => 'Enter max capacity...',
+            'genre' => 'Enter the genre...',
         ],
         'cards' => [
             'create' => [

@@ -89,11 +89,16 @@ export default function BookcasesIndex() {
                     header: t('ui.bookcases.columns.zone') || 'Zone',
                     accessorKey: 'zone_number',
                 }),
-                createTextColumn<Bookcase>({
-                    id: 'zone_genre',
-                    header: t('ui.bookcases.columns.zoneGenre') || "Zone's Genre",
-                    accessorKey: 'zone_genre',
-                }),
+                                createTextColumn<Bookcase>({
+                                    id: 'zone_genre',
+                                    header: t('ui.zones.columns.genre') || 'Genre',
+                                    accessorKey: 'zone_genre',
+                                    format: (value) => {
+
+                                            return t(`ui.genres.names.${value}`);
+
+                                    },
+                                }),
                 createDateColumn<Bookcase>({
                     id: 'created_at',
                     header: t('ui.bookcases.columns.created_at') || 'Created At',

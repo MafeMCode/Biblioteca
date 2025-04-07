@@ -11,6 +11,7 @@ class ZoneResource extends Data
     public function __construct(
         public readonly string $id,
         public readonly int $number,
+        public readonly string $genre,
         public readonly int $capacity,
         public readonly string $genre_name,
         public readonly int $floor_story,
@@ -31,6 +32,7 @@ class ZoneResource extends Data
             number: $zone->number,
             capacity: $zone->capacity,
             genre_name: $zone->genreName,
+            genre: $zone->genre,
             floor_story: $story,
             created_at: $zone->created_at->format('Y-m-d H:i:s'),
             updated_at: $zone->updated_at->format('Y-m-d H:i:s'),

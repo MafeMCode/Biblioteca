@@ -244,11 +244,13 @@ return [
             'title' => 'Titulo',
             'author' => 'Autor',
             'genres' => 'Género/s',
-            'password_optional' => 'Contraseña (opcional)',
-            'created_at' => 'Fecha de creación',
-            'actions' => 'Acciones',
-            'rolPpal' => 'Rol Principal',
-            'permisos' => 'Permisos Específicos'
+            'editor' => 'Editorial',
+            'length' => 'Número de Páginas',
+            'bookcase' => 'Estantería',
+            'zone' => 'Zona',
+            'floor' => 'Piso',
+            'image' => 'Imagen',
+            'selgenres' => 'Géneros Seleccionados'
         ],
         'columns' => [
             'title' => 'Título',
@@ -259,30 +261,29 @@ return [
             'bookcase' => 'Estantería',
             'zone' => 'Zona',
             'floor' => 'Piso',
+            'image' => 'Imagen',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
         ],
-        'gridelements' => [
-            'users' => 'Usuarios',
-            'products' => 'Productos',
-            'reports' => 'Reportes',
-            'configurations' => 'Configuración',
-        ],
         'filters' => [
-            'search' => 'Buscar',
-            'title' => 'Título del Libro',
-            'author' => 'Autor del Libro',
+            'title' => 'Título',
+            'author' => 'Autor',
+            'genres' => 'Géneros',
+            'publisher' => 'Editorial',
+            'pages' => 'Páginas',
+            'bookcase' => 'Estantería',
+            'zone' => 'Zona',
+            'floor' => 'Piso',
         ],
         'placeholders' => [
-            'title' => 'Titulo...',
-            'author' => 'Autor...',
-            'genres' => 'Seleccione el/los generos...',
-            'search' => 'Buscar libros...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
-        ],
-        'tabs' => [
-            'userForm' => 'Información Básica',
-            'permissionsForm' => 'Roles y Permisos'
+            'title' => 'Ingrese el Título',
+            'author' => 'Ingrese el Autor',
+            'genres' => 'Ingrese los Géneros',
+            'publisher' => 'Ingrese la Editorial',
+            'pages' => 'Ingrese el número de Páginas',
+            'bookcase' => 'Ingrese la Estantería',
+            'zone' => 'Ingrese la Zona',
+            'floor' => 'Ingrese el Piso',
         ],
         'cards' => [
             'create' => [
@@ -339,31 +340,27 @@ return [
             'permisos' => 'Permisos Específicos'
         ],
         'columns' => [
-            'capacity' => 'Capacity',
-            'number' => 'Number',
-            'zoneGenre' => "Genre",
-            'zone' => 'Zone',
-            'floor' => 'Floor',
-            'created_at' => 'Creation at',
-            'actions' => 'Actions',
-        ],
-        'gridelements' => [
-            'users' => 'Usuarios',
-            'products' => 'Productos',
-            'reports' => 'Reportes',
-            'configurations' => 'Configuración',
+            'capacity' => 'Capacidad Máxima',
+            'number' => 'Número',
+            'zoneGenre' => "Género",
+            'zone' => 'Zona',
+            'floor' => 'Piso',
+            'created_at' => 'Fecha de Creación',
+            'actions' => 'Acciones',
         ],
         'filters' => [
-            'search' => 'Buscar',
-            'title' => "Book's Title...",
-            'author' => "Book's Author...",
+            'capacity' => 'Capacidad Máxima',
+            'number' => 'Nú´mero',
+            'genre' => "Género",
+            'zone' => 'Zona',
+            'floor' => 'Piso',
         ],
         'placeholders' => [
-            'title' => 'Title...',
-            'author' => 'Author...',
-            'genres' => 'Select the genre or genres...',
-            'search' => 'Search books...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
+            'capacity' => 'Ingrese la capacidad máxima...',
+            'number' => 'Ingrese el número indentificador...',
+            'genre' => "Ingrese el género...",
+            'zone' => 'Ingrese la zona...',
+            'floor' => 'Ingrese el piso...',
         ],
         'cards' => [
             'create' => [
@@ -416,21 +413,17 @@ return [
         ],
         'columns' => [
             'story' => 'Planta',
-            'capacity' => 'Capacidad',
+            'capacity' => 'Máxima Capacidad',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
         ],
         'filters' => [
-            'search' => 'Buscar',
-            'title' => 'Título del Libro',
-            'author' => 'Autor del Libro',
+            'story' => 'Planta',
+            'capacity' => 'Máxima Capacidad',
         ],
         'placeholders' => [
             'story' => 'Ingrese el número de planta',
             'capacity' => 'Ingrese el número máximo de zonas',
-            'genres' => 'Seleccione el/los generos...',
-            'search' => 'Buscar libros...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],
         'cards' => [
             'create' => [
@@ -493,16 +486,17 @@ return [
         ],
         'filters' => [
             'search' => 'Buscar',
-            'title' => 'Título de la Libro',
-            'author' => 'Autor de la Libro',
+            'number' => 'Número',
+            'capacity' => 'Capacidad Máxima',
+            'genre' => 'Género',
+            'floor' => 'Piso',
         ],
         'placeholders' => [
-            'number' => 'Ingrese el número identificador de la zona',
-            'capacity' => 'Ingrese el número máximo de estanterías',
-            'genres' => 'Seleccione el género...',
-            'floors' => 'Seleccione el piso...',
+            'number' => 'Ingrese el número identificador...',
+            'capacity' => 'Ingrese la capacidad máxima...',
+            'genre' => 'Ingrese el género...',
+            'floor' => 'Ingrese el piso...',
             'search' => 'Buscar libros...',
-            'passRulings' => 'La contraseña debe tener al menos 8 caracteres, incluyendo letras y números'
         ],
         'cards' => [
             'create' => [
@@ -511,7 +505,7 @@ return [
             ],
             'edit' => [
                 'title' => 'Editar Zona',
-                'description' => 'Ingresa la nueva información para editar la piso'
+                'description' => 'Ingresa la nueva información para editar la zona'
             ]
         ],
         'buttons' => [
@@ -527,16 +521,16 @@ return [
         ],
         'delete' => [
             'title' => '¿Estás seguro?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la piso del sistema.',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la zona del sistema.',
         ],
         'delete_dialog' => [
             'title' => '¿Estás seguro?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la piso del sistema.',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente la zona del sistema.',
             'success' => 'Eliminado correctamente ;)',
         ],
-        'deleted_error' => 'Error al eliminar la piso',
+        'deleted_error' => 'Error al eliminar la zona',
         'no_results' => 'No hay resultados.',
-        'error_loading' => 'Error al cargar los pisos. Por favor, inténtalo de nuevo.',
+        'error_loading' => 'Error al cargar las zonas. Por favor, inténtalo de nuevo.',
         'showing_results' => 'Mostrando :from a :to de :total resultados',
         'pagination' => [
             'previous' => 'Anterior',

@@ -177,7 +177,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                 </Label>
                 <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t('ui.bookcases.fields.floor')} />
+                        <SelectValue placeholder={t('ui.bookcases.placeholders.floor')} />
                     </SelectTrigger>
                     <SelectContent>
                         {floors.map((floor) => (
@@ -209,7 +209,7 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                                 </Label>
                                 <Select disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => field.handleChange(value)}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.bookcases.fields.zones')} />
+                                        <SelectValue placeholder={t('ui.bookcases.placeholders.zone')} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {zones.filter(zone => zone.floor_id === selectedFloor).map((zone) => (
