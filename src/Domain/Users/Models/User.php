@@ -5,11 +5,13 @@ namespace Domain\Users\Models;
 use Domain\Users\Models\UserSetting;
 
 use Database\Factories\UserFactory;
+use Domain\Loans\Models\Loan;
 use Domain\Users\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -75,8 +77,13 @@ class User extends Authenticatable
         return $this->hasOne(UserSetting::class, 'user_id');
     }
 
-    public function loans(): BelongsToMany
+    public function loans(): HasMany
     {
-        return $this->belongsToMany(User::class, 'loan', 'user_id', 'book_id');
+        return $this->hasMany(Loan::class);
+    }
+
+    public function activeLoans(): HasMany
+    {
+        return $this->hasMany(Loan::class)->where('active', true);
     }
 }

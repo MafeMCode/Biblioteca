@@ -20,6 +20,7 @@ class BookIndexAction
         $floor = $search[5];
         $zone = $search[6];
         $bookcase = $search[7];
+        $ISBN = $search[8];
 
         $floorModel = Floor::query()->when($floor !== "null", function ($query) use ($floor) {
             $query->where('story', '=', $floor);
@@ -30,7 +31,7 @@ class BookIndexAction
         $zones = Zone::query()->when($zone !== "null", function ($query) use ($zone) {
             $query->where('number', '=', $zone);
         })
-        ->when($floor !== "null" || $floor_id !== null, function ($query) use ($floor_id) {
+        ->when($floor !== "null" && $floor_id !== null, function ($query) use ($floor_id) {
             $query->where('floor_id', '=', $floor_id);
         })->pluck('id');
 
@@ -60,6 +61,9 @@ class BookIndexAction
         })
         ->when($bookcases !== "null", function ($query) use ($bookcases) {
             $query->whereIn('bookcase_id', $bookcases);
+        })
+        ->when($ISBN !== "null", function ($query) use ($ISBN) {
+            $query->where('ISBN', 'ILIKE', '%'.$ISBN.'%');
         })
             ->latest()
             ->paginate($perPage);

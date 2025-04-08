@@ -21,6 +21,7 @@ class BookFactory extends Factory
 
             'title' => $this->faker->name,
             'author' => $this->faker->name,
+            'ISBN' => $this->faker->numberBetween(1000000000000, 9999999999999),
             'genres'=>implode(', ', $genresArray),
             'length' => $this->faker->numberBetween(300, 900),
             'editor' => $this->faker->name,

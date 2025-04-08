@@ -1,32 +1,39 @@
 <?php
 
-namespace Domain\Floors\Models;
+namespace Domain\Loans\Models;
 
 use Domain\Books\Models\Book;
-use Domain\Loans\Models\Loan;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Floor extends Model
+class Loan extends Model
 {
     use HasUuids;
 
     protected $fillable = [
         'id',
-        'fecha_inicio',
-        'fecha_fin',
+        'user_id',
+        'book_id',
+        'due_date',
+        'is_overdue',
+        'returned_at',
         'status',
     ];
 
-    public function users(): HasOne
+    protected $casts = [
+        'due_date' => 'datetime:dd/mm/YYYY', // Change your format
+        'created_at' => 'datetime:dd/mm/YYYY'
+    ];
+
+    public function user(): BelongsTo
     {
-        return $this->hasOne(User::class);
+        return $this->BelongsTo(User::class);
     }
 
-    public function books(): HasOne
+    public function book(): BelongsTo
     {
-        return $this->hasOne(Book::class);
+        return $this->BelongsTo(Book::class);
     }
 }

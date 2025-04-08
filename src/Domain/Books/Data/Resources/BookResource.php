@@ -5,6 +5,7 @@ namespace Domain\Books\Data\Resources;
 use Domain\Bookcases\Models\Bookcase;
 use Domain\Books\Models\Book;
 use Domain\Floors\Models\Floor;
+use Domain\Loans\Models\Loan;
 use Domain\Zones\Models\Zone;
 use Spatie\LaravelData\Data;
 
@@ -13,6 +14,8 @@ class BookResource extends Data
     public function __construct(
         public readonly string $id,
         public readonly string $title,
+        public readonly array $ISBN,
+        public readonly bool $hasActive,
         public readonly string $genres,
         public readonly string $author,
         public readonly int $length,
@@ -37,11 +40,25 @@ class BookResource extends Data
         $piso = Floor::find($zona->floor_id);
         $story = $piso->story;
 
+        $isbn_count = Book::where('ISBN', 'like', $book->ISBN)->count();
 
+        $ids_mismo_ISBN = Book::where('ISBN', 'like', $book->ISBN)->pluck('id');
+
+        $numPrestamosMismoISBN = Loan::whereIn('book_id', $ids_mismo_ISBN)->count();
+
+        $ActiveBool = $book->activeLoan()->first() !== null;
+
+        $datos_ISBN = [
+            'number' => $book->ISBN,
+            'loans' => $numPrestamosMismoISBN,
+            'total' => $isbn_count,
+        ];
 
         return new self(
             id: $book->id,
             title: $book->title,
+            ISBN: $datos_ISBN,
+            hasActive: $ActiveBool,
             genres: $book->genres,
             author: $book->author,
             length: $book->length,

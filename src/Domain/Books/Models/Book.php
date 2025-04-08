@@ -5,11 +5,14 @@ namespace Domain\Books\Models;
 use Database\Factories\BookFactory;
 use Domain\Bookcases\Models\Bookcase;
 use Domain\Genres\Models\Genre;
+use Domain\Loans\Models\Loan;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -29,6 +32,7 @@ class Book extends Model implements HasMedia
     protected $fillable = [
         'id',
         'title',
+        'ISBN',
         'genres',
         'author',
         'length',
@@ -46,8 +50,13 @@ class Book extends Model implements HasMedia
         return $this->belongsToMany(Book::class, 'book_genre', 'book_id', 'genre_id');
     }
 
-    public function loans(): BelongsToMany
+    public function loans(): HasMany
     {
-        return $this->belongsToMany(Book::class, 'loan', 'book_id', 'user_id');
+        return $this->hasMany(Loan::class);
+    }
+
+    public function activeLoan(): HasOne
+    {
+        return $this->hasOne(Loan::class)->where('is_active', true);
     }
 }

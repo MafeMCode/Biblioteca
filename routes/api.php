@@ -1,6 +1,7 @@
 <?php
 
 use App\Bookcases\Controllers\Api\BookcaseApiController;
+use App\Loans\Controllers\Api\LoanApiController;
 use App\Books\Controllers\Api\BookApiController;
 use App\Floors\Controllers\Api\FloorApiController;
 use App\Zones\Controllers\Api\ZoneApiController;
@@ -47,4 +48,12 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/floors', [FloorApiController::class, 'store']);
     Route::put('/floors/{floor}', [FloorApiController::class, 'update']);
     Route::delete('/floors/{floor}', [FloorApiController::class, 'destroy']);
+});
+
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/loans', [LoanApiController::class, 'index']);
+    Route::get('/loans/{loan}', [LoanApiController::class, 'show']);
+    Route::post('/loans', [LoanApiController::class, 'store']);
+    Route::put('/loans/{loan}', [LoanApiController::class, 'update']);
+    Route::delete('/loans/{loan}', [LoanApiController::class, 'destroy']);
 });

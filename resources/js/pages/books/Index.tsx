@@ -10,10 +10,9 @@ import { useTranslations } from '@/hooks/use-translations';
 import { BookLayout } from '@/layouts/books/BookLayout';
 import { Link, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-
 
 export default function BooksIndex() {
     const { t } = useTranslations();
@@ -38,6 +37,7 @@ export default function BooksIndex() {
         filters.floor ? filters.floor : 'null',
         filters.zone ? filters.zone : 'null',
         filters.bookcase ? filters.bookcase : 'null',
+        filters.ISBN ? filters.ISBN : 'null',
     ];
 
     const {
@@ -85,32 +85,47 @@ export default function BooksIndex() {
                     header: t('ui.books.columns.title') || 'Title',
                     accessorKey: 'title',
                 }),
+                createTextColumn<Book>({
+                    id: 'ISBN',
+                    header: t('ISBN') || 'Title',
+                    accessorKey: 'ISBN',
+                    format: (value) => {
+                        return value['number'] + ' - (' + value['loans'] + '/' + value['total'] + ')';
+                    }
+                }),
+                createTextColumn<Book>({
+                    id: 'hasActive',
+                    header: t('Availible') || 'Title',
+                    accessorKey: 'hasActive',
+                    format: (value) => {
+                        return !value ? 'Availible' : 'Unavailable'
+
+
+                    }
+                }),
                 createActionsColumn<Book>({
                     id: 'imgUrl',
                     header: t('ui.books.columns.image') || 'Image',
                     accessorKey: 'imgUrl',
                     renderActions(book) {
                         return (
-                        <TooltipProvider>
+                            <TooltipProvider>
                                 <Tooltip>
                                     <TooltipTrigger>
-                                        <Image/>
+                                        <Image />
                                     </TooltipTrigger>
                                     <TooltipContent>
-{/* Check if URL exists */}
-{book.imgUrl ? (
-              <img
-                src={book.imgUrl }
-                alt="Preview"
-                style={{ width: '200px', height: 'auto', marginTop: '10px' }}
-              />
-            ) : (
-              <span>{book.imgUrl }</span> // Fallback message or image
-            )}
+                                        {/* Check if URL exists */}
+                                        {book.imgUrl ? (
+                                            <img src={book.imgUrl} alt="Preview" style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
+                                        ) : (
+                                            <span>{book.imgUrl}</span> // Fallback message or image
+                                        )}
                                     </TooltipContent>
                                 </Tooltip>
                             </TooltipProvider>
-                )}
+                        );
+                    },
                 }),
                 createTextColumn<Book>({
                     id: 'genres',
@@ -162,44 +177,53 @@ export default function BooksIndex() {
                     header: t('ui.books.columns.bookcase') || 'Bookcase',
                     accessorKey: 'bookcase_id',
                 }),
-                createDateColumn<Book>({
-                    id: 'created_at',
-                    header: t('ui.books.columns.created_at') || 'Created At',
-                    accessorKey: 'created_at',
-                }),
+                // createDateColumn<Book>({
+                //     id: 'created_at',
+                //     header: t('ui.books.columns.created_at') || 'Created At',
+                //     accessorKey: 'created_at',
+                // }),
                 createActionsColumn<Book>({
                     id: 'actions',
                     header: t('ui.books.columns.actions') || 'Actions',
                     renderActions: (book) => {
-
-                        return(
-                        <>
-
-                            <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
-                                <Button variant="outline" size="icon" title={t('ui.books.buttons.edit') || 'Edit book'}>
-                                    <PencilIcon className="h-4 w-4" />
-                                </Button>
-                            </Link>
-                            <DeleteDialog
-                                id={book.id}
-                                onDelete={handleDeleteBook}
-                                title={t('ui.books.delete.title') || 'Delete book'}
-                                description={
-                                    t('ui.books.delete.description') || 'Are you sure you want to delete this book? This action cannot be undone.'
-                                }
-                                trigger={
-                                    <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="text-destructive hover:text-destructive"
-                                        title={t('ui.users.buttons.delete') || 'Delete user'}
-                                    >
-                                        <TrashIcon className="h-4 w-4" />
+                        return (
+                            <>
+                            {!book.hasActive ? (
+                                <Link href={`/loans/create?bookID=${book.id}`}>
+                                {/* idea -> HandleButtonPress -> router?.get con props */}
+                                    <Button variant="outline" size="icon" title={t('ui.books.buttons.loan') || 'Loan book'}>
+                                        <Handshake className="h-4 w-4" />
                                     </Button>
-                                }
-                            />
-                        </>
-                    )},
+                                </Link>) :
+                                <Button disabled={true} variant="outline" size="icon" title={t('ui.books.buttons.loan') || 'Loan book'}>
+                                <Handshake className="h-4 w-4" />
+                            </Button>}
+                                <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
+                                    <Button variant="outline" size="icon" title={t('ui.books.buttons.edit') || 'Edit book'}>
+                                        <PencilIcon className="h-4 w-4" />
+                                    </Button>
+                                </Link>
+                                <DeleteDialog
+                                    id={book.id}
+                                    onDelete={handleDeleteBook}
+                                    title={t('ui.books.delete.title') || 'Delete book'}
+                                    description={
+                                        t('ui.books.delete.description') || 'Are you sure you want to delete this book? This action cannot be undone.'
+                                    }
+                                    trigger={
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            className="text-destructive hover:text-destructive"
+                                            title={t('ui.users.buttons.delete') || 'Delete user'}
+                                        >
+                                            <TrashIcon className="h-4 w-4" />
+                                        </Button>
+                                    }
+                                />
+                            </>
+                        );
+                    },
                 }),
             ] as ColumnDef<Book>[],
         [t, handleDeleteBook],
@@ -239,6 +263,12 @@ export default function BooksIndex() {
                                         label: t('ui.books.filters.title') || 'Titulo',
                                         type: 'text',
                                         placeholder: t('ui.books.placeholders.title') || 'Titulo...',
+                                    },
+                                    {
+                                        id: 'ISBN',
+                                        label: t('ISBN') || 'ISBN',
+                                        type: 'text',
+                                        placeholder: t('ui.books.placeholders.ISBN') || 'ISBN...',
                                     },
                                     {
                                         id: 'genres',

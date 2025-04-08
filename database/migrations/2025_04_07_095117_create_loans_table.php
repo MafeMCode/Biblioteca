@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('loan', function (Blueprint $table) {
-            $table->uuid()->unique();
+        Schema::create('loans', function (Blueprint $table) {
+            $table->uuid('id')->unique()->primary();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignUuid('book_id')->references('id')->on('books')->cascadeOnDelete();
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
-            $table->boolean('state'); //true -> prestado; false -> terminado
+            $table->timestamps();
+            $table->date('due_date');
+            $table->boolean('is_active')->default(true);
+            $table->dateTime('returned_at')->nullable();
+            $table->boolean('is_overdue')->default(false);
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('loan');
+        Schema::dropIfExists('loans');
     }
 };

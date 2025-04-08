@@ -50,9 +50,12 @@ class BookController extends Controller
     public function store(Request $request, BookStoreAction $action)
     {
 
+    $request['ISBN'] = 'testISBN';
+
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string'],
             'author' => ['required', 'string'],
+            'ISBN' => ['string'],
             'editor' => ['required', 'string'],
             'length' => ['required', 'integer', 'min:1'],
             'bookcase_id' => ['required', 'string'],
