@@ -17,12 +17,14 @@ return [
         'floors' => 'Floors',
         'books' => 'Books',
         'zones' => 'Zones',
+        'loans' => 'Loans',
         'bookcases' => 'Bookcases',
         'description' => [
             'users' => 'Manage all users in the system',
             'floors' => 'Manage all floors and sections in the system',
             'books' => 'Manage all books in the system',
             'zones' => 'Manage all zones in the system',
+            'loans' => 'Manage all loans in the system',
             'bookcases' => 'Manage all bookcases in the system',
         ]
     ],
@@ -260,6 +262,10 @@ return [
             'actions' => 'Actions',
             'selgenres' => 'Selected Genres'
         ],
+        'utils' => [
+            'available' => 'Available',
+            'unavailable' => 'Unavailable'
+        ],
         'columns' => [
             'title' => 'Title',
             'author' => 'Author',
@@ -313,6 +319,9 @@ return [
             'deleting' => 'Deleting...',
             'saving' => 'Saving...',
             'retry' => 'Retry',
+            'loan' => 'Lend',
+            'queue' => 'Make a reservation',
+
         ],
         'delete' => [
             'title' => 'Are you sure?',
@@ -339,7 +348,9 @@ return [
         'fields' => [
             'number' => 'Number',
             'floors' => 'Floor',
+            'floor' => 'Floor',
             'zones' => 'Zone',
+            'zone' => 'Zone',
             'capacity' => 'Max Capacity',
         ],
         'columns' => [
@@ -562,5 +573,84 @@ return [
             'Cyberpunk' => 'Cyberpunk',
             'Poetry' => 'Poetry',
         ]
-    ]
+        ],
+        'loans' => [
+            'title' => 'Loans',
+            'create' => 'Create Loan',
+            'edit' => 'Edit Loan',
+            'fields' => [
+                'book' => "Book's UUID",
+                'user' => "User's Email",
+                'duedate' => 'Due Date'
+            ],
+            'columns' => [
+                'book' => "Book's Title",
+                'email' => "User's Email",
+                'status' => 'Status',
+                'remaining' => 'Remaining',
+                'duedate' => 'Due Date',
+                'created_at' => 'Starting Date',
+                'actions' => 'Actions',
+            ],
+            'utils' => [
+                'remaining' => ' remaining',
+                'overdue' => ' overdue',
+                'returned' => 'Returned',
+                'days' => 'days',
+                'hours' => 'hours',
+                'minutes' => 'minutes',
+            ],
+            'filters' => [
+                'book' => "Book's Title",
+                'email' => "User's Email",
+                'status' => 'Status',
+            ],
+            'placeholders' => [
+                'book' => "Enter the book's UUID",
+                'user' => "Enter the user's email",
+                'booktitle' => "Book's Title",
+                'email' => "User's Email",
+                'status' => 'Status',
+            ],
+            'cards' => [
+                'create' => [
+                    'title' => 'Create New Loan',
+                    'description' => 'Enter the information to create a new loan in the system'
+                ],
+                'edit' => [
+                    'title' => 'Edit Loan',
+                    'description' => 'Enter the new information to edit this loan'
+                    ]
+            ],
+            'buttons' => [
+                'new' => 'New Loan',
+                'edit' => 'Edit',
+                'save' => 'Save',
+                'update' => 'Update',
+                'cancel' => 'Cancel',
+                'delete' => 'Delete',
+                'deleting' => 'Deleting...',
+                'saving' => 'Saving...',
+                'retry' => 'Retry',
+                'return' => 'Return',
+                'delayOneWeek' => 'Delay due date by one week',
+            ],
+            'delete' => [
+                'title' => 'Are you sure?',
+                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            ],
+            'delete_dialog' => [
+                'title' => 'Are you sure?',
+                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+                'success' => 'Successfully deleted ;)',
+            ],
+            'deleted_error' => 'Error deleting loan',
+            'no_results' => 'No results.',
+            'error_loading' => 'Error loading loans. Please try again.',
+            'showing_results' => 'Showing :from to :to of :total results',
+            'pagination' => [
+                'previous' => 'Previous',
+                'next' => 'Next',
+            ],
+        ],
 ];

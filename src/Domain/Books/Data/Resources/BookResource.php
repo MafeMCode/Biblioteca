@@ -44,7 +44,7 @@ class BookResource extends Data
 
         $ids_mismo_ISBN = Book::where('ISBN', 'like', $book->ISBN)->pluck('id');
 
-        $numPrestamosMismoISBN = Loan::whereIn('book_id', $ids_mismo_ISBN)->count();
+        $numPrestamosMismoISBN = Loan::whereIn('book_id', $ids_mismo_ISBN)->where('is_active', 'like', 'true')->count();
 
         $ActiveBool = $book->activeLoan()->first() !== null;
 

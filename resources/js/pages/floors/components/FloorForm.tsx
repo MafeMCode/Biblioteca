@@ -86,8 +86,8 @@ export function FloorForm({ initialData, page, perPage, storyList }: FloorFormPr
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <div>
+        <form onSubmit={handleSubmit}noValidate>
+            <div className="space-y-4" >
                 {/* Story field */}
                 <div>
                     <form.Field

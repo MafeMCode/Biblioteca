@@ -1,13 +1,20 @@
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useTranslations } from '@/hooks/use-translations';
+import { cn } from '@/lib/utils';
 import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Box, Layers2, Save, User, X } from 'lucide-react';
+import { format } from 'date-fns';
+import { enUS, es } from 'date-fns/locale';
+import { Box, CalendarIcon, Layers2, Save, X } from 'lucide-react';
 import * as React from 'react';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/style.css';
 import { toast } from 'sonner';
 
 interface LoanFormProps {
@@ -19,9 +26,10 @@ interface LoanFormProps {
         title: string;
         dueDate: Date;
     };
-    storyList: number[];
+    bookIDButton?: string;
     page?: string;
     perPage?: string;
+    lang: string;
 }
 
 // Field error display component
@@ -36,14 +44,15 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-export function LoanForm({ initialData, page, perPage}: LoanFormProps) {
+export function LoanForm({ initialData, page, perPage, bookIDButton, lang }: LoanFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
+    const comprobanteButton = bookIDButton !== null;
     // TanStack Form setup
     const form = useForm({
         defaultValues: {
-            book: initialData?.book_id ?? undefined,
+            book: initialData?.book_id ?? bookIDButton ?? undefined,
             user: initialData?.user ?? undefined,
             dueDate: initialData?.dueDate ?? undefined,
         },
@@ -89,9 +98,14 @@ export function LoanForm({ initialData, page, perPage}: LoanFormProps) {
         form.handleSubmit();
     };
 
+    const langMap = {
+        en: enUS,
+        es: es,
+      };
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <div>
+        <form onSubmit={handleSubmit} noValidate>
+            <div className="space-y-4">
                 {/* Book field */}
                 <div>
                     <form.Field
@@ -99,8 +113,7 @@ export function LoanForm({ initialData, page, perPage}: LoanFormProps) {
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.book').toLowerCase() }) :
-                                undefined
+                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.book').toLowerCase() }) : undefined;
                             },
                         }}
                     >
@@ -120,7 +133,7 @@ export function LoanForm({ initialData, page, perPage}: LoanFormProps) {
                                     onChange={(e) => field.handleChange(e.target.value)}
                                     onBlur={field.handleBlur}
                                     placeholder={t('ui.loans.placeholders.book')}
-                                    disabled={form.state.isSubmitting}
+                                    disabled={comprobanteButton || form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
                                 />
@@ -137,8 +150,7 @@ export function LoanForm({ initialData, page, perPage}: LoanFormProps) {
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.user').toLowerCase() }) :
-                                undefined
+                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.user').toLowerCase() }) : undefined;
                             },
                         }}
                     >
@@ -161,6 +173,69 @@ export function LoanForm({ initialData, page, perPage}: LoanFormProps) {
                                     disabled={form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
+                                />
+                                <FieldInfo field={field} />
+                            </>
+                        )}
+                    </form.Field>
+                </div>
+
+                {/* Due Date field */}
+                <div>
+                    <form.Field
+                        name="dueDate"
+                        validators={{
+                            onChangeAsync: async ({ value }) => {
+                                await new Promise((resolve) => setTimeout(resolve, 500));
+                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.book').toLowerCase() }) : undefined;
+                            },
+                        }}
+                    >
+                        {(field) => (
+                            <>
+                                {/* <Calendar
+                                mode="single"
+                                disabled={[{ before: new Date() }, new Date()]}
+                                timeZone='Europe/Madrid'
+                                selected={field.state.value}
+                                onSelect={(value) => field.handleChange(value)}
+                                className="rounded-md border shadow"
+
+                                /> */}
+                                <Label htmlFor={field.name}>
+                                    <div className="mb-1 flex items-center gap-1">
+                                        <Box color="grey" size={18} />
+                                        {t('ui.loans.fields.duedate')}
+                                    </div>
+                                </Label>
+                                {/* <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant={'outline'}
+                                            className={cn('w-[240px] justify-start text-left font-normal', !field.state.value && 'text-muted-foreground')}
+                                        >
+                                            <CalendarIcon />
+                                            {field.state.value ? format(field.state.value, 'PPP') : <span>Pick a date</span>}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0" align="start">
+                                        <Calendar
+                                    animate
+                                    mode="single"
+                                    disabled={[{ before: new Date() }, new Date()]}
+                                    timeZone="Europe/Madrid"
+                                    selected={field.state.value}
+                                    onSelect={(value) => field.handleChange(value)} />
+                                    </PopoverContent>
+                                </Popover> */}
+                                <DayPicker
+                                    animate
+                                    mode="single"
+                                    locale={langMap[lang]}
+                                    disabled={[{ before: new Date() }, new Date()]}
+                                    timeZone="Europe/Madrid"
+                                    selected={field.state.value}
+                                    onSelect={(value) => field.handleChange(value)}
                                 />
                                 <FieldInfo field={field} />
                             </>

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('length');
             $table->string('editor');
             $table->foreignUuid('bookcase_id')->constrained(table:'bookcases', indexName:'id')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

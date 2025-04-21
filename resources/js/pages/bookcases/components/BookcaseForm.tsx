@@ -7,7 +7,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Box, Hash, LandPlot, Layers, Save, User, X } from 'lucide-react';
+import { Box, Hash, LandPlot, Layers, Lock, Save, User, X } from 'lucide-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -134,8 +134,10 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <div>
+        <form onSubmit={handleSubmit} noValidate>
+            <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+
                 {/* Number field */}
                 <div>
                     <form.Field name="number" validators={{}}>
@@ -161,65 +163,6 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                                     required={false}
                                     autoComplete="off"
                                 />
-                                <FieldInfo field={field} />
-                            </>
-                        )}
-                    </form.Field>
-                </div>
-
-                {/* Floor Select */}
-
-                <Label>
-                    <div className="mb-1 flex items-center gap-1">
-                        <Layers color="grey" size={18} />
-                        {t('ui.bookcases.fields.floors')}
-                    </div>
-                </Label>
-                <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder={t('ui.bookcases.placeholders.floor')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {floors.map((floor) => (
-                            <SelectItem key={floor.id} value={floor.id}>
-                                {t('ui.bookcases.fields.floor')} {floor.story}
-                            </SelectItem>
-                        ))}
-                    </SelectContent>
-                </Select>
-
-                {/* Zone field */}
-                <div>
-                    <form.Field
-                        name="zone_id"
-                        validators={{
-                            onChangeAsync: async ({ value }) => {
-                                await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.bookcases.fields.zone').toLowerCase() }) : null;
-                            },
-                        }}
-                    >
-                        {(field) => (
-                            <>
-                                <Label htmlFor={field.name}>
-                                    <div className="mb-1 flex items-center gap-1">
-                                        <LandPlot color="grey" size={18} />
-                                        {t('ui.bookcases.fields.zones')}
-                                    </div>
-                                </Label>
-                                <Select disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => field.handleChange(value)}>
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder={t('ui.bookcases.placeholders.zone')} />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {zones.filter(zone => zone.floor_id === selectedFloor).map((zone) => (
-                                                <SelectItem key={zone.id} value={zone.id} disabled={zone.bookcases_count >= zone.capacity}>
-                                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}{zone.bookcases_count >= zone.capacity ? "- Full" : "- Availible"}
-                                                    {/* DIABLO */}
-                                                </SelectItem>
-                                            ))}
-                                    </SelectContent>
-                                </Select>
                                 <FieldInfo field={field} />
                             </>
                         )}
@@ -264,6 +207,69 @@ export function BookcaseForm({ initialData, page, perPage, floors, zones }: Book
                         )}
                     </form.Field>
                 </div>
+                </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+<div>
+                {/* Floor Select */}
+
+                <Label>
+                    <div className="mb-1 flex items-center gap-1">
+                        <Layers color="grey" size={18} />
+                        {t('ui.bookcases.fields.floors')}
+                    </div>
+                </Label>
+                <Select required={true} value={selectedFloor} onValueChange={(value) => handleFloorChange(value)}>
+                    <SelectTrigger className="w-full">
+                        <SelectValue placeholder={t('ui.bookcases.placeholders.floor')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {floors.map((floor) => (
+                            <SelectItem key={floor.id} value={floor.id}>
+                                {t('ui.bookcases.fields.floor')} {floor.story}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+</div>
+                {/* Zone field */}
+                <div>
+                    <form.Field
+                        name="zone_id"
+                        validators={{
+                            onChangeAsync: async ({ value }) => {
+                                await new Promise((resolve) => setTimeout(resolve, 500));
+                                return !value ? t('ui.validation.required', { attribute: t('ui.bookcases.fields.zone').toLowerCase() }) : null;
+                            },
+                        }}
+                    >
+                        {(field) => (
+                            <>
+                                <Label htmlFor={field.name}>
+                                    <div className="mb-1 flex items-center gap-1">
+                                        <LandPlot color="grey" size={18} />
+                                        {t('ui.bookcases.fields.zones')}
+                                    </div>
+                                </Label>
+                                <Select disabled={comprobantePiso()} required={true} value={selectedZone} onValueChange={(value) => field.handleChange(value)}>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder={t('ui.bookcases.placeholders.zone')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {zones.filter(zone => zone.floor_id === selectedFloor).map((zone) => (
+                                                <SelectItem key={zone.id} value={zone.id} disabled={zone.bookcases_count >= zone.capacity}>
+                                                    {`${t(`ui.bookcases.fields.zone`)} ${zone.number} - ${t(`ui.genres.names.${zone.genreName}`)}`}{zone.bookcases_count >= zone.capacity ? <Lock/> : ""}
+                                                    {/* DIABLO */}
+                                                </SelectItem>
+                                            ))}
+                                    </SelectContent>
+                                </Select>
+                                <FieldInfo field={field} />
+                            </>
+                        )}
+                    </form.Field>
+                </div>
+                </div>
+
 
                 {/* Form buttons */}
                 <div className="mt-3 mt-4 flex justify-center gap-100">

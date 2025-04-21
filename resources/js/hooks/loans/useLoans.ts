@@ -7,6 +7,8 @@ export interface Loan {
   user_id: string;
   is_overdue: boolean;
   is_active: boolean;
+  hours_between: number;
+  hoursDue_between: number;
   created_at: string;
   returned_at: string;
   due_date: string;

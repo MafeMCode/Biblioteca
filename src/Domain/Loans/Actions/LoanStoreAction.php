@@ -16,7 +16,8 @@ class LoanStoreAction
         $loan = Loan::create([
             'book_id' => $data['book'],  // Must secure unique in validations!!!
             'user_id' => $user,
-            'due_date' => Carbon::tomorrow('Europe/London'),
+            'due_date' => $data['dueDate'],
+            'is_active' => true,
         ]);
 
         return LoanResource::fromModel($loan);

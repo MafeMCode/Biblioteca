@@ -2,6 +2,7 @@
 
 namespace Domain\Users\Actions;
 
+use App\Notifications\confirmacion_reserva;
 use Domain\Users\Models\User;
 
 class UserDestroyAction

@@ -13,23 +13,27 @@ class LoanIndexAction
     {
         $email = $search[0];
         $title = $search[1];
+        $status = $search[2];
 
-        $user = User::query()
+        $users = User::query()
         ->when($email !== "null", function ($query) use ($email) {
             $query->where('email', 'ILIKE', '%'.$email.'%');
-        })->first()->id;
+        })->pluck('id');
 
-        $book = Book::query()
+        $books = Book::query()
         ->when($title !== 'null', function ($query) use ($title) {
             $query->where('title', 'ILIKE', '%'.$title.'%');
-        })->first()->id;
+        })->pluck('id');
 
         $loan = Loan::query()
-            ->when($email !== "null" && $user!==null, function ($query) use ($user) {
-                $query->where('user_id', 'like', $user);
+            ->when($email !== "null" && $users!==null, function ($query) use ($users) {
+                $query->whereIn('user_id', $users);
             })
-            ->when($title !== "null", function ($query) use ($book) {
-                $query->where('book_id', 'like', $book);
+            ->when($title !== "null", function ($query) use ($books) {
+                $query->whereIn('book_id', $books);
+            })
+            ->when($status !== "null", function ($query) use ($status) {
+                $query->where('is_active', 'like', $status);
             })
             ->latest()
             ->paginate($perPage);

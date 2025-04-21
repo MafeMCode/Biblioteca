@@ -8,6 +8,7 @@ use Domain\Books\Actions\BookUpdateAction;
 use Domain\Books\Models\Book;
 use Domain\Bookcases\Models\Bookcase;
 use Domain\Books\Actions\BookDestroyAction;
+use Domain\Books\Actions\ISBNGeneration;
 use Domain\Floors\Models\Floor;
 use Domain\Genres\Models\Genre;
 use Domain\Zones\Models\Zone;
@@ -23,9 +24,6 @@ class BookController extends Controller
      */
     public function index()
     {
-
-
-
         return Inertia::render('books/Index');
     }
 
@@ -47,10 +45,10 @@ class BookController extends Controller
         return Inertia::render('books/Create', ['genres' => $genres, 'floors' => $floors, 'zones' => $zones, 'bookcases' => $bookcases]);
     }
 
-    public function store(Request $request, BookStoreAction $action)
+    public function store(Request $request, BookStoreAction $action, ISBNGeneration $ISBNG)
     {
 
-    $request['ISBN'] = 'testISBN';
+        $request['ISBN'] = $ISBNG($request['title'], $request['author'], $request['editor']);
 
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string'],
@@ -117,11 +115,19 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Book $book, BookUpdateAction $action)
+    public function update(Request $request, Book $book, BookUpdateAction $action, ISBNGeneration $ISBNG)
     {
+
+        $title = $request['title'] ? $request['title'] : $book->title;
+        $author = $request['author'] ? $request['author'] : $book->author;
+        $editor = $request['editor'] ? $request['editor'] : $book->editor;
+
+        $request['ISBN'] = $ISBNG($title, $author, $editor);
+
         $validator = Validator::make($request->all(), [
             'title' => ['required', 'string'],
             'author' => ['required', 'string'],
+            'ISBN' => ['string'],
             'editor' => ['required', 'string'],
             'length' => ['required', 'integer', 'min:1'],
             'bookcase_id' => ['required', 'string'],

@@ -186,8 +186,8 @@ export function UserForm({ initialData, page, perPage, roles, emails, rolesConPe
     const accesoPermisos = false;
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-            <div>
+        <form onSubmit={handleSubmit} noValidate>
+            <div className="space-y-4">
                 <Tabs defaultValue="userForm">
                     <TabsList className="w-full">
                         <TabsTrigger value="userForm" className="w-1/2">
@@ -198,7 +198,7 @@ export function UserForm({ initialData, page, perPage, roles, emails, rolesConPe
                         </TabsTrigger>
                     </TabsList>
                     <Separator />
-                    <TabsContent value="userForm" className="w-full">
+                    <TabsContent value="userForm" className="w-full space-y-4">
                         {/* Name field */}
                         <div>
                             <form.Field

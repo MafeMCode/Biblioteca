@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Loans\Models;
+namespace Domain\Reservations\Models;
 
 use Domain\Books\Models\Book;
 use Domain\Users\Models\User;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Loan extends Model
+class Reservation extends Model
 {
     use HasUuids;
 
@@ -16,16 +16,6 @@ class Loan extends Model
         'id',
         'user_id',
         'book_id',
-        'due_date',
-        'is_overdue',
-        'returned_at',
-        'is_active',
-    ];
-
-    protected $casts = [
-        'due_date' => 'datetime:dd/mm/YYYY', // Change your format
-        'created_at' => 'datetime:dd/mm/YYYY',
-        'returned_at' => 'datetime:dd/mm/YYYY'
     ];
 
     public function user(): BelongsTo

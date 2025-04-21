@@ -1,23 +1,25 @@
-import { createActionsColumn, createDateColumn, createTextColumn } from '@/components/stack-table/columnsTable';
+import { createActionsColumn, createTextColumn } from '@/components/stack-table/columnsTable';
 import { DeleteDialog } from '@/components/stack-table/DeleteDialog';
 import { FilterConfig, FiltersTable } from '@/components/stack-table/FiltersTable';
 import { Table } from '@/components/stack-table/Table';
 import { TableSkeleton } from '@/components/stack-table/TableSkeleton';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Book, useBooks, useDeleteBook } from '@/hooks/books/useBooks';
 import { useTranslations } from '@/hooks/use-translations';
 import { BookLayout } from '@/layouts/books/BookLayout';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { ClipboardList, Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function BooksIndex() {
     const { t } = useTranslations();
     const { url } = usePage();
-
     // Obtener los parámetros de la URL actual
     const urlParams = new URLSearchParams(url.split('?')[1] || '');
     const pageParam = urlParams.get('page');
@@ -27,6 +29,9 @@ export default function BooksIndex() {
     const [currentPage, setCurrentPage] = useState(pageParam ? parseInt(pageParam) : 1);
     const [perPage, setPerPage] = useState(perPageParam ? parseInt(perPageParam) : 10);
     const [filters, setFilters] = useState<Record<string, any>>({});
+    const [open, setOpen] = useState(false);
+    const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+    const [reserMail, setReserMail] = useState('');
 
     const combinedSearch = [
         filters.title ? filters.title : 'null',
@@ -56,6 +61,20 @@ export default function BooksIndex() {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+
+    function handleLoanButton(bookID: string) {
+        return router.get('/loans/create', { bookID });
+    }
+
+    function HandleReservation(bookID: string, userMail: string) {
+
+        const reservationData = new FormData();
+        reservationData.append('bookID', bookID);
+        reservationData.append('userMail', userMail);
+
+        router.post('/reservations', reservationData);
+        // window.location.reload();
+    }
 
     const handleFilterChange = (newFilters: Record<string, any>) => {
         setFilters(newFilters);
@@ -91,17 +110,15 @@ export default function BooksIndex() {
                     accessorKey: 'ISBN',
                     format: (value) => {
                         return value['number'] + ' - (' + value['loans'] + '/' + value['total'] + ')';
-                    }
+                    },
                 }),
                 createTextColumn<Book>({
                     id: 'hasActive',
                     header: t('Availible') || 'Title',
                     accessorKey: 'hasActive',
                     format: (value) => {
-                        return !value ? 'Availible' : 'Unavailable'
-
-
-                    }
+                        return !value ? t('ui.books.utils.available') : t('ui.books.utils.unavailable');
+                    },
                 }),
                 createActionsColumn<Book>({
                     id: 'imgUrl',
@@ -188,16 +205,32 @@ export default function BooksIndex() {
                     renderActions: (book) => {
                         return (
                             <>
-                            {!book.hasActive ? (
-                                <Link href={`/loans/create?bookID=${book.id}`}>
-                                {/* idea -> HandleButtonPress -> router?.get con props */}
-                                    <Button variant="outline" size="icon" title={t('ui.books.buttons.loan') || 'Loan book'}>
-                                        <Handshake className="h-4 w-4" />
+                                {!book.hasActive && (
+                                    <Button
+                                        disabled={book.hasActive}
+                                        onClick={() => handleLoanButton(book.id)}
+                                        variant="outline"
+                                        size="icon"
+                                        title={t('ui.books.buttons.loan') || 'Loan book'}
+                                    >
+                                        <Handshake className="h-4 w-4 text-green-500" />
                                     </Button>
-                                </Link>) :
-                                <Button disabled={true} variant="outline" size="icon" title={t('ui.books.buttons.loan') || 'Loan book'}>
-                                <Handshake className="h-4 w-4" />
-                            </Button>}
+                                )}
+
+                                {book.hasActive && (
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        title={t('ui.books.buttons.queue') || 'Loan book'}
+                                        onClick={() => {
+                                            setSelectedBook(book);
+                                            setOpen(true);
+                                        }}
+                                    >
+                                        <ClipboardList className="h-4 w-4 text-orange-500" />
+                                    </Button>
+                                )}
+
                                 <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
                                     <Button variant="outline" size="icon" title={t('ui.books.buttons.edit') || 'Edit book'}>
                                         <PencilIcon className="h-4 w-4" />
@@ -248,16 +281,6 @@ export default function BooksIndex() {
                         <FiltersTable
                             filters={
                                 [
-                                    /*
-                                filters.title ? filters.title : 'null',
-                                filters.genres ? filters.genres : 'null',
-                                filters.author ? filters.author : 'null',
-                                filters.pages ? filters.pages : 'null',
-                                filters.publisher ? filters.publisher : 'null',
-                                filters.floor ? filters.floor : 'null',
-                                filters.zone ? filters.zone : 'null',
-                                filters.bookcase ? filters.bookcase : 'null',
-                                */
                                     {
                                         id: 'title',
                                         label: t('ui.books.filters.title') || 'Titulo',
@@ -316,6 +339,8 @@ export default function BooksIndex() {
                             }
                             onFilterChange={handleFilterChange}
                             initialValues={filters}
+                            containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
+
                         />
                     </div>
 
@@ -356,6 +381,54 @@ export default function BooksIndex() {
                     </div>
                 </div>
             </div>
+            <Dialog
+                open={open}
+                onOpenChange={(val) => {
+                    setOpen(val);
+                    if (!val) {
+                        setReserMail('');
+                        setSelectedBook(null);
+                    }
+                }}
+            >
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Make a Reservation</DialogTitle>
+                        <DialogDescription>Input the email of the user that wants to be notified when the book becomes available.</DialogDescription>
+                    </DialogHeader>
+                    {selectedBook && (
+                        <div className="grid gap-4 py-4">
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right">
+                                    Book
+                                </Label>
+                                <Input disabled id="name" value={selectedBook.title} className="col-span-3" />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="username" className="text-right">
+                                    User Email
+                                </Label>
+                                <Input
+                                    id="username"
+                                    type="email"
+                                    value={reserMail}
+                                    onChange={(e) => setReserMail(e.target.value)}
+                                    className="col-span-3"
+                                />
+                            </div>
+                        </div>
+                    )}
+                    <DialogFooter>
+                        <Button
+                            onClick={() => {
+                                if (selectedBook) HandleReservation(selectedBook.id, reserMail);
+                            }}
+                        >
+                            Save changes
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </BookLayout>
     );
 }

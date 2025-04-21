@@ -11,13 +11,12 @@ class BookUpdateAction
 {
     public function __invoke(Book $book, array $data, FileBag $imagenes): BookResource
     {
-
-
         $updateData = [
             'title' => $data['title'],
             'author' => $data['author'],
             'editor' => $data['editor'],
             'length' => $data['length'],
+            'ISBN' => $data['ISBN'],
             'bookcase_id' => $data['bookcase_id'],
             'genres' => $data['generos'],
         ];

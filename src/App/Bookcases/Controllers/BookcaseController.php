@@ -33,7 +33,7 @@ class BookcaseController extends Controller
         $zones = Zone::withCount('bookcases')->get()->toArray();
         $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
 
-        dd($zones);
+        // dd($zones);
 
         return Inertia::render('bookcases/Create', ['floors' => $floors, 'zones' => $zones]);
     }

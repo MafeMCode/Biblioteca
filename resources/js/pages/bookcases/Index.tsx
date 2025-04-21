@@ -202,6 +202,8 @@ export default function BookcasesIndex() {
                             }
                             onFilterChange={setFilters}
                             initialValues={filters}
+                            containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols- gap-4"
+
                         />
                     </div>
 

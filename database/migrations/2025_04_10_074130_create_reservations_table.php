@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('loans', function (Blueprint $table) {
-            $table->uuid('id')->unique()->primary();
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->uuid('id')->primary()->unique();
             $table->foreignUuid('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignUuid('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->timestamps();
-            $table->date('due_date');
-            $table->boolean('is_active')->default(true);
-            $table->dateTime('returned_at')->nullable();
-            $table->boolean('is_overdue')->default(false);
         });
     }
 
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('loans');
+        Schema::dropIfExists('reservations');
     }
 };

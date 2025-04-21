@@ -1,6 +1,5 @@
 <?php
 
-
 return [
     'navigation' => [
         'menu' => 'Menú de Navegación',
@@ -18,12 +17,14 @@ return [
         'floors' => 'Pisos',
         'books' => 'Libros',
         'zones' => 'Zonas',
+        'loans' => 'Préstamos',
         'bookcases' => 'Estanterías',
         'description' => [
             'users' => 'Gestiona los usuarios del sistema',
             'floors' => 'Gestiona los pisos y secciones del sistema',
             'books' => 'Gestiona los libros del sistema',
             'zones' => 'Gestiona las zonas del sistema',
+            'loans' => 'Gestiona los prestamos del sistema',
             'bookcases' => 'Gestiona las estanterías del sistema',
         ]
     ],
@@ -252,6 +253,10 @@ return [
             'image' => 'Imagen',
             'selgenres' => 'Géneros Seleccionados'
         ],
+        'utils' => [
+            'available' => 'Disponible',
+            'unavailable' => 'No disponible'
+        ],
         'columns' => [
             'title' => 'Título',
             'author' => 'Autor',
@@ -305,6 +310,8 @@ return [
             'deleting' => 'Eliminando...',
             'saving' => 'Guardando...',
             'retry' => 'Reintentar',
+            'loan' => 'Prestar',
+            'queue' => 'Reservar',
         ],
         'delete' => [
             'title' => '¿Estás seguro?',
@@ -561,5 +568,87 @@ return [
             'Poetry' => 'Poesía',
         ]
 
-    ]
+    ],
+    'loans' => [
+        'title' => 'Préstamos',
+        'create' => 'Crear Préstamo',
+        'edit' => 'Editar Préstamo',
+        'fields' => [
+            'book' => 'UUID del libro',
+            'user' => 'Email del usuario',
+            'duedate' => 'Fecha de entrega límite'
+        ],
+        'columns' => [
+            'book' => 'Título del libro',
+            'email' => 'Email del usuario',
+            'status' => 'Estado',
+            'remaining' => 'Entrega',
+            'duedate' => 'Fecha límite',
+            'created_at' => 'Fecha de inicio',
+            'actions' => 'Acciones',
+        ],
+        'utils' => [
+            'remaining' => ' restante/s',
+            'overdue' => ' de retraso',
+            'returned' => 'Devuelto',
+            'days' => 'días',
+            'hours' => 'horas',
+            'minutes' => 'minutos',
+        ],
+        'filters' => [
+            'book' => 'Título del libro',
+            'email' => 'Email del usuario',
+            'status' => 'Estado',
+            'remaining' => 'Entrega',
+            'duedate' => 'Fecha límite',
+            'created_at' => 'Fecha de inicio',
+        ],
+        'placeholders' => [
+            'book' => 'Introduzca el UUID del libro',
+            'user' => 'Introduzca el email del usuario',
+            'booktitle' => 'Título del libro',
+            'email' => 'Email del usuario',
+            'status' => 'Estado',
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Crear Nuevo Préstamo',
+                'description' => 'Ingresa la información para crear un nuevo préstamo en el sistema'
+            ],
+            'edit' => [
+                'title' => 'Editar Préstamo',
+                'description' => 'Ingresa la nueva información para editar el préstamo'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'Nuevo Préstamo',
+            'edit' => 'Editar',
+            'save' => 'Guardar',
+            'update' => 'Actualizar',
+            'cancel' => 'Cancelar',
+            'delete' => 'Eliminar',
+            'deleting' => 'Eliminando...',
+            'saving' => 'Guardando...',
+            'retry' => 'Reintentar',
+            'return' => 'Devolver',
+            'delayOneWeek' => 'Aplazar fecha una semana',
+        ],
+        'delete' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el préstamo del sistema.',
+        ],
+        'delete_dialog' => [
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el préstamo del sistema.',
+            'success' => 'Eliminado correctamente ;)',
+        ],
+        'deleted_error' => 'Error al eliminar el préstamo',
+        'no_results' => 'No hay resultados.',
+        'error_loading' => 'Error al cargar los préstamos. Por favor, inténtalo de nuevo.',
+        'showing_results' => 'Mostrando :from a :to de :total resultados',
+        'pagination' => [
+            'previous' => 'Anterior',
+            'next' => 'Siguiente',
+        ],
+    ],
 ];

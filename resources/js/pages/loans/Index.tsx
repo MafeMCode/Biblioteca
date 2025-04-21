@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Loan, useDeleteLoan, useLoans } from '@/hooks/loans/useLoans';
 import { useTranslations } from '@/hooks/use-translations';
 import { LoanLayout } from '@/layouts/loans/LoanLayout';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { PencilIcon, PlusIcon, TrashIcon, TriangleAlert } from 'lucide-react';
+import { BookDown, Clock, PencilIcon, PlusIcon, TrashIcon, TriangleAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -30,10 +30,46 @@ export default function LoansIndex() {
     const combinedSearch = [
         filters.email ? filters.email : 'null',
         filters.book ? filters.book : 'null',
+        filters.status ? filters.status : 'null',
         // filters.capacity ? filters.capacity : 'null',
         // filters.genre ? filters.genre : 'null',
         // filters.floor ? filters.floor : 'null',
     ];
+
+    function handleReturnButton(loan_id: string) {
+        const newStatus = false;
+        const information = new FormData();
+        information.append('newStatus', newStatus);
+        information.append('_method', 'PUT');
+        router.post(`/loans/${loan_id}`, information);
+        setTimeout(function() {
+            refetch(); //no recargar pagina solo refetch
+        }, 500);
+    }
+
+    function handleAmpliacion(loan_id: string, due_date: string, days: number) {
+
+        let dayE = parseInt(due_date.slice(0, 2));
+        console.log(dayE);
+        let monthE = parseInt(due_date.slice(3, 5));
+        console.log(monthE);
+        let yearE = parseInt(due_date.slice(6, 10));
+        console.log(yearE);
+
+        let dateE = new Date(yearE, monthE -1, dayE);
+
+        dateE.setDate(dateE.getDate() + days);
+
+        const dateEString = dateE.toLocaleString("en-GB", { timeZone: "Europe/Madrid" });
+
+        console.log(dateEString);
+        const information = new FormData();
+        information.append('newDueDate', dateEString);
+        information.append('_method', 'PUT');
+        console.log(information);
+        router.post(`/loans/${loan_id}`, information);
+        refetch(); //no recargar pagina solo refetch
+    }
 
     const {
         data: loans,
@@ -71,46 +107,139 @@ export default function LoansIndex() {
             [
                 createTextColumn<Loan>({
                     id: 'title',
-                    header: t('Book Title') || 'Book',
+                    header: t('ui.loans.columns.book') || 'Book',
                     accessorKey: 'title',
                 }),
                 createTextColumn<Loan>({
                     id: 'email',
-                    header: t('User Email') || 'Email',
+                    header: t('ui.loans.columns.email') || 'Email',
                     accessorKey: 'email',
                 }),
                 createTextColumn<Loan>({
                     id: 'is_active',
-                    header: t('Loan Status') || 'Status',
+                    header: t('ui.loans.columns.status') || 'Status',
                     accessorKey: 'is_active',
                     format: (value) => {
-                        return value ? 'Finished' : 'In progress';
+                        return value ? 'In progress' : 'Finished';
                     },
                 }),
                 createTextColumn<Loan>({
                     id: 'created_at',
-                    header: t('Starting date') || 'Created At',
+                    header: t('ui.loans.columns.created_at') || 'Created At',
                     accessorKey: 'created_at',
                 }),
-                createTextColumn<Loan>({
-                    id: 'days_between',
-                    header: t('Remaining') || 'Created At',
-                    accessorKey: 'days_between',
-                    format: (value) => {
-                        const overdue = parseInt(value) < 0;
-                        const followup = overdue ? t('overdue') : t('remaining');
+                createActionsColumn<Loan>({
+                    id: 'remaining',
+                    header: t('ui.loans.columns.remaining') || 'Remaining',
+                    renderActions: (loan) => {
+                        const textDays = t('ui.loans.utils.days');
+                        const textHours = t('ui.loans.utils.hours');
+                        const textMinutes = t('ui.loans.utils.minutes');
+
+                        let intHours = loan.hours_between;
+                        let intDays = Math.trunc(intHours / 24);
+                        let intMinutes = Math.trunc(intHours * 60);
+
+                        let absMinutes = Math.abs(intMinutes);
+                        let absHours = Math.abs(intHours);
+                        let absDays = Math.abs(intDays);
+
+                        let intHoursD = loan.hoursDue_between;
+                        let intDaysD = Math.trunc(intHoursD / 24);
+                        let intMinutesD = Math.trunc(intHoursD * 60);
+
+                        let absMinutesD = Math.abs(intMinutesD);
+                        let absHoursD = Math.abs(intHoursD);
+                        let absDaysD = Math.abs(intDaysD);
+
+                        const overdue = loan.hours_between < 0;
+                        const followup = overdue ? t('ui.loans.utils.overdue') : t('ui.loans.utils.remaining');
+
+                        let dayD = parseInt(loan.due_date.slice(0, 2));
+                        let monthD = parseInt(loan.due_date.slice(3, 5));
+                        let yearD = parseInt(loan.due_date.slice(6, 10));
+
+                        let dayE = parseInt(loan.returned_at.slice(0, 2));
+                        let monthE = parseInt(loan.returned_at.slice(3, 5));
+                        let yearE = parseInt(loan.returned_at.slice(6, 10));
+
+                        let dateE = new Date(yearE, monthE, dayE);
+                        let dateD = new Date(yearD, monthD, dayD);
+
+                        let comprobanteTarde = dateE > dateD;
+
+                        // if (dateE.getFullYear > dateD.getFullYear) {
+                        //     comprobanteTarde=true;
+                        // }else if (dateE.getMonth > dateD.getMonth) {
+                        //     comprobanteTarde=true;
+                        // } else if (dateE.getDay > dateD.getDay) {
+                        //     comprobanteTarde=true;
+                        // }
 
                         return (
-                            <span className={`flex items-center gap-1 ${overdue ? 'text-red-500' : ''}`}>
-                                {value} {t('days')} {followup}
-                                {overdue && <TriangleAlert className="text-yellow-500" />}
-                            </span>
+                            <section>
+                                {loan.is_active && (
+                                    <span className={`flex items-center gap-1 ${overdue ? 'text-red-500' : ''}`}>
+                                        {absDays == 0
+                                            ? absHours == 0
+                                                ? absMinutes + ' ' + textMinutes
+                                                : absHours + ' ' + textHours
+                                            : absDays + ' ' + textDays}
+                                        {followup}
+                                        {overdue && <TriangleAlert className="text-yellow-500" />}
+                                    </span>
+                                )}
+                                {!loan.is_active && (
+                                    <span className={`flex items-center gap-1 ${comprobanteTarde ? 'text-red-500' : ''}`}>
+                                        {t('ui.loans.utils.returned')}: {loan.returned_at}
+                                        <br />
+
+                                            {comprobanteTarde && (absDaysD == 0
+                                                ? absHoursD == 0
+                                                    ? absMinutesD + ' ' + textMinutes
+                                                    : absHoursD + ' ' + textHours
+                                                : absDaysD + ' ' + textDays)}
+
+                                        {comprobanteTarde && ' (' + followup + ') '}
+                                    </span>
+                                )}
+                            </section>
                         );
                     },
                 }),
+                // createTextColumn<Loan>({
+                //     id: 'hours_between',
+                //     header: t('Remaining') || 'Created At',
+                //     accessorKey: 'hours_between',
+                //     format: (value) => {
+                //         const textDays = t('days');
+                //         const textHours = t('hours');
+                //         const textMinutes = t('minutes');
+
+                //         let intHours = parseInt(value);
+                //         let intDays = Math.trunc(intHours/24);
+                //         let intMinutes = Math.trunc(intHours*60);
+
+                //         let absMinutes = Math.abs(intMinutes);
+                //         let absHours = Math.abs(intHours);
+                //         let absDays = Math.abs(intDays);
+
+                //         const overdue = parseFloat(value) < 0;
+                //         const followup = overdue ? t(' overdue') : t(' remaining');
+
+                //         return (
+                //             <span className={`flex items-center gap-1 ${overdue ? 'text-red-500' : ''}`}>
+                //                     {absDays == 0 ? absHours == 0 ? absMinutes + ' ' + textMinutes : absHours + ' ' + textHours : absDays + ' ' + textDays}
+                //                     {followup}
+                //                     {overdue && <TriangleAlert className="text-yellow-500" />}
+                //                  </span>
+                //         );
+                //     },
+                // }),
+
                 createTextColumn<Loan>({
                     id: 'due_date',
-                    header: t('Due Date') || 'Due Date',
+                    header: t('ui.loans.columns.duedate') || 'Due Date',
                     accessorKey: 'due_date',
                 }),
                 createActionsColumn<Loan>({
@@ -118,6 +247,24 @@ export default function LoansIndex() {
                     header: t('ui.loans.columns.actions') || 'Actions',
                     renderActions: (loan) => (
                         <>
+                            <Button
+                                disabled={!loan.is_active}
+                                onClick={() => handleReturnButton(loan.id)}
+                                variant="outline"
+                                size="icon"
+                                title={t('ui.loans.buttons.return') || 'Return book'}
+                            >
+                                <BookDown className="h-4 w-4" />
+                            </Button>
+                            <Button
+                                disabled={!loan.is_active}
+                                onClick={() => handleAmpliacion(loan.id, loan.due_date, 7)}
+                                variant="outline"
+                                size="icon"
+                                title={t('ui.loans.buttons.delayOneWeek') || 'Return book'}
+                            >
+                                <Clock className="h-4 w-4" />
+                            </Button>
                             <Link href={`/loans/${loan.id}/edit?page=${currentPage}&perPage=${perPage}`}>
                                 <Button variant="outline" size="icon" title={t('ui.loans.buttons.edit') || 'Edit loan'}>
                                     <PencilIcon className="h-4 w-4" />
@@ -173,16 +320,26 @@ export default function LoansIndex() {
                                         filters.floor ? filters.floor : "null",
                                     */
                                     {
+                                        id: 'book',
+                                        label: t('ui.loans.filters.book') || 'Book',
+                                        type: 'text',
+                                        placeholder: t('ui.loans.placeholders.booktitle') || 'Book...',
+                                    },
+                                    {
                                         id: 'email',
                                         label: t('ui.loans.filters.email') || 'Email',
                                         type: 'text',
                                         placeholder: t('ui.loans.placeholders.email') || 'Email...',
                                     },
                                     {
-                                        id: 'book',
-                                        label: t('ui.loans.filters.book') || 'Book',
-                                        type: 'text',
-                                        placeholder: t('ui.loans.placeholders.book') || 'Book...',
+                                        id: 'status',
+                                        label: t('ui.loans.filters.status') || 'Status',
+                                        type: 'select',
+                                        options: [
+                                            { label: 'En progreso', value: 'true' },
+                                            { label: 'Finalizado', value: 'false' },
+                                        ],
+                                        placeholder: t('ui.loans.placeholders.status') || 'Status...',
                                     },
                                 ] as FilterConfig[]
                             }

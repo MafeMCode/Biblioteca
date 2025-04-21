@@ -1,5 +1,5 @@
 import { DashboardCard } from '@/components/dashboard/DashboardCard';
-import { Users, User, ChartColumnStacked, BookMarked, LandPlot, Layers } from 'lucide-react';
+import { Users, User, ChartColumnStacked, BookMarked, LandPlot, Layers, Handshake } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { useTranslations } from '@/hooks/use-translations';
@@ -81,6 +81,13 @@ export default function Dashboard() {
                     description={t('ui.dashboard.description.books')}
                     href="/books"
                     icon={BookMarked}
+                />
+
+                <DashboardCard
+                    title={t('ui.dashboard.loans')}
+                    description={t('ui.dashboard.description.loans')}
+                    href="/loans"
+                    icon={Handshake}
                 />
 
             </div>
