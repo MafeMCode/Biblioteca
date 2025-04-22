@@ -7,10 +7,11 @@ use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Loan extends Model
 {
-    use HasUuids;
+    use HasUuids, SoftDeletes;
 
     protected $fillable = [
         'id',
@@ -30,11 +31,11 @@ class Loan extends Model
 
     public function user(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->BelongsTo(User::class)->withTrashed();
     }
 
     public function book(): BelongsTo
     {
-        return $this->BelongsTo(Book::class);
+        return $this->BelongsTo(Book::class)->withTrashed();
     }
 }

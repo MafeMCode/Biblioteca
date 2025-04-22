@@ -42,13 +42,12 @@ export default function LoansIndex() {
         information.append('newStatus', newStatus);
         information.append('_method', 'PUT');
         router.post(`/loans/${loan_id}`, information);
-        setTimeout(function() {
+        setTimeout(function () {
             refetch(); //no recargar pagina solo refetch
         }, 500);
     }
 
     function handleAmpliacion(loan_id: string, due_date: string, days: number) {
-
         let dayE = parseInt(due_date.slice(0, 2));
         console.log(dayE);
         let monthE = parseInt(due_date.slice(3, 5));
@@ -56,11 +55,11 @@ export default function LoansIndex() {
         let yearE = parseInt(due_date.slice(6, 10));
         console.log(yearE);
 
-        let dateE = new Date(yearE, monthE -1, dayE);
+        let dateE = new Date(yearE, monthE - 1, dayE);
 
         dateE.setDate(dateE.getDate() + days);
 
-        const dateEString = dateE.toLocaleString("en-GB", { timeZone: "Europe/Madrid" });
+        const dateEString = dateE.toLocaleString('en-GB', { timeZone: 'Europe/Madrid' });
 
         console.log(dateEString);
         const information = new FormData();
@@ -120,7 +119,7 @@ export default function LoansIndex() {
                     header: t('ui.loans.columns.status') || 'Status',
                     accessorKey: 'is_active',
                     format: (value) => {
-                        return value ? 'In progress' : 'Finished';
+                        return value ? t('ui.loans.utils.inProgress') : t('ui.loans.utils.finished');
                     },
                 }),
                 createTextColumn<Loan>({
@@ -193,13 +192,12 @@ export default function LoansIndex() {
                                     <span className={`flex items-center gap-1 ${comprobanteTarde ? 'text-red-500' : ''}`}>
                                         {t('ui.loans.utils.returned')}: {loan.returned_at}
                                         <br />
-
-                                            {comprobanteTarde && (absDaysD == 0
+                                        {comprobanteTarde &&
+                                            (absDaysD == 0
                                                 ? absHoursD == 0
                                                     ? absMinutesD + ' ' + textMinutes
                                                     : absHoursD + ' ' + textHours
                                                 : absDaysD + ' ' + textDays)}
-
                                         {comprobanteTarde && ' (' + followup + ') '}
                                     </span>
                                 )}
@@ -266,7 +264,7 @@ export default function LoansIndex() {
                                 <Clock className="h-4 w-4" />
                             </Button>
                             <Link href={`/loans/${loan.id}/edit?page=${currentPage}&perPage=${perPage}`}>
-                                <Button variant="outline" size="icon" title={t('ui.loans.buttons.edit') || 'Edit loan'}>
+                                <Button disabled={!loan.is_active} variant="outline" size="icon" title={t('ui.loans.buttons.edit') || 'Edit loan'}>
                                     <PencilIcon className="h-4 w-4" />
                                 </Button>
                             </Link>
@@ -336,8 +334,8 @@ export default function LoansIndex() {
                                         label: t('ui.loans.filters.status') || 'Status',
                                         type: 'select',
                                         options: [
-                                            { label: 'En progreso', value: 'true' },
-                                            { label: 'Finalizado', value: 'false' },
+                                            { label: t('ui.loans.utils.inProgress'), value: 'true' },
+                                            { label: t('ui.loans.utils.finished'), value: 'false' },
                                         ],
                                         placeholder: t('ui.loans.placeholders.status') || 'Status...',
                                     },

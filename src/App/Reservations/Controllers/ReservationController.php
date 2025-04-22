@@ -8,6 +8,7 @@ use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class ReservationController extends Controller
 {
@@ -16,7 +17,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('reservations/Index', []);
     }
 
     /**
@@ -32,25 +33,27 @@ class ReservationController extends Controller
      */
     public function store(Request $request, ReservationStoreAction $action)
     {
-        $user_id = User::where('email', 'like', $request['userMail']);
+
+        $user_id = User::where('email', 'like', $request['userMail'])->first()->id;
 
         $validator = Validator::make($request->all(), [
-            'book_id' => [
+            'bookID' => [
                 'required',
-                Rule::unique('reservations')
-                    ->where(
-                        fn($query) => $query
-                            ->where('book_id', $request->book_id)
-                            ->where('user_id', $user_id)
-                    ),
+                // Rule::unique('reservations')
+                //     ->where(
+                //         fn($query) => $query
+                //             ->where('book_id', $request->book_id)
+                //             ->where('user_id', $user_id)
+                //     ),
             ],
-            'userMail' => ['required', 'string'],
+            'userMail' => ['required'],
         ]);
-
 
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
+
+        // dd($request);
 
         $action($validator->validated());
 

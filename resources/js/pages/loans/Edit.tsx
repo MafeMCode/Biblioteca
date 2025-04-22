@@ -7,22 +7,30 @@ import { LoanForm } from './components/LoanForm';
 import { usePage } from '@inertiajs/react';
 
 interface LoanFormProps {
-    initialData?: {
+    loan?: {
         id: string;
-        user_id: string;
-        user: string;
         book_id: string;
-        title: string;
-        dueDate: Date;
+        user_id: string;
+        is_overdue: boolean;
+        is_active: boolean;
+        hours_between: number;
+        hoursDue_between: number;
+        created_at: string;
+        returned_at: string;
+        due_date: string;
     },
+    usermail: string;
+    bookUUID: string;
+    ddate: string;
+    lang: string;
 }
 
-export default function EditLoan({initialData}:LoanFormProps) {
+export default function CreateLoan({loan, lang, usermail, bookUUID, ddate}:LoanFormProps) {
     const { t } = useTranslations();
 
     const paramsString = window.location.search;
     const searchParams = new URLSearchParams(paramsString);
-    const Bookid = searchParams.get("bookID");
+    const book_id = searchParams.get("bookID") || bookUUID;
 
     return (
         <LoanLayout title={t('ui.loans.edit')}>
@@ -32,14 +40,14 @@ export default function EditLoan({initialData}:LoanFormProps) {
                         <CardTitle>
                             <div className="flex items-center gap-1">
                                 <Layers color="#2762c2" />
-                                {t('ui.loans.cards.edit.title')}
+                                {t('ui.loans.cards.create.title')}
                             </div>
                         </CardTitle>
                         <CardDescription>{t('ui.loans.cards.edit.description')}</CardDescription>
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <LoanForm initialData={initialData} bookIDButton={Bookid}/>
+                        <LoanForm ddate={ddate} initialData={loan} usermail={usermail} bookIDButton={book_id} lang={lang}/>
                     </CardContent>
                 </Card>
             </div>

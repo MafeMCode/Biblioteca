@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignUuid('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->timestamps();
             $table->date('due_date');
+            $table->softDeletes();
             $table->boolean('is_active')->default(true);
             $table->dateTime('returned_at')->nullable();
             $table->boolean('is_overdue')->default(false);

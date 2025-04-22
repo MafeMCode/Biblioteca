@@ -3,6 +3,7 @@ import { Head, usePage } from '@inertiajs/react';
 import { useTranslations } from '@/hooks/use-translations';
 import HeadingSmall from '@/components/heading-small';
 import AppLayout from '@/layouts/app-layout';
+import { Timeline } from "flowbite-react";
 import SettingsLayout from '@/layouts/settings/layout';
 
 export default function Profile() {
@@ -31,7 +32,9 @@ export default function Profile() {
                         description={t('')}
                     />
 
-
+                    <div>
+                        <p>Timeline</p>
+                    </div>
                 </div>
 
 

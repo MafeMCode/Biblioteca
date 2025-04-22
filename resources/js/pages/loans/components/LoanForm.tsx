@@ -20,13 +20,19 @@ import { toast } from 'sonner';
 interface LoanFormProps {
     initialData?: {
         id: string;
-        user_id: string;
-        user: string;
         book_id: string;
-        title: string;
-        dueDate: Date;
+        user_id: string;
+        is_overdue: boolean;
+        is_active: boolean;
+        hours_between: number;
+        hoursDue_between: number;
+        created_at: string;
+        returned_at: string;
+        due_date: string;
     };
+    usermail?: string;
     bookIDButton?: string;
+    ddate?: string;
     page?: string;
     perPage?: string;
     lang: string;
@@ -44,17 +50,30 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-export function LoanForm({ initialData, page, perPage, bookIDButton, lang }: LoanFormProps) {
+export function LoanForm({ initialData, page, perPage, bookIDButton, lang, usermail, ddate }: LoanFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
     const comprobanteButton = bookIDButton !== null;
+    const comprobanteEmail = usermail !== undefined;
+
+    let fecha: Date;
+
+    if (ddate) {
+        fecha = new Date(ddate); // month is 0-indexed
+      } else {
+        fecha = new Date(); // fallback
+      }
+
+
+
+
     // TanStack Form setup
     const form = useForm({
         defaultValues: {
             book: initialData?.book_id ?? bookIDButton ?? undefined,
-            user: initialData?.user ?? undefined,
-            dueDate: initialData?.dueDate ?? undefined,
+            user: initialData?.user_id ?? usermail ?? undefined,
+            dueDate: fecha ?? undefined,
         },
         onSubmit: async ({ value }) => {
             const options = {
@@ -170,7 +189,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang }: Loa
                                     onChange={(e) => field.handleChange(e.target.value)}
                                     onBlur={field.handleBlur}
                                     placeholder={t('ui.loans.placeholders.user')}
-                                    disabled={form.state.isSubmitting}
+                                    disabled={comprobanteEmail || form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
                                 />
@@ -193,42 +212,24 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang }: Loa
                     >
                         {(field) => (
                             <>
-                                {/* <Calendar
-                                mode="single"
-                                disabled={[{ before: new Date() }, new Date()]}
-                                timeZone='Europe/Madrid'
-                                selected={field.state.value}
-                                onSelect={(value) => field.handleChange(value)}
-                                className="rounded-md border shadow"
-
-                                /> */}
                                 <Label htmlFor={field.name}>
                                     <div className="mb-1 flex items-center gap-1">
                                         <Box color="grey" size={18} />
                                         {t('ui.loans.fields.duedate')}
                                     </div>
                                 </Label>
-                                {/* <Popover>
+                                <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant={'outline'}
                                             className={cn('w-[240px] justify-start text-left font-normal', !field.state.value && 'text-muted-foreground')}
                                         >
                                             <CalendarIcon />
-                                            {field.state.value ? format(field.state.value, 'PPP') : <span>Pick a date</span>}
+                                            {field.state.value ? format(field.state.value, 'PPP', {locale: langMap[lang]}) : <span>{t('ui.loans.utils.pickDate')}</span>}
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0" align="start">
                                         <Calendar
-                                    animate
-                                    mode="single"
-                                    disabled={[{ before: new Date() }, new Date()]}
-                                    timeZone="Europe/Madrid"
-                                    selected={field.state.value}
-                                    onSelect={(value) => field.handleChange(value)} />
-                                    </PopoverContent>
-                                </Popover> */}
-                                <DayPicker
                                     animate
                                     mode="single"
                                     locale={langMap[lang]}
@@ -236,7 +237,18 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang }: Loa
                                     timeZone="Europe/Madrid"
                                     selected={field.state.value}
                                     onSelect={(value) => field.handleChange(value)}
-                                />
+                                    />
+                                    </PopoverContent>
+                                </Popover>
+                                {/* <DayPicker
+                                    animate
+                                    mode="single"
+                                    locale={langMap[lang]}
+                                    disabled={[{ before: new Date() }, new Date()]}
+                                    timeZone="Europe/Madrid"
+                                    selected={field.state.value}
+                                    onSelect={(value) => field.handleChange(value)}
+                                /> */}
                                 <FieldInfo field={field} />
                             </>
                         )}

@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use Domain\Books\Models\Book;
 use Domain\Loans\Models\Loan;
+use Domain\Users\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -13,12 +14,14 @@ class confirmacion_reserva extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $book;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct( Book $book)
     {
-        //
+        $this->book = $book;
     }
 
     /**
@@ -37,17 +40,9 @@ class confirmacion_reserva extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
 
-        //preguntar por parametros!!!!!!!!!!!
-
-        $user_reservas = $notifiable->reservations->pluck('book_id');
-
-        $book_id = Loan::orderBy('updated_at', 'desc')->whereIn('book_id', $user_reservas)->first()->book_id;
-
-        $title = Book::find($book_id)->title;
-
         return (new MailMessage)
                     ->line('¡Hola '.$notifiable->name.'!')
-                    ->line('¡Es tu turno para poder leer '.$title.'!')
+                    ->line('¡Es tu turno para poder leer '.$this->book->title.'!')
                     ->action('Ven a reservarlo', url('/books'))
                     ->line('¡No tardes!');
 

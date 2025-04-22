@@ -4,6 +4,7 @@ namespace Domain\Loans\Actions;
 
 use App\Notifications\confirmacion_reserva;
 use Carbon\Carbon;
+use Domain\Books\Models\Book;
 use Domain\Loans\Data\Resources\LoanResource;
 use Domain\Loans\Models\Loan;
 use Domain\Reservations\Models\Reservation;
@@ -20,13 +21,17 @@ class LoanUpdateAction
             if (Reservation::where('book_id', 'like', $loan->book_id)->first() !== null){
             $user_id_res = Reservation::where('book_id', 'like', $loan->book_id)->orderBy('created_at', 'asc')->first()->user_id;
             $user = User::find($user_id_res);
-            $user->notify(new confirmacion_reserva);
+            $librito = Book::find($loan->book_id);
+            $user->notify(new confirmacion_reserva($librito));
             Reservation::where('user_id', '=', $user_id_res)->where('book_id', '=', $loan->book_id)->first()->delete();
         }}
         $returnDateCheck = null;
         if (isset($data['newStatus'])) {
             $returnDateCheck = Carbon::now();
         }
+
+
+
         $dueDateCheck = $loan->due_date;
         if (isset($data['newDueDate'])) {
             $dueDateCheck = Carbon::createFromFormat('d/m/Y, H:i:s',  $data['newDueDate']);

@@ -7,6 +7,7 @@ use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
 {
@@ -20,11 +21,11 @@ class Reservation extends Model
 
     public function user(): BelongsTo
     {
-        return $this->BelongsTo(User::class);
+        return $this->BelongsTo(User::class)->withTrashed();
     }
 
     public function book(): BelongsTo
     {
-        return $this->BelongsTo(Book::class);
+        return $this->BelongsTo(Book::class)->withTrashed();
     }
 }

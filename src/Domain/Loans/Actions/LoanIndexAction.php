@@ -17,7 +17,7 @@ class LoanIndexAction
 
         $users = User::query()
         ->when($email !== "null", function ($query) use ($email) {
-            $query->where('email', 'ILIKE', '%'.$email.'%');
+            $query->where('email', 'ILIKE', '%'.$email.'%')->withTrashed();
         })->pluck('id');
 
         $books = Book::query()

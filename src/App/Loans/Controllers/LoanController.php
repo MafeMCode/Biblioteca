@@ -3,6 +3,7 @@
 namespace App\Loans\Controllers;
 
 use App\Core\Controllers\Controller;
+use Carbon\Carbon;
 use Domain\Loans\Actions\LoanStoreAction;
 use Domain\Loans\Actions\LoanUpdateAction;
 use Domain\Loans\Models\Loan;
@@ -27,10 +28,8 @@ class LoanController extends Controller
      */
     public function create()
     {
-        $lang = Auth::user()->settings->preferences;
-
-
-        return Inertia::render('loans/Create', ['lang'=>$lang['locale']]);
+        $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
+        return Inertia::render('loans/Create', ['lang'=>$lang]);
     }
 
     /**
@@ -39,8 +38,8 @@ class LoanController extends Controller
     public function store(Request $request, LoanStoreAction $action)
     {
         $validator = Validator::make($request->all(), [
-            'book' => ['required'],
-            'user' => ['required'],
+            'book' => ['required', 'string'],
+            'user' => ['required', 'string'],
             'dueDate' => ['required'],
         ]);
 
@@ -65,9 +64,26 @@ class LoanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, Loan $loan)
     {
-        //
+        $usermail = $loan->user->email;
+        $bookUUID = $loan->book->id;
+        $ddate = $loan->due_date->toISOString();
+
+        // dd($ddate);
+
+        $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
+
+        // dd($loan);
+        return Inertia::render('loans/Edit', [
+            'loan' => $loan,
+            'usermail' => $usermail,
+            'bookUUID' => $bookUUID,
+            'ddate' => $ddate,
+            'lang' => $lang,
+            'page' => $request->query('page'),
+            'perPage' => $request->query('perPage'),
+        ]);
     }
 
     /**
@@ -75,6 +91,10 @@ class LoanController extends Controller
      */
     public function update(Request $request, Loan $loan, LoanUpdateAction $action)
     {
+        if(isset($request['dueDate'])){
+            $request['newDueDate'] = Carbon::parse($request['dueDate'])->format('d/m/Y, H:i:s');
+
+        }
 
         $validator = Validator::make($request->all(), [
             'newStatus' => [],

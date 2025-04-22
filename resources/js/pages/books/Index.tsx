@@ -393,20 +393,20 @@ export default function BooksIndex() {
             >
                 <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
-                        <DialogTitle>Make a Reservation</DialogTitle>
-                        <DialogDescription>Input the email of the user that wants to be notified when the book becomes available.</DialogDescription>
+                        <DialogTitle>{t('ui.reservations.utils.title')}</DialogTitle>
+                        <DialogDescription>{t('ui.reservations.utils.description')}</DialogDescription>
                     </DialogHeader>
                     {selectedBook && (
                         <div className="grid gap-4 py-4">
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="name" className="text-right">
-                                    Book
+                                {t('ui.reservations.utils.book')}
                                 </Label>
                                 <Input disabled id="name" value={selectedBook.title} className="col-span-3" />
                             </div>
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label htmlFor="username" className="text-right">
-                                    User Email
+                                {t('ui.reservations.utils.email')}
                                 </Label>
                                 <Input
                                     id="username"
@@ -424,7 +424,7 @@ export default function BooksIndex() {
                                 if (selectedBook) HandleReservation(selectedBook.id, reserMail);
                             }}
                         >
-                            Save changes
+                            {t('ui.reservations.utils.confirm')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

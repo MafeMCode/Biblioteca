@@ -19,6 +19,7 @@ return [
         'zones' => 'Zones',
         'loans' => 'Loans',
         'bookcases' => 'Bookcases',
+        'reservations' => 'Reservations',
         'description' => [
             'users' => 'Manage all users in the system',
             'floors' => 'Manage all floors and sections in the system',
@@ -26,6 +27,7 @@ return [
             'zones' => 'Manage all zones in the system',
             'loans' => 'Manage all loans in the system',
             'bookcases' => 'Manage all bookcases in the system',
+            'reservations' => 'Manage all reservations in the system',
         ]
     ],
     'user_menu' => [
@@ -292,6 +294,7 @@ return [
         'placeholders' => [
             'title' => 'Enter the Title...',
             'author' => 'Enter the Author...',
+            'ISBN' => 'Enter the ISBN...',
             'genres' => 'Enter the Genre/s...',
             'publisher' => 'Enter the Publisher...',
             'pages' => 'Enter number of pages...',
@@ -574,7 +577,7 @@ return [
             'Poetry' => 'Poetry',
         ]
         ],
-        'loans' => [
+'loans' => [
             'title' => 'Loans',
             'create' => 'Create Loan',
             'edit' => 'Edit Loan',
@@ -595,6 +598,9 @@ return [
             'utils' => [
                 'remaining' => ' remaining',
                 'overdue' => ' overdue',
+                'finished' => 'Finished',
+                'inProgress' => 'In progress',
+                'pickDate' => 'Pick a date',
                 'returned' => 'Returned',
                 'days' => 'days',
                 'hours' => 'hours',
@@ -607,6 +613,75 @@ return [
             ],
             'placeholders' => [
                 'book' => "Enter the book's UUID",
+                'user' => "Enter the user's email",
+                'booktitle' => "Book's Title",
+                'email' => "User's Email",
+                'status' => 'Status',
+            ],
+            'cards' => [
+                'create' => [
+                    'title' => 'Create New Loan',
+                    'description' => 'Enter the information to create a new loan in the system'
+                ],
+                'edit' => [
+                    'title' => 'Edit Loan',
+                    'description' => 'Enter the new information to edit this loan'
+                    ]
+            ],
+            'buttons' => [
+                'new' => 'New Loan',
+                'edit' => 'Edit',
+                'save' => 'Save',
+                'update' => 'Update',
+                'cancel' => 'Cancel',
+                'delete' => 'Delete',
+                'deleting' => 'Deleting...',
+                'saving' => 'Saving...',
+                'retry' => 'Retry',
+                'return' => 'Return',
+                'delayOneWeek' => 'Delay due date by one week',
+            ],
+            'delete' => [
+                'title' => 'Are you sure?',
+                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            ],
+            'delete_dialog' => [
+                'title' => 'Are you sure?',
+                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+                'success' => 'Successfully deleted ;)',
+            ],
+            'deleted_error' => 'Error deleting loan',
+            'no_results' => 'No results.',
+            'error_loading' => 'Error loading loans. Please try again.',
+            'showing_results' => 'Showing :from to :to of :total results',
+            'pagination' => [
+                'previous' => 'Previous',
+                'next' => 'Next',
+            ],
+        ],
+'reservations' => [
+            'title' => 'Reservations',
+            'columns' => [
+                'book_id' => "Book's Title",
+                'user_id' => "User's Email",
+                'puesto' => "Position in Queue",
+                'created_at' => 'Created At',
+                'actions' => 'Actions',
+            ],
+            'utils' => [
+                'title' => 'Make a reservation',
+                'description' => 'Input the email of the user that wants to be notified when the book becomes available.',
+                'book' => 'Book',
+                'email' => 'User Email',
+                'confirm' => 'Confirm',
+            ],
+            'filters' => [
+                'book' => "Book's Title",
+                'email' => "User's Email",
+                'status' => 'Status',
+            ],
+            'placeholders' => [
+                'book' => "Enter the book's Title",
                 'user' => "Enter the user's email",
                 'booktitle' => "Book's Title",
                 'email' => "User's Email",

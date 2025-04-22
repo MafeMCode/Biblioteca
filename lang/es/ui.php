@@ -19,6 +19,7 @@ return [
         'zones' => 'Zonas',
         'loans' => 'Préstamos',
         'bookcases' => 'Estanterías',
+        'reservations' => 'Reservas',
         'description' => [
             'users' => 'Gestiona los usuarios del sistema',
             'floors' => 'Gestiona los pisos y secciones del sistema',
@@ -26,6 +27,7 @@ return [
             'zones' => 'Gestiona las zonas del sistema',
             'loans' => 'Gestiona los prestamos del sistema',
             'bookcases' => 'Gestiona las estanterías del sistema',
+            'reservations' => 'Gestiona las reservas del sistema',
         ]
     ],
     'user_menu' => [
@@ -591,6 +593,9 @@ return [
             'remaining' => ' restante/s',
             'overdue' => ' de retraso',
             'returned' => 'Devuelto',
+            'finished' => 'Finalizado',
+            'inProgress' => 'En progreso',
+            'pickDate' => 'Seleccione una fecha',
             'days' => 'días',
             'hours' => 'horas',
             'minutes' => 'minutos',
@@ -649,6 +654,76 @@ return [
         'pagination' => [
             'previous' => 'Anterior',
             'next' => 'Siguiente',
+        ],
+    ],
+
+    'reservations' => [
+        'title' => 'Reservas',
+        'columns' => [
+            'book_id' => "Título del Libro",
+            'user_id' => "Email del Usuario",
+            'puesto' => "Posición en cola",
+            'created_at' => 'Fecha de Creación',
+            'actions' => 'Borrar',
+        ],
+        'utils' => [
+            'title' => 'Hacer una reserva',
+            'description' => 'Introduzca el email del usuario que desea ser notificado cuando el libro esté disponible.',
+            'book' => 'Libro',
+            'email' => 'Email del usuario',
+            'confirm' => 'Confirmar',
+        ],
+        'filters' => [
+            'book' => "Titulo del libro",
+            'email' => "Email del usuario",
+            'status' => 'Status',
+        ],
+        'placeholders' => [
+            'book' => "Introduce el titulo del libro",
+            'user' => "Introduce el email del usuario",
+            'booktitle' => "Book's Title",
+            'email' => "User's Email",
+            'status' => 'Status',
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Loan',
+                'description' => 'Enter the information to create a new loan in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Loan',
+                'description' => 'Enter the new information to edit this loan'
+                ]
+        ],
+        'buttons' => [
+            'new' => 'New Loan',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+            'return' => 'Return',
+            'delayOneWeek' => 'Delay due date by one week',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+        ],
+        'delete_dialog' => [
+            'title' => 'Are you sure?',
+            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            'success' => 'Successfully deleted ;)',
+        ],
+        'deleted_error' => 'Error deleting loan',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading loans. Please try again.',
+        'showing_results' => 'Showing :from to :to of :total results',
+        'pagination' => [
+            'previous' => 'Previous',
+            'next' => 'Next',
         ],
     ],
 ];
