@@ -8,6 +8,10 @@ return [
             'users' => 'Usuarios',
             'floors' => 'Pisos',
             'books' => 'Libros',
+            'zones' => 'Zonas',
+            'bookcases' => 'Estanterías',
+            'loans' => 'Préstamos',
+            'reservations' => 'Reservas',
             'repository' => 'Repositorio',
             'documentation' => 'Documentación',
         ],
@@ -60,6 +64,19 @@ return [
             'verification_sent' => 'Se ha enviado un nuevo enlace de verificación a tu dirección de correo.',
             'save_button' => 'Guardar',
             'saved_message' => 'Guardado',
+            'timeline' => [
+                'title' => 'Historial de Préstamos',
+                'description' => "Aquí puedes ver todo tu historial de préstamos",
+                'inProgress' => 'En préstamo',
+                'returned' => 'Devuelto',
+                'dueDate' => 'Fecha límite: ',
+                'unknown' => 'Libro desconocido',
+                'overdue' => '(Retrasado)',
+                'isOverdue' => 'Llevas retraso en tu fecha de entrega.',
+                'lend' => '~ Feliz lectura ~',
+                'isReturned' => '¡Esperamos que lo hayas disfrutado!',
+                'returnedOverdue' => 'Devuelto con retraso - Por favor, ten más cuidado la próxima vez.'
+            ]
         ],
         'password' => [
             'title' => 'Configuración de contraseña',
@@ -247,6 +264,7 @@ return [
             'title' => 'Titulo',
             'author' => 'Autor',
             'genres' => 'Género/s',
+            'publisher' => 'Editorial',
             'editor' => 'Editorial',
             'length' => 'Número de Páginas',
             'bookcase' => 'Estantería',

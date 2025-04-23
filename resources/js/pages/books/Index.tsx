@@ -422,6 +422,8 @@ export default function BooksIndex() {
                         <Button
                             onClick={() => {
                                 if (selectedBook) HandleReservation(selectedBook.id, reserMail);
+                                //comprobar email Y libro
+                                if (selectedBook) setOpen(false);
                             }}
                         >
                             {t('ui.reservations.utils.confirm')}

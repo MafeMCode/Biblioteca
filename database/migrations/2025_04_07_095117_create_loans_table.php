@@ -20,7 +20,6 @@ return new class extends Migration
             $table->softDeletes();
             $table->boolean('is_active')->default(true);
             $table->dateTime('returned_at')->nullable();
-            $table->boolean('is_overdue')->default(false);
         });
     }
 

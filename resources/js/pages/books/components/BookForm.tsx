@@ -8,7 +8,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { Book, ChartColumnStacked, FilePenLine, LandPlot, Layers, PencilRuler, Save, UserPen, X } from 'lucide-react';
+import { Book, ChartColumnStacked, FilePenLine, LandPlot, Layers, Lock, PencilRuler, Save, UserPen, X } from 'lucide-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -439,7 +439,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                             validators={{
                                 onChangeAsync: async ({ value }) => {
                                     await new Promise((resolve) => setTimeout(resolve, 500));
-                                    return !value ? t('ui.validation.required', { attribute: t('ui.books.fieldsbookcase').toLowerCase() }) : null;
+                                    return !value ? t('ui.validation.required', { attribute: t('ui.books.fields.bookcase').toLowerCase() }) : null;
                                 },
                             }}
                         >
@@ -470,7 +470,7 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                                                         disabled={bookcase.books_count >= bookcase.capacity}
                                                     >
                                                         {`${t(`ui.books.fields.bookcase`)} ${bookcase.number} - ${bookcase.books_count}/${bookcase.capacity}`}
-                                                        {bookcase.books_count >= bookcase.capacity ? '- Full' : '- Availible'}
+                                                        {bookcase.books_count >= bookcase.capacity ? <Lock></Lock> : ''}
                                                         {/* DIABLO */}
                                                     </SelectItem>
                                                 ))}

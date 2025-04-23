@@ -48,7 +48,7 @@ class LoanResource extends Data
             is_active: $loan->is_active,
             title: $bookTitle,
             created_at: $loan->created_at->format('d/m/Y'),
-            hours_between: Carbon::now()->diffInHours($loan->due_date),
+            hours_between: Carbon::now()->diffInHours($loan->due_date)+24,
             hoursDue_between: $hoursD,
             updated_at: $loan->updated_at,
             returned_at: $retorno,

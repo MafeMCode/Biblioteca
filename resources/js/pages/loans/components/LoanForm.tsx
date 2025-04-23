@@ -233,7 +233,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
                                     animate
                                     mode="single"
                                     locale={langMap[lang]}
-                                    disabled={[{ before: new Date() }, new Date()]}
+                                    // disabled={[{ before: new Date() }, new Date()]}
                                     timeZone="Europe/Madrid"
                                     selected={field.state.value}
                                     onSelect={(value) => field.handleChange(value)}

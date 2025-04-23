@@ -8,6 +8,10 @@ return [
             'users' => 'Users',
             'floors' => 'Floors',
             'books' => 'Books',
+            'zones' => 'Zones',
+            'bookcases' => 'Bookcases',
+            'loans' => 'Loans',
+            'reservations' => 'Reservations',
             'repository' => 'Repository',
             'documentation' => 'Documentation',
         ],
@@ -60,6 +64,19 @@ return [
             'verification_sent' => 'A new verification link has been sent to your email address.',
             'save_button' => 'Save',
             'saved_message' => 'Saved',
+            'timeline' => [
+                'title' => 'Loan History',
+                'description' => "Here's a timeline with all your loans",
+                'inProgress' => 'Currently lend',
+                'returned' => 'Returned',
+                'unknown' => 'Unknown book',
+                'dueDate' => 'Due date: ',
+                'overdue' => '(Overdue)',
+                'isOverdue' => 'You are overdue your return date.',
+                'lend' => '~ Happy reading ~',
+                'isReturned' => 'We hope you enjoyed it!',
+                'returnedOverdue' => 'Returned overdue - Be more careful next time please.'
+            ]
         ],
         'password' => [
             'title' => 'Password settings',
@@ -254,6 +271,7 @@ return [
             'title' => 'Title',
             'author' => 'Author',
             'genres' => 'Genres',
+            'publisher' => 'Publisher',
             'editor' => 'Publisher',
             'length' => 'Pages',
             'bookcase' => 'Bookcase',

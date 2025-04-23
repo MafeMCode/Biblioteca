@@ -4,6 +4,8 @@ namespace App\Settings\Controllers;
 
 use App\Core\Controllers\Controller;
 use App\Settings\Requests\ProfileUpdateRequest;
+use Domain\Users\Actions\UserLoanHistoryAction;
+use Domain\Users\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,11 +18,15 @@ class ProfileController extends Controller
     /**
      * Show the user's profile settings page.
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, UserLoanHistoryAction $action): Response
     {
+
+        $loans = $action(Auth::user());
+
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'loanHistory' => $loans,
         ]);
     }
 
