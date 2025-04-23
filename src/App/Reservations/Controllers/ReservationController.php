@@ -6,6 +6,7 @@ use App\Core\Controllers\Controller;
 use Domain\Reservations\Actions\ReservationStoreAction;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -17,7 +18,9 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return Inertia::render('reservations/Index', []);
+        $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
+
+        return Inertia::render('reservations/Index', ['lang' => $lang]);
     }
 
     /**

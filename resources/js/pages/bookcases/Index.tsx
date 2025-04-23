@@ -13,7 +13,11 @@ import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-export default function BookcasesIndex() {
+interface BookcaseIndexProps {
+    floor_list: number[],
+    zone_list: number[],
+}
+export default function BookcasesIndex({floor_list, zone_list}:BookcaseIndexProps) {
     const { t } = useTranslations();
     const { url } = usePage();
 
@@ -183,13 +187,15 @@ export default function BookcasesIndex() {
                                     {
                                         id: 'floor',
                                         label: t('ui.bookcases.filters.floor') || 'Piso',
-                                        type: 'number',
+                                        type: 'select',
+                                        options: floor_list,
                                         placeholder: t('ui.bookcases.placeholders.floor') || 'Piso...',
                                     },
                                     {
                                         id: 'zone',
                                         label: t('ui.bookcases.filters.zone') || 'Zona',
-                                        type: 'number',
+                                        type: 'select',
+                                        options: zone_list,
                                         placeholder: t('ui.bookcases.placeholders.zone') || 'Zona...',
                                     },
                                     {

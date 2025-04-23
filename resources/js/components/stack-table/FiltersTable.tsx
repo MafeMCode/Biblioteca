@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { enUS, es } from 'date-fns/locale';
 import {
   Popover,
   PopoverContent,
@@ -140,8 +141,16 @@ export interface FiltersTableProps {
   filtersButtonText?: string;
   /** Texto para el botón de limpiar filtros */
   clearFiltersText?: string;
+  /** parametro de lenguage para el mapeo */
+  lang?: string;
 }
 
+  // Constante de mapeo de lenguages
+
+  const langMap = {
+    en: enUS,
+    es: es,
+  }
 /**
  * Componente para filtrar datos de una tabla
  */
@@ -154,6 +163,7 @@ export function FiltersTable({
   containerClassName,
   filtersButtonText,
   clearFiltersText,
+  lang,
 }: FiltersTableProps) {
   const { t } = useTranslations();
   const [open, setOpen] = useState(false);
@@ -243,6 +253,7 @@ export function FiltersTable({
                       {renderFilterInput(
                         filter,
                         field,
+                        lang,
                         (value) => handleFilterChange(filter.id, value)
                       )}
                     </FormControl>
@@ -343,7 +354,9 @@ export function FiltersTable({
 function renderFilterInput(
   filter: FilterConfig,
   field: any,
+  lang: string,
   onChange: (value: any) => void
+
 ) {
   switch (filter.type) {
     case "text":
@@ -404,6 +417,7 @@ function renderFilterInput(
               mode="single"
               selected={field.value}
               timeZone='Europe/Madrid'
+              locale={langMap[lang]}
               onSelect={(date: Date | undefined) => {
                 field.onChange(date);
                 onChange(date);

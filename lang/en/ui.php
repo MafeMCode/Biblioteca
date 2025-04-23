@@ -628,6 +628,8 @@ return [
                 'book' => "Book's Title",
                 'email' => "User's Email",
                 'status' => 'Status',
+                'start_date' => 'Start date',
+                'due_date' => 'Due date',
             ],
             'placeholders' => [
                 'book' => "Enter the book's UUID",
@@ -635,6 +637,8 @@ return [
                 'booktitle' => "Book's Title",
                 'email' => "User's Email",
                 'status' => 'Status',
+                'start_date' => 'Start date',
+                'due_date' => 'Due date',
             ],
             'cards' => [
                 'create' => [

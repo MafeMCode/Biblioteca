@@ -48,7 +48,6 @@ export default function Profile({ loanHistory }: ProfileProps) {
 
             <SettingsLayout>
                     <div className="flex flex-col items-center space-y-6">
-                    {/* <ScrollArea className="h-120 w-[full] rounded-md p-4"> */}
 
                         <div className="text-center">
                             <HeadingSmall
@@ -56,6 +55,8 @@ export default function Profile({ loanHistory }: ProfileProps) {
                                 description={t('ui.settings.profile.timeline.description')}
                             />
                         </div>
+                    <ScrollArea className="h-100 w-[full] rounded-md p-4">
+
                         <div>
                             <Timeline>
                                 {loanHistory.map((loan, index) => (
@@ -144,7 +145,7 @@ export default function Profile({ loanHistory }: ProfileProps) {
                                 ))}
                             </Timeline>
                         </div>
-                        {/* </ScrollArea> */}
+                        </ScrollArea>
 
                     </div>
             </SettingsLayout>

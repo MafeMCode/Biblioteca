@@ -7,13 +7,17 @@ import { Button } from '@/components/ui/button';
 import { Loan, useDeleteLoan, useLoans } from '@/hooks/loans/useLoans';
 import { useTranslations } from '@/hooks/use-translations';
 import { LoanLayout } from '@/layouts/loans/LoanLayout';
+import { PageProps } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { BookDown, Clock, PencilIcon, PlusIcon, TrashIcon, TriangleAlert } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-export default function LoansIndex() {
+interface IndexLoanProps extends PageProps {
+    lang: string;
+}
+export default function LoansIndex({lang}:IndexLoanProps) {
     const { t } = useTranslations();
     const { url } = usePage();
 
@@ -31,6 +35,8 @@ export default function LoansIndex() {
         filters.email ? filters.email : 'null',
         filters.book ? filters.book : 'null',
         filters.status ? filters.status : 'null',
+        filters.start_date ? filters.start_date : 'null',
+        filters.due_date ? filters.due_date : 'null',
         // filters.capacity ? filters.capacity : 'null',
         // filters.genre ? filters.genre : 'null',
         // filters.floor ? filters.floor : 'null',
@@ -167,14 +173,6 @@ export default function LoansIndex() {
 
                         let comprobanteTarde = dateE > dateD;
 
-                        // if (dateE.getFullYear > dateD.getFullYear) {
-                        //     comprobanteTarde=true;
-                        // }else if (dateE.getMonth > dateD.getMonth) {
-                        //     comprobanteTarde=true;
-                        // } else if (dateE.getDay > dateD.getDay) {
-                        //     comprobanteTarde=true;
-                        // }
-
                         return (
                             <section>
                                 {loan.is_active && (
@@ -198,43 +196,13 @@ export default function LoansIndex() {
                                                     ? absMinutesD + ' ' + textMinutes
                                                     : absHoursD + ' ' + textHours
                                                 : absDaysD + ' ' + textDays)}
-                                        {comprobanteTarde && ' (' + followup + ') '}
+                                        {comprobanteTarde && followup}
                                     </span>
                                 )}
                             </section>
                         );
                     },
                 }),
-                // createTextColumn<Loan>({
-                //     id: 'hours_between',
-                //     header: t('Remaining') || 'Created At',
-                //     accessorKey: 'hours_between',
-                //     format: (value) => {
-                //         const textDays = t('days');
-                //         const textHours = t('hours');
-                //         const textMinutes = t('minutes');
-
-                //         let intHours = parseInt(value);
-                //         let intDays = Math.trunc(intHours/24);
-                //         let intMinutes = Math.trunc(intHours*60);
-
-                //         let absMinutes = Math.abs(intMinutes);
-                //         let absHours = Math.abs(intHours);
-                //         let absDays = Math.abs(intDays);
-
-                //         const overdue = parseFloat(value) < 0;
-                //         const followup = overdue ? t(' overdue') : t(' remaining');
-
-                //         return (
-                //             <span className={`flex items-center gap-1 ${overdue ? 'text-red-500' : ''}`}>
-                //                     {absDays == 0 ? absHours == 0 ? absMinutes + ' ' + textMinutes : absHours + ' ' + textHours : absDays + ' ' + textDays}
-                //                     {followup}
-                //                     {overdue && <TriangleAlert className="text-yellow-500" />}
-                //                  </span>
-                //         );
-                //     },
-                // }),
-
                 createTextColumn<Loan>({
                     id: 'due_date',
                     header: t('ui.loans.columns.duedate') || 'Due Date',
@@ -309,14 +277,9 @@ export default function LoansIndex() {
 
                     <div className="space-y-4">
                         <FiltersTable
+                        lang={lang}
                             filters={
                                 [
-                                    /*
-                                        filters.number ? filters.story : "null",
-                                        filters.capacity ? filters.capacity : "null",
-                                        filters.genre ? filters.genre : "null",
-                                        filters.floor ? filters.floor : "null",
-                                    */
                                     {
                                         id: 'book',
                                         label: t('ui.loans.filters.book') || 'Book',
@@ -338,6 +301,19 @@ export default function LoansIndex() {
                                             { label: t('ui.loans.utils.finished'), value: 'false' },
                                         ],
                                         placeholder: t('ui.loans.placeholders.status') || 'Status...',
+                                    },
+                                    {
+                                        id: 'start_date',
+                                        label: t('ui.loans.filters.start_date') || 'Starting date',
+                                        type: 'date',
+                                        placeholder: t('ui.loans.placeholders.start_date') || 'Starting date...',
+                                    },
+                                    {
+                                        id: 'due_date',
+                                        label: t('ui.loans.filters.due_date') || 'Due date',
+                                        type: 'date',
+                                        placeholder: t('ui.loans.placeholders.due_date') || 'Due date...',
+
                                     },
                                 ] as FilterConfig[]
                             }

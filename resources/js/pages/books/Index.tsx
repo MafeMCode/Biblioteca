@@ -17,7 +17,13 @@ import { ClipboardList, Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-export default function BooksIndex() {
+interface BookIndexProps {
+    floor_list: number[],
+    zone_list: number[],
+    bookcase_list: number[],
+}
+
+export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIndexProps) {
     const { t } = useTranslations();
     const { url } = usePage();
     // Obtener los parámetros de la URL actual
@@ -320,19 +326,22 @@ export default function BooksIndex() {
                                     {
                                         id: 'floor',
                                         label: t('ui.books.filters.floor') || 'Piso',
-                                        type: 'number',
+                                        type: 'select',
+                                        options: floor_list,
                                         placeholder: t('ui.books.placeholders.floor') || 'Piso...',
                                     },
                                     {
                                         id: 'zone',
                                         label: t('ui.books.filters.zone') || 'Zona',
-                                        type: 'number',
+                                        type: 'select',
+                                        options: zone_list,
                                         placeholder: t('ui.books.placeholders.zone') || 'Zona...',
                                     },
                                     {
                                         id: 'bookcase',
                                         label: t('ui.books.filters.bookcase') || 'Estantería',
-                                        type: 'number',
+                                        type: 'select',
+                                        options: bookcase_list,
                                         placeholder: t('ui.books.placeholders.bookcase') || 'Estantería...',
                                     },
                                 ] as FilterConfig[]

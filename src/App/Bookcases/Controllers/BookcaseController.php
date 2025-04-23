@@ -22,7 +22,20 @@ class BookcaseController extends Controller
      */
     public function index()
     {
-        return Inertia::render('bookcases/Index', []);
+        $floor_numbers = Floor::all()->pluck('story')->map(function ($story) {
+            return [
+                'label' => $story,
+                'value' => $story,
+            ];
+        })->toArray();
+        $zone_numbers = Zone::orderBy('number')->distinct()->pluck('number')->map(function ($number) {
+            return [
+                'label' => $number,
+                'value' => $number,
+            ];
+        })->toArray();
+
+        return Inertia::render('bookcases/Index', ['floor_list' => $floor_numbers, 'zone_list' => $zone_numbers]);
     }
 
     /**

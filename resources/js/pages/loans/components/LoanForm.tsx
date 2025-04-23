@@ -206,7 +206,10 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.book').toLowerCase() }) : undefined;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.book').toLowerCase() }) :
+                                // value <= new Date ? t('mu pronto') :
+                                undefined;
+
                             },
                         }}
                     >
@@ -233,7 +236,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
                                     animate
                                     mode="single"
                                     locale={langMap[lang]}
-                                    // disabled={[{ before: new Date() }, new Date()]}
+                                    disabled={[{ before: new Date() }, new Date()]}
                                     timeZone="Europe/Madrid"
                                     selected={field.state.value}
                                     onSelect={(value) => field.handleChange(value)}

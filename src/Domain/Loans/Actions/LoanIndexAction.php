@@ -14,6 +14,8 @@ class LoanIndexAction
         $email = $search[0];
         $title = $search[1];
         $status = $search[2];
+        $startDate = $search[3];
+        $dueDate = $search[4];
 
         $users = User::query()
         ->when($email !== "null", function ($query) use ($email) {
@@ -34,6 +36,12 @@ class LoanIndexAction
             })
             ->when($status !== "null", function ($query) use ($status) {
                 $query->where('is_active', 'like', $status);
+            })
+            ->when($startDate !== 'null', function ($query) use ($startDate) {
+                $query->whereDate('created_at', '=', $startDate);
+            })
+            ->when($dueDate !== 'null', function ($query) use ($dueDate) {
+                $query->whereDate('due_date', '=', $dueDate);
             })
             ->latest()
             ->paginate($perPage);

@@ -17,7 +17,7 @@ class LoanUpdateAction
         // dd($data);
         $statusCheck = $loan->is_active;
         if (isset($data['newStatus'])) {
-            $statusCheck = $data['newStatus'];
+            $statusCheckcx = $data['newStatus'];
             if (Reservation::where('book_id', 'like', $loan->book_id)->first() !== null){
             $user_id_res = Reservation::where('book_id', 'like', $loan->book_id)->orderBy('created_at', 'asc')->first()->user_id;
             $user = User::find($user_id_res);

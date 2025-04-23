@@ -20,7 +20,9 @@ class LoanController extends Controller
      */
     public function index()
     {
-        return Inertia::render('loans/Index', []);
+        $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
+
+        return Inertia::render('loans/Index', ['lang' => $lang]);
     }
 
     /**

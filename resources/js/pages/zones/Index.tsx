@@ -13,7 +13,11 @@ import { PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
-export default function ZonesIndex() {
+interface ZoneIndexProps {
+    floor_list: number[],
+}
+
+export default function ZonesIndex({floor_list}:ZoneIndexProps) {
     const { t } = useTranslations();
     const { url } = usePage();
 
@@ -183,7 +187,8 @@ export default function ZonesIndex() {
                                     {
                                         id: 'floor',
                                         label: t('ui.zones.filters.floor') || 'Floor',
-                                        type: 'number',
+                                        type: 'select',
+                                        options: floor_list,
                                         placeholder: t('ui.zones.placeholders.floor') || 'Floor...',
                                     },
                                 ] as FilterConfig[]

@@ -625,6 +625,9 @@ return [
             'remaining' => 'Entrega',
             'duedate' => 'Fecha límite',
             'created_at' => 'Fecha de inicio',
+            'start_date' => 'Fecha de inicio',
+            'due_date' => 'Fecha límite',
+
         ],
         'placeholders' => [
             'book' => 'Introduzca el UUID del libro',
@@ -632,6 +635,8 @@ return [
             'booktitle' => 'Título del libro',
             'email' => 'Email del usuario',
             'status' => 'Estado',
+            'start_date' => 'Fecha de inicio',
+            'due_date' => 'Fecha límite',
         ],
         'cards' => [
             'create' => [
