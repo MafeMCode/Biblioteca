@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Domain\Loans\Actions\LoanStoreAction;
 use Domain\Loans\Actions\LoanUpdateAction;
 use Domain\Loans\Models\Loan;
+use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -30,8 +31,9 @@ class LoanController extends Controller
      */
     public function create()
     {
+        $email_list = User::all()->pluck('email');
         $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
-        return Inertia::render('loans/Create', ['lang'=>$lang]);
+        return Inertia::render('loans/Create', ['lang'=>$lang, 'emailList' => $email_list]);
     }
 
     /**
@@ -68,11 +70,12 @@ class LoanController extends Controller
      */
     public function edit(Request $request, Loan $loan)
     {
+        $email_list = User::all()->pluck('email');
         $usermail = $loan->user->email;
         $bookUUID = $loan->book->id;
         $ddate = $loan->due_date->toISOString();
 
-        // dd($ddate);
+        // dd($usermail);
 
         $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
 
@@ -82,6 +85,7 @@ class LoanController extends Controller
             'usermail' => $usermail,
             'bookUUID' => $bookUUID,
             'ddate' => $ddate,
+            'emailList' => $email_list,
             'lang' => $lang,
             'page' => $request->query('page'),
             'perPage' => $request->query('perPage'),
@@ -93,8 +97,11 @@ class LoanController extends Controller
      */
     public function update(Request $request, Loan $loan, LoanUpdateAction $action)
     {
+
         if(isset($request['dueDate'])){
             $request['newDueDate'] = Carbon::parse($request['dueDate'])->format('d/m/Y, H:i:s');
+        } else {
+            $request['newDueDate'] = $request['newDueDate'];
 
         }
 

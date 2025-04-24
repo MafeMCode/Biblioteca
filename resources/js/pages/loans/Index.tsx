@@ -92,6 +92,15 @@ export default function LoansIndex({lang}:IndexLoanProps) {
         setCurrentPage(page);
     };
 
+    const handleFilterChange = (newFilters: Record<string, any>) => {
+        const filtersChanged = newFilters!==filters;
+
+        if (filtersChanged) {
+            setCurrentPage(1);
+        }
+        setFilters(newFilters);
+        };
+
     const handlePerPageChange = (newPerPage: number) => {
         setPerPage(newPerPage);
         setCurrentPage(1); // Reset to first page when changing items per page
@@ -231,8 +240,8 @@ export default function LoansIndex({lang}:IndexLoanProps) {
                             >
                                 <Clock className="h-4 w-4" />
                             </Button>
-                            <Link href={`/loans/${loan.id}/edit?page=${currentPage}&perPage=${perPage}`}>
-                                <Button disabled={!loan.is_active} variant="outline" size="icon" title={t('ui.loans.buttons.edit') || 'Edit loan'}>
+                            <Link disabled={!loan.is_active} href={`/loans/${loan.id}/edit?page=${currentPage}&perPage=${perPage}`}>
+                                <Button variant="outline" size="icon" title={t('ui.loans.buttons.edit') || 'Edit loan'}>
                                     <PencilIcon className="h-4 w-4" />
                                 </Button>
                             </Link>
@@ -317,11 +326,14 @@ export default function LoansIndex({lang}:IndexLoanProps) {
                                     },
                                 ] as FilterConfig[]
                             }
-                            onFilterChange={setFilters}
+                            onFilterChange={handleFilterChange}
                             initialValues={filters}
                         />
                     </div>
+                    <div className="text-center w-full justify-center mb-5">
 
+                    {loans?.meta.total !== undefined && <h2>{t('ui.common.filters.results', {attribute: loans?.meta.total})}</h2>}
+</div>
                     <div className="w-full overflow-hidden">
                         {isLoading ? (
                             <TableSkeleton columns={10} rows={10} />

@@ -108,6 +108,7 @@ return [
     'validation' => [
             'required' => 'El campo :attribute es obligatorio.',
             'email' => 'El campo :attribute debe ser una dirección de correo válida.',
+            'userEmail' => 'El campo :attribute debe ser una dirección de correo válida de un usuario activo en el sistema.',
             'min' => [
                 'string' => 'El campo :attribute debe tener al menos :min caracteres.',
             ],
@@ -116,7 +117,10 @@ return [
             ],
             'unique' => 'El campo :attribute ya ha sido tomado.',
             'confirmed' => 'El campo :attribute no coincide.',
+            'pastDueDate' => 'La :attribute no puede ser una fecha pasada u hoy.',
+            'sunday' => 'La :attribute no puede ser un domingo.',
             'positive' => 'El campo :attribute debe ser positivo y mayor de 0.',
+
     ],
     'common' => [
         'buttons' => [
@@ -127,6 +131,9 @@ return [
         'filters'=> [
             'title' => 'Filtros',
             'clear' => 'Limpiar',
+            'results' => ':attribute resultados encontrados.',
+            'trigger' => 'Filtros',
+
         ],
         'delete_dialog' => [
             'success' => 'Usuario eliminado correctamente',
@@ -297,15 +304,18 @@ return [
             'publisher' => 'Editorial',
             'pages' => 'Páginas',
             'bookcase' => 'Estantería',
+            'available' => 'Disponibilidad',
             'zone' => 'Zona',
             'floor' => 'Piso',
         ],
         'placeholders' => [
             'title' => 'Ingrese el Título',
             'author' => 'Ingrese el Autor',
+            'ISBN' => 'Ingrese el ISBN',
             'genres' => 'Ingrese los Géneros',
             'publisher' => 'Ingrese la Editorial',
             'pages' => 'Ingrese el número de Páginas',
+            'available' => 'Disponibilidad',
             'bookcase' => 'Ingrese la Estantería',
             'zone' => 'Ingrese la Zona',
             'floor' => 'Ingrese el Piso',
@@ -700,11 +710,13 @@ return [
             'book' => "Titulo del libro",
             'email' => "Email del usuario",
             'status' => 'Status',
+            'queue' => 'Posición en cola',
         ],
         'placeholders' => [
             'book' => "Introduce el titulo del libro",
             'user' => "Introduce el email del usuario",
             'booktitle' => "Book's Title",
+            'queue' => 'Posición en cola',
             'email' => "User's Email",
             'status' => 'Status',
         ],

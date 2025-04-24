@@ -3,6 +3,7 @@ import { DeleteDialog } from '@/components/stack-table/DeleteDialog';
 import { FilterConfig, FiltersTable } from '@/components/stack-table/FiltersTable';
 import { Table } from '@/components/stack-table/Table';
 import { TableSkeleton } from '@/components/stack-table/TableSkeleton';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -49,6 +50,7 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
         filters.zone ? filters.zone : 'null',
         filters.bookcase ? filters.bookcase : 'null',
         filters.ISBN ? filters.ISBN : 'null',
+        filters.available ? filters.available : 'null',
     ];
 
     const {
@@ -83,9 +85,13 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
     }
 
     const handleFilterChange = (newFilters: Record<string, any>) => {
+        const filtersChanged = newFilters!==filters;
+
+        if (filtersChanged) {
+            setCurrentPage(1);
+        }
         setFilters(newFilters);
-        console.log('Filters changed:', newFilters);
-    };
+        };
 
     const handlePerPageChange = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -116,11 +122,12 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
                     accessorKey: 'ISBN',
                     format: (value) => {
                         return value['number'] + ' - (' + value['loans'] + '/' + value['total'] + ')';
+
                     },
                 }),
                 createTextColumn<Book>({
                     id: 'hasActive',
-                    header: t('Availible') || 'Title',
+                    header: t('ui.books.utils.available') || 'Title',
                     accessorKey: 'hasActive',
                     format: (value) => {
                         return !value ? t('ui.books.utils.available') : t('ui.books.utils.unavailable');
@@ -283,6 +290,11 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
                     </div>
                     <div></div>
 
+                    <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-1">
+      <AccordionTrigger className="text-center w-full justify-center">
+      {t('ui.common.filters.trigger')}</AccordionTrigger>
+        <AccordionContent>
                     <div className="space-y-4">
                         <FiltersTable
                             filters={
@@ -344,14 +356,29 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
                                         options: bookcase_list,
                                         placeholder: t('ui.books.placeholders.bookcase') || 'Estantería...',
                                     },
+                                    {
+                                        id: 'available',
+                                        label: t('ui.books.filters.available') || 'Disponible',
+                                        type: 'select',
+                                        options: [
+                                            {label: 'Disponible', value: 'true'},
+                                            {label: 'No disponible', value: 'false'},
+                                        ],
+                                        placeholder: t('ui.books.placeholders.available') || 'Disponible...',
+                                    },
                                 ] as FilterConfig[]
                             }
                             onFilterChange={handleFilterChange}
                             initialValues={filters}
                             containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
-
                         />
                     </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+    <div className="text-center w-full justify-center mb-5">
+    {books?.meta.total !== undefined && <h2>{t('ui.common.filters.results', {attribute: books?.meta.total})}</h2>}
+    </div>
 
                     <div className="w-full overflow-hidden">
                         {isLoading ? (

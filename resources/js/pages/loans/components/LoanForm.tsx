@@ -9,7 +9,7 @@ import { router } from '@inertiajs/react';
 import type { AnyFieldApi } from '@tanstack/react-form';
 import { useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
+import { format, isSunday } from 'date-fns';
 import { enUS, es } from 'date-fns/locale';
 import { Box, CalendarIcon, Layers2, Save, X } from 'lucide-react';
 import * as React from 'react';
@@ -33,6 +33,7 @@ interface LoanFormProps {
     usermail?: string;
     bookIDButton?: string;
     ddate?: string;
+    emailList: string[];
     page?: string;
     perPage?: string;
     lang: string;
@@ -50,7 +51,7 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
     );
 }
 
-export function LoanForm({ initialData, page, perPage, bookIDButton, lang, usermail, ddate }: LoanFormProps) {
+export function LoanForm({ initialData, page, perPage, bookIDButton, lang, emailList, usermail, ddate }: LoanFormProps) {
     const { t } = useTranslations();
     const queryClient = useQueryClient();
 
@@ -63,6 +64,8 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
         fecha = new Date(ddate); // month is 0-indexed
       } else {
         fecha = new Date(); // fallback
+        fecha.setDate(fecha.getDate() + 1);
+
       }
 
 
@@ -72,7 +75,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
     const form = useForm({
         defaultValues: {
             book: initialData?.book_id ?? bookIDButton ?? undefined,
-            user: initialData?.user_id ?? usermail ?? undefined,
+            user: usermail ?? undefined,
             dueDate: fecha ?? undefined,
         },
         onSubmit: async ({ value }) => {
@@ -169,7 +172,9 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.user').toLowerCase() }) : undefined;
+                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.user').toLowerCase() }) :
+                                !emailList.includes(value) ? t('ui.validation.userEmail', { attribute: t('ui.loans.fields.user').toLowerCase() }) :
+                                undefined;
                             },
                         }}
                     >
@@ -206,8 +211,9 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
                         validators={{
                             onChangeAsync: async ({ value }) => {
                                 await new Promise((resolve) => setTimeout(resolve, 500));
-                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.book').toLowerCase() }) :
-                                // value <= new Date ? t('mu pronto') :
+                                return !value ? t('ui.validation.required', { attribute: t('ui.loans.fields.duedate').toLowerCase() }) :
+                                value <= new Date ? t('ui.validation.pastDueDate', { attribute: t('ui.loans.fields.duedate').toLowerCase() }) :
+                                isSunday(value) ? t('ui.validation.sunday', { attribute: t('ui.loans.fields.duedate').toLowerCase() }) :
                                 undefined;
 
                             },
@@ -236,7 +242,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, userm
                                     animate
                                     mode="single"
                                     locale={langMap[lang]}
-                                    disabled={[{ before: new Date() }, new Date()]}
+                                    disabled={[{ before: new Date() }, new Date(), isSunday]}
                                     timeZone="Europe/Madrid"
                                     selected={field.state.value}
                                     onSelect={(value) => field.handleChange(value)}

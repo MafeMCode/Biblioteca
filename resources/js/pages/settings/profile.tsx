@@ -1,21 +1,12 @@
 import HeadingSmall from '@/components/heading-small';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import Timeline from '@mui/lab/Timeline';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import Typography from '@mui/material/Typography';
-import { Tooltip } from '@radix-ui/react-tooltip';
-import { Book, ClockAlert, Frown, Smile } from 'lucide-react';
+import { Book, ClockAlertIcon, Frown, FrownIcon, Smile, SmileIcon } from 'lucide-react';
+import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
+import 'react-vertical-timeline-component/style.min.css';
 
 interface LoanHistoryItem {
     title: string | null;
@@ -47,18 +38,55 @@ export default function Profile({ loanHistory }: ProfileProps) {
             <Head title={t('ui.settings.profile.title')} />
 
             <SettingsLayout>
-                    <div className="flex flex-col items-center space-y-6">
+                <div className="flex flex-col items-center space-y-6">
+                    <div className="text-center">
+                        <HeadingSmall title={t('ui.settings.profile.timeline.title')} description={t('ui.settings.profile.timeline.description')} />
+                    </div>
+                    {/* <ScrollArea className="h-100 w-[full] rounded-md p-4"> */}
 
-                        <div className="text-center">
-                            <HeadingSmall
-                                title={t('ui.settings.profile.timeline.title')}
-                                description={t('ui.settings.profile.timeline.description')}
-                            />
-                        </div>
-                    <ScrollArea className="h-100 w-[full] rounded-md p-4">
-
-                        <div>
-                            <Timeline>
+                    <div>
+                        <VerticalTimeline
+                        layout={'1-column-left'}>
+                            {loanHistory.map((loan, index) => (
+                                <VerticalTimelineElement
+                                    className=""
+                                    contentStyle={{ background: 'rgba(255, 255, 255, 0.13)', color: '#fff' }}
+                                    contentArrowStyle={
+                                        loan.overdue && loan.isActive
+                                            ? { borderRight: '7px solid  rgb(210, 144, 0)' }
+                                            : loan.overdue && !loan.isActive
+                                              ? { borderRight: '7px solid  rgb(210, 0, 0)' }
+                                              : !loan.overdue && !loan.isActive
+                                                ? { borderRight: '7px solid  rgb(4, 210, 0)' }
+                                                : { borderRight: '7px solid  rgb(0, 193, 210)' }
+                                    }
+                                    date={loan.returnedAt ? 'Returned at: '+loan.returnedAt : 'Due date: '+loan.dueDate}
+                                    iconStyle={
+                                        loan.overdue && loan.isActive
+                                            ? { background: 'rgb(210, 144, 0)', color: '#fff' }
+                                            : loan.overdue && !loan.isActive
+                                              ? { background: 'rgb(210, 0, 0)', color: '#fff' }
+                                              : !loan.overdue && !loan.isActive
+                                                ? { background: 'rgb(4, 210, 0)', color: '#fff' }
+                                                : { background: 'rgb(0, 193, 210)', color: '#fff' }
+                                    }
+                                    icon={
+                                        loan.overdue && loan.isActive
+                                            ? <ClockAlertIcon/>
+                                            : loan.overdue && !loan.isActive
+                                              ? <Frown/>
+                                              : !loan.overdue && !loan.isActive
+                                                ? <Smile/>
+                                                : <Book/>
+                                    }
+                                >
+                                    <h3 className="tailwind con to mi p">{loan.title}</h3>
+                                    <h4 className="vertical-timeline-element-subtitle">{loan.author}</h4>
+                                    <p>Creative Direction, User Experience, Visual Design, Project Management, Team Leading</p>
+                                </VerticalTimelineElement>
+                            ))}
+                        </VerticalTimeline>
+                        {/* <Timeline>
                                 {loanHistory.map((loan, index) => (
                                     <TimelineItem key={index}>
                                         <TimelineOppositeContent width={500} sx={{ py: '12px', px: 2 }}>
@@ -143,11 +171,10 @@ export default function Profile({ loanHistory }: ProfileProps) {
                                         </TimelineContent>
                                     </TimelineItem>
                                 ))}
-                            </Timeline>
-                        </div>
-                        </ScrollArea>
-
+                            </Timeline> */}
                     </div>
+                    {/* </ScrollArea> */}
+                </div>
             </SettingsLayout>
         </AppLayout>
     );

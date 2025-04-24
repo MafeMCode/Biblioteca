@@ -108,6 +108,7 @@ return [
     'validation' => [
            'required' => 'The :attribute field is required.',
             'email' => 'The :attribute field must be a valid email address.',
+            'userEmail' => 'The :attribute field must be a valid email of an active user in the system.',
             'min' => [
                 'string' => 'The :attribute field must be at least :min characters.',
             ],
@@ -116,6 +117,8 @@ return [
             ],
             'unique' => 'The :attribute has already been taken.',
             'confirmed' => 'The :attribute confirmation does not match.',
+            'pastDueDate' => 'The :attribute cannot be a past date or today.',
+            'sunday' => 'The :attribute cannot be a Sunday.',
             'positive' => 'The :attribute must be positive and greater than 0.',
     ],
     'common' => [
@@ -127,6 +130,9 @@ return [
         'filters'=> [
             'title' => 'Filters',
             'clear' => 'Clear',
+            'results' => ':attribute results found.',
+            'trigger' => 'Filters',
+
         ],
         'delete_dialog' => [
             'success' => 'User deleted successfully',
@@ -306,6 +312,7 @@ return [
             'publisher' => 'Publisher',
             'pages' => 'Pages',
             'bookcase' => 'Bookcase',
+            'available' => 'Availability',
             'zone' => 'Zone',
             'floor' => 'Floor',
         ],
@@ -315,6 +322,7 @@ return [
             'ISBN' => 'Enter the ISBN...',
             'genres' => 'Enter the Genre/s...',
             'publisher' => 'Enter the Publisher...',
+            'available' => 'Availability',
             'pages' => 'Enter number of pages...',
             'bookcase' => 'Enter the Bookcase...',
             'zone' => 'Enter the Zone...',
@@ -701,6 +709,7 @@ return [
                 'book' => "Book's Title",
                 'email' => "User's Email",
                 'status' => 'Status',
+                'queue' => 'Place in queue',
             ],
             'placeholders' => [
                 'book' => "Enter the book's Title",
@@ -708,6 +717,7 @@ return [
                 'booktitle' => "Book's Title",
                 'email' => "User's Email",
                 'status' => 'Status',
+                'queue' => 'Place in queue',
             ],
             'cards' => [
                 'create' => [

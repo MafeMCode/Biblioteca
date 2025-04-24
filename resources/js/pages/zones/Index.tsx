@@ -53,6 +53,14 @@ export default function ZonesIndex({floor_list}:ZoneIndexProps) {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+    const handleFilterChange = (newFilters: Record<string, any>) => {
+        const filtersChanged = newFilters!==filters;
+
+        if (filtersChanged) {
+            setCurrentPage(1);
+        }
+        setFilters(newFilters);
+        };
 
     const handlePerPageChange = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -193,13 +201,16 @@ export default function ZonesIndex({floor_list}:ZoneIndexProps) {
                                     },
                                 ] as FilterConfig[]
                             }
-                            onFilterChange={setFilters}
+                            onFilterChange={handleFilterChange}
                             initialValues={filters}
                             containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4"
 
                         />
                     </div>
+                    <div className="text-center w-full justify-center mb-5">
 
+                    {zones?.meta.total !== undefined && <h2>{t('ui.common.filters.results', {attribute: zones?.meta.total})}</h2>}
+</div>
                     <div className="w-full overflow-hidden">
                         {isLoading ? (
                             <TableSkeleton columns={10} rows={10} />

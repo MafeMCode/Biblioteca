@@ -54,6 +54,14 @@ export default function BookcasesIndex({floor_list, zone_list}:BookcaseIndexProp
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+    const handleFilterChange = (newFilters: Record<string, any>) => {
+        const filtersChanged = newFilters!==filters;
+
+        if (filtersChanged) {
+            setCurrentPage(1);
+        }
+        setFilters(newFilters);
+        };
 
     const handlePerPageChange = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -206,13 +214,16 @@ export default function BookcasesIndex({floor_list, zone_list}:BookcaseIndexProp
                                     },
                                 ] as FilterConfig[]
                             }
-                            onFilterChange={setFilters}
+                            onFilterChange={handleFilterChange}
                             initialValues={filters}
                             containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols- gap-4"
 
                         />
                     </div>
+                    <div className="text-center w-full justify-center mb-5">
 
+                    {bookcases?.meta.total !== undefined && <h2>{t('ui.common.filters.results', {attribute: bookcases?.meta.total})}</h2>}
+</div>
                     <div className="w-full overflow-hidden">
                         {isLoading ? (
                             <TableSkeleton columns={10} rows={10} />

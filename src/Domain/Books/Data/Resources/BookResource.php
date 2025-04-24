@@ -46,7 +46,9 @@ class BookResource extends Data
 
         $numPrestamosMismoISBN = Loan::whereIn('book_id', $ids_mismo_ISBN)->where('is_active', 'like', 'true')->count();
 
-        $ActiveBool = $book->activeLoan()->first() !== null;
+        // pescar reserva de destado ' en espera ' del libro
+        // si existe vvvvvvv
+        $ActiveBool = $book->activeLoan()->first() !== null; // || 0condicional de reserva en espera;
 
         $datos_ISBN = [
             'number' => $book->ISBN,

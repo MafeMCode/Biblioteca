@@ -43,6 +43,14 @@ export default function FloorsIndex() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+  const handleFilterChange = (newFilters: Record<string, any>) => {
+      const filtersChanged = newFilters!==filters;
+
+      if (filtersChanged) {
+          setCurrentPage(1);
+      }
+      setFilters(newFilters);
+      };
 
   const handlePerPageChange = (newPerPage: number) => {
     setPerPage(newPerPage);
@@ -137,11 +145,14 @@ export default function FloorsIndex() {
                                   },
                               ] as FilterConfig[]
                           }
-                          onFilterChange={setFilters}
+                          onFilterChange={handleFilterChange}
                           initialValues={filters}
                       />
                   </div>
+                  <div className="text-center w-full justify-center mb-5">
 
+                  {floors?.meta.total !== undefined && <h2>{t('ui.common.filters.results', {attribute: floors?.meta.total})}</h2>}
+</div>
                   <div className="w-full overflow-hidden">
                       {isLoading ? (
                           <TableSkeleton columns={10} rows={10} />

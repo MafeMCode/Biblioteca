@@ -13,9 +13,11 @@ interface LoanFormProps {
 
     },
     lang: string;
+    emailList: string[];
+
 }
 
-export default function CreateLoan({lang}:LoanFormProps) {
+export default function CreateLoan({lang, emailList}:LoanFormProps) {
     const { t } = useTranslations();
 
     const paramsString = window.location.search;
@@ -37,7 +39,7 @@ export default function CreateLoan({lang}:LoanFormProps) {
                     </CardHeader>
                     <Separator />
                     <CardContent>
-                        <LoanForm bookIDButton={book_id} lang={lang}/>
+                        <LoanForm emailList={emailList} bookIDButton={book_id} lang={lang}/>
                     </CardContent>
                 </Card>
             </div>

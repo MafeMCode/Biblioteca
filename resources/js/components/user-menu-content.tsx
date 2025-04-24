@@ -51,6 +51,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     onClick={() => {
                         cleanup();
                         setOpen(false);
+
                     }}
                 >
                     <LogOut className="mr-2" />
