@@ -4,17 +4,19 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-import { Book, ClockAlertIcon, Frown, FrownIcon, Smile, SmileIcon } from 'lucide-react';
+import { Book, ClockAlertIcon, Frown, Smile } from 'lucide-react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
 
 interface LoanHistoryItem {
     title: string | null;
+    ISBN: string | null;
     isActive: boolean;
     returnedAt: string | null;
     dueDate: string | null;
     overdue: boolean;
     author: string | null;
+    imgURL: string | null;
 }
 
 interface ProfileProps {
@@ -38,19 +40,35 @@ export default function Profile({ loanHistory }: ProfileProps) {
             <Head title={t('ui.settings.profile.title')} />
 
             <SettingsLayout>
-                <div className="flex flex-col items-center space-y-6">
-                    <div className="text-center">
+            <div className="flex flex-col items-center space-y-6 w-4/5 mx-auto">
+            <div className="text-center">
                         <HeadingSmall title={t('ui.settings.profile.timeline.title')} description={t('ui.settings.profile.timeline.description')} />
                     </div>
-                    {/* <ScrollArea className="h-100 w-[full] rounded-md p-4"> */}
 
-                    <div>
-                        <VerticalTimeline
-                        layout={'1-column-left'}>
+                        <VerticalTimeline layout={'1-column-left'}>
                             {loanHistory.map((loan, index) => (
                                 <VerticalTimelineElement
-                                    className=""
-                                    contentStyle={{ background: 'rgba(255, 255, 255, 0.13)', color: '#fff' }}
+                                    contentStyle={{
+                                        background: 'rgba(255, 255, 255, 0.13)',
+                                        color: (loan.overdue && loan.isActive
+                                            ? 'rgb(213, 185, 125)'
+                                            : loan.overdue && !loan.isActive
+                                              ? 'rgb(206, 138, 138)'
+                                              : !loan.overdue && !loan.isActive
+                                                ? 'rgb(132, 192, 131)'
+                                                : 'rgb(135, 193, 198)'),
+                                        borderTop:
+                                            '7px solid ' +
+                                            (loan.overdue && loan.isActive
+                                                ? 'rgb(210, 144, 0)'
+                                                : loan.overdue && !loan.isActive
+                                                  ? 'rgb(210, 0, 0)'
+                                                  : !loan.overdue && !loan.isActive
+                                                    ? 'rgb(4, 210, 0)'
+                                                    : 'rgb(0, 193, 210)'),
+                                        borderTopLeftRadius: '0.5rem',
+                                        borderTopRightRadius: '0.5rem',
+                                    }}
                                     contentArrowStyle={
                                         loan.overdue && loan.isActive
                                             ? { borderRight: '7px solid  rgb(210, 144, 0)' }
@@ -60,7 +78,16 @@ export default function Profile({ loanHistory }: ProfileProps) {
                                                 ? { borderRight: '7px solid  rgb(4, 210, 0)' }
                                                 : { borderRight: '7px solid  rgb(0, 193, 210)' }
                                     }
-                                    date={loan.returnedAt ? 'Returned at: '+loan.returnedAt : 'Due date: '+loan.dueDate}
+                                    date=
+                                    {
+                                        loan.overdue && loan.isActive
+                                            ? 'Due date: ' + loan.dueDate + ' Overdue!'
+                                            : loan.overdue && !loan.isActive
+                                              ? 'Returned at: ' + loan.returnedAt + ' Overdue!'
+                                              : !loan.overdue && !loan.isActive
+                                                ? 'Returned at: ' + loan.returnedAt
+                                                : 'Due date: ' + loan.dueDate
+                                    }
                                     iconStyle={
                                         loan.overdue && loan.isActive
                                             ? { background: 'rgb(210, 144, 0)', color: '#fff' }
@@ -71,18 +98,28 @@ export default function Profile({ loanHistory }: ProfileProps) {
                                                 : { background: 'rgb(0, 193, 210)', color: '#fff' }
                                     }
                                     icon={
-                                        loan.overdue && loan.isActive
-                                            ? <ClockAlertIcon/>
-                                            : loan.overdue && !loan.isActive
-                                              ? <Frown/>
-                                              : !loan.overdue && !loan.isActive
-                                                ? <Smile/>
-                                                : <Book/>
+                                        loan.overdue && loan.isActive ? (
+                                            <ClockAlertIcon />
+                                        ) : loan.overdue && !loan.isActive ? (
+                                            <Frown />
+                                        ) : !loan.overdue && !loan.isActive ? (
+                                            <Smile />
+                                        ) : (
+                                            <Book />
+                                        )
                                     }
                                 >
-                                    <h3 className="tailwind con to mi p">{loan.title}</h3>
-                                    <h4 className="vertical-timeline-element-subtitle">{loan.author}</h4>
-                                    <p>Creative Direction, User Experience, Visual Design, Project Management, Team Leading</p>
+                                    <div className="flex items-center justify-between w-full">
+    <div className="w-4/5">
+        <h3 className="mb-2 text-3xl font-semibold">{loan.title}</h3>
+        <h4 className="mb-4 text-xl text-gray-300">{loan.author}</h4>
+        <p className="text-2xl font-medium text-gray-500">ISBN: {loan.ISBN}</p>
+    </div>
+    <div className="w-1/5 h-full flex items-center justify-center">
+
+        <img src={loan.imgURL} alt="Preview"  />
+    </div>
+</div>
                                 </VerticalTimelineElement>
                             ))}
                         </VerticalTimeline>
@@ -172,7 +209,6 @@ export default function Profile({ loanHistory }: ProfileProps) {
                                     </TimelineItem>
                                 ))}
                             </Timeline> */}
-                    </div>
                     {/* </ScrollArea> */}
                 </div>
             </SettingsLayout>

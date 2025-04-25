@@ -312,6 +312,16 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
                                         placeholder: t('ui.books.placeholders.ISBN') || 'ISBN...',
                                     },
                                     {
+                                        id: 'available',
+                                        label: t('ui.books.filters.available') || 'Disponible',
+                                        type: 'select',
+                                        options: [
+                                            {label: 'Disponible', value: 'true'},
+                                            {label: 'No disponible', value: 'false'},
+                                        ],
+                                        placeholder: t('ui.books.placeholders.available') || 'Disponible...',
+                                    },
+                                    {
                                         id: 'genres',
                                         label: t('ui.books.filters.genres') || 'Géneros',
                                         type: 'text',
@@ -356,21 +366,11 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
                                         options: bookcase_list,
                                         placeholder: t('ui.books.placeholders.bookcase') || 'Estantería...',
                                     },
-                                    {
-                                        id: 'available',
-                                        label: t('ui.books.filters.available') || 'Disponible',
-                                        type: 'select',
-                                        options: [
-                                            {label: 'Disponible', value: 'true'},
-                                            {label: 'No disponible', value: 'false'},
-                                        ],
-                                        placeholder: t('ui.books.placeholders.available') || 'Disponible...',
-                                    },
                                 ] as FilterConfig[]
                             }
                             onFilterChange={handleFilterChange}
                             initialValues={filters}
-                            containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4"
+                            containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-4"
                         />
                     </div>
         </AccordionContent>

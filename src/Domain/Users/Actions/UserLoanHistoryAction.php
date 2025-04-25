@@ -24,6 +24,8 @@ class UserLoanHistoryAction
 
                 return [
                     'title' => $loan->book->title ?? null, // null-safe in case the book is missing
+                    'ISBN' => $loan->book->ISBN ?? null, // null-safe in case the book is missing
+                    'imgURL' => $loan->book->getFirstMediaUrl('media'),
                     'isActive' => $loan->is_active,
                     'returnedAt' => optional($loan->returned_at)->format('d/m/Y'),
                     'dueDate' => $loan->due_date->format('d/m/Y'),
