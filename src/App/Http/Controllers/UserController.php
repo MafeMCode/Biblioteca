@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Domain\Users\Actions\UserDestroyAction;
 use Domain\Users\Actions\UserIndexAction;
+use Domain\Users\Actions\UserLoanHistoryAction;
 use Domain\Users\Actions\UserStoreAction;
 use Domain\Users\Actions\UserUpdateAction;
 use Domain\Users\Models\User;

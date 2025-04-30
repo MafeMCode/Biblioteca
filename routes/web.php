@@ -1,5 +1,6 @@
 <?php
 
+use Domain\Stats\Actions\StatsAction;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -8,10 +9,13 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('stats', function (StatsAction $action) {
+        $data = $action();
+        return Inertia::render('stats', ['data' => $data]);
+    })->name('stats');
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
-
     Route::resource('users', \App\Users\Controllers\UserController::class);
     Route::resource('floors', \App\Floors\Controllers\FloorController::class);
     Route::resource('zones', \App\Zones\Controllers\ZoneController::class);

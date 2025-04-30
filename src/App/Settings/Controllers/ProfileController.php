@@ -21,12 +21,12 @@ class ProfileController extends Controller
     public function edit(Request $request, UserLoanHistoryAction $action): Response
     {
 
-        $loans = $action(Auth::user());
+        $activity = $action(Auth::user());
 
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
-            'loanHistory' => $loans,
+            'activityHistory' => $activity,
         ]);
     }
 

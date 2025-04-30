@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { TableSkeleton } from "@/components/stack-table/TableSkeleton";
 import { UserLayout } from "@/layouts/users/UserLayout";
 import { User, useDeleteUser, useUsers } from "@/hooks/users/useUsers";
-import { PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { Eye, PencilIcon, PlusIcon, TrashIcon } from "lucide-react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useState, useMemo } from "react";
 import { Link, usePage } from "@inertiajs/react";
@@ -104,8 +104,14 @@ export default function UsersIndex() {
               <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" title={t("ui.users.buttons.delete") || "Delete user"}>
                 <TrashIcon className="h-4 w-4" />
               </Button>
+
             }
           />
+          <Link href={`/users/${user.id}`}>
+            <Button variant="outline" size="icon" title={t("ui.users.buttons.show") || "Show user"}>
+              <Eye className="h-4 w-4" />
+            </Button>
+          </Link>
         </>
       ),
     }),

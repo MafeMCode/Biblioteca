@@ -7,6 +7,7 @@ use Domain\Permissions\Models\Permission;
 use Domain\Roles\Models\Role;
 use Domain\Users\Actions\UserDestroyAction;
 use Domain\Users\Actions\UserIndexAction;
+use Domain\Users\Actions\UserLoanHistoryAction;
 use Domain\Users\Actions\UserStoreAction;
 use Domain\Users\Actions\UserUpdateAction;
 use Domain\Users\Models\User;
@@ -21,6 +22,16 @@ class UserController extends Controller
     public function index()
     {
         return Inertia::render('users/Index');
+    }
+
+    public function show(User $user, UserLoanHistoryAction $action)
+    {
+        $activityList = $action($user);
+
+        return Inertia::render('users/Show', [
+            'user' => $user,
+            'activityList' => $activityList,
+        ]);
     }
 
     public function create()

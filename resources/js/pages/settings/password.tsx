@@ -55,7 +55,7 @@ export default function Password() {
             <Head title={t('ui.settings.password.title')} />
 
             <SettingsLayout>
-                <div className="space-y-6">
+                <div className="space-y-6 w-2/5">
                     <HeadingSmall
                         title={t('ui.settings.password.update_title')}
                         description={t('ui.settings.password.update_description')}

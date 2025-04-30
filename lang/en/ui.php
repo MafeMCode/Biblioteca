@@ -65,8 +65,9 @@ return [
             'save_button' => 'Save',
             'saved_message' => 'Saved',
             'timeline' => [
-                'title' => 'Loan History',
-                'description' => "Here's a timeline with all your loans",
+                'title' => 'Activity History',
+                'description' => "Here's a timeline with all your activity",
+                'description2' => "Here's a timeline with all of this user's activity",
                 'inProgress' => 'Currently lend',
                 'returned' => 'Returned',
                 'unknown' => 'Unknown book',
@@ -132,7 +133,7 @@ return [
             'clear' => 'Clear',
             'results' => ':attribute results found.',
             'trigger' => 'Filters',
-
+            'all' => 'All'
         ],
         'delete_dialog' => [
             'success' => 'User deleted successfully',
@@ -150,6 +151,7 @@ return [
     'users' => [
         'title' => 'Users',
         'create' => 'Create User',
+        'show' => 'User Details',
         'edit' => 'Edit User',
         'fields' => [
             'name' => 'Name',

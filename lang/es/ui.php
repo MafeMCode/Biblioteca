@@ -65,8 +65,9 @@ return [
             'save_button' => 'Guardar',
             'saved_message' => 'Guardado',
             'timeline' => [
-                'title' => 'Historial de Préstamos',
-                'description' => "Aquí puedes ver todo tu historial de préstamos",
+                'title' => 'Historial de Actividad',
+                'description' => "Aquí puedes ver todo tu historial de actividad",
+                'description' => "Aquí puedes ver todo el historial de actividad de este usuario",
                 'inProgress' => 'En préstamo',
                 'returned' => 'Devuelto',
                 'dueDate' => 'Fecha límite: ',
@@ -133,6 +134,7 @@ return [
             'clear' => 'Limpiar',
             'results' => ':attribute resultados encontrados.',
             'trigger' => 'Filtros',
+            'all' => 'Todos'
 
         ],
         'delete_dialog' => [
@@ -151,6 +153,7 @@ return [
     'users' => [
         'title' => 'Usuarios',
         'create' => 'Crear Usuario',
+        'show' => 'Datos del Usuario',
         'edit' => 'Editar Usuario',
         'fields' => [
             'name' => 'Nombre',

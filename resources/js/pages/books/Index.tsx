@@ -5,26 +5,34 @@ import { Table } from '@/components/stack-table/Table';
 import { TableSkeleton } from '@/components/stack-table/TableSkeleton';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Book, useBooks, useDeleteBook } from '@/hooks/books/useBooks';
 import { useTranslations } from '@/hooks/use-translations';
 import { BookLayout } from '@/layouts/books/BookLayout';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { ClipboardList, Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { Check, ChevronsUpDown, ClipboardList, Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
+
+interface Email {
+    label: string,
+    value: string,
+}
 
 interface BookIndexProps {
     floor_list: number[],
     zone_list: number[],
     bookcase_list: number[],
+    emailList: Email[],
 }
 
-export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIndexProps) {
+export default function BooksIndex({floor_list, zone_list, bookcase_list, emailList}:BookIndexProps) {
     const { t } = useTranslations();
     const { url } = usePage();
     // Obtener los parámetros de la URL actual
@@ -37,6 +45,7 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
     const [perPage, setPerPage] = useState(perPageParam ? parseInt(perPageParam) : 10);
     const [filters, setFilters] = useState<Record<string, any>>({});
     const [open, setOpen] = useState(false);
+    const [popOpen, popSetOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [reserMail, setReserMail] = useState('');
 
@@ -292,7 +301,7 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
 
                     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="item-1">
-      <AccordionTrigger className="text-center w-full justify-center">
+      <AccordionTrigger className="text-center w-full justify-center cursor-pointer">
       {t('ui.common.filters.trigger')}</AccordionTrigger>
         <AccordionContent>
                     <div className="space-y-4">
@@ -434,23 +443,58 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list}:BookIn
                     </DialogHeader>
                     {selectedBook && (
                         <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="items-center gap-4">
                                 <Label htmlFor="name" className="text-right">
                                 {t('ui.reservations.utils.book')}
                                 </Label>
                                 <Input disabled id="name" value={selectedBook.title} className="col-span-3" />
                             </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="items-center gap-4 w-full">
                                 <Label htmlFor="username" className="text-right">
                                 {t('ui.reservations.utils.email')}
                                 </Label>
-                                <Input
+                                {/* popoverStyle */}
+
+                                <div className="flex items-center space-x-4 w-full">
+      <Popover open={popOpen} onOpenChange={popSetOpen}>
+        <PopoverTrigger asChild className='w-full'>
+          <Button variant="outline" className="w-full justify-start">
+            {reserMail ? <>{reserMail}</> : <>Email</>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="p-0" side="bottom" align="start">
+          <Command>
+            <CommandInput placeholder="Email..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup>
+                {emailList.map((email) => (
+                  <CommandItem
+                    key={email.value}
+                    value={email.value}
+                    onSelect={(value) => {
+                        setReserMail(value)
+                        popSetOpen(false)
+                    }}
+                  >
+                    {email.label}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+                                {/* popoverStyle */}
+
+                                {/* <Input
                                     id="username"
                                     type="email"
                                     value={reserMail}
                                     onChange={(e) => setReserMail(e.target.value)}
                                     className="col-span-3"
-                                />
+                                /> */}
                             </div>
                         </div>
                     )}

@@ -40,7 +40,7 @@ export default function CreateBook({genres, floors, zones, bookcases}:BookFormPr
     return (
         <BookLayout title={t('ui.books.create')}>
             <div className="flex max-w-screen items-center self-center">
-                <Card className="w-100% m-4 p-4 shadow-lg dark:shadow-xs dark:shadow-white">
+                <Card className="w-full m-4 p-4 shadow-lg dark:shadow-xs dark:shadow-white">
                     <CardHeader>
                         <CardTitle>
                             <div className="flex items-center gap-1">

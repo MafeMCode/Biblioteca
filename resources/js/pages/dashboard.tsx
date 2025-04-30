@@ -1,5 +1,5 @@
 import { DashboardCard } from '@/components/dashboard/DashboardCard';
-import { Users, User, ChartColumnStacked, BookMarked, LandPlot, Layers, Handshake, ClipboardListIcon } from 'lucide-react';
+import { Users, User, ChartColumnStacked, BookMarked, LandPlot, Layers, Handshake, ClipboardListIcon, ChartNoAxesCombined } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { useTranslations } from '@/hooks/use-translations';
@@ -95,6 +95,13 @@ export default function Dashboard() {
                     description={t('ui.dashboard.description.reservations')}
                     href="/reservations"
                     icon={ClipboardListIcon}
+                />
+
+                <DashboardCard
+                    title={t('ui.dashboard.stats')}
+                    description={t('ui.dashboard.description.stats')}
+                    href="/stats"
+                    icon={ChartNoAxesCombined}
                 />
 
             </div>

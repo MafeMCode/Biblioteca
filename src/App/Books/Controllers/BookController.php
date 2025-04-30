@@ -11,6 +11,7 @@ use Domain\Books\Actions\BookDestroyAction;
 use Domain\Books\Actions\ISBNGeneration;
 use Domain\Floors\Models\Floor;
 use Domain\Genres\Models\Genre;
+use Domain\Users\Models\User;
 use Domain\Zones\Models\Zone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +25,14 @@ class BookController extends Controller
      */
     public function index()
     {
+
+        $emailList = User::all()->pluck('email')->map(function ($email) {
+            return [
+                'label' => $email,
+                'value' => $email,
+            ];
+        })->toArray();
+
         $floor_numbers = Floor::all()->pluck('story')->map(function ($story) {
             return [
                 'label' => $story,
@@ -43,7 +52,7 @@ class BookController extends Controller
             ];
         })->toArray();
 
-        return Inertia::render('books/Index', ['floor_list' => $floor_numbers, 'zone_list' => $zone_numbers, 'bookcase_list' => $bookcase_numbers]);
+        return Inertia::render('books/Index', ['emailList' => $emailList, 'floor_list' => $floor_numbers, 'zone_list' => $zone_numbers, 'bookcase_list' => $bookcase_numbers]);
     }
 
     /**
