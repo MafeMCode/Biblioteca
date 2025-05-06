@@ -17,8 +17,8 @@ class UserLoanHistoryAction
             ->get();
 
         $reservations = $user->reservations()
-        ->withTrashed()
-        ->with('book') // or any relations you need
+            ->withTrashed()
+            ->with('book')
             ->get();
 
         $loans->each->setAttribute('type', 'loan');
@@ -26,26 +26,26 @@ class UserLoanHistoryAction
 
         $merged = $loans->merge($reservations)
             ->sortByDesc('created_at')
-            ->values(); // Reset keys
+            ->values();
 
         $activities = $merged->map(function ($activity) {
 
-                /** Analizar el tipo de dato primero y rellenar valores en funcion  de lo que sea poara poder tener un eleento unico */
-                return [
-                    'title' => $activity->book->title ?? null,
-                    'ISBN' => $activity->book->ISBN ?? null,
-                    'imgURL' => $activity->book->getFirstMediaUrl('media') ?? null,
-                    'isActive' => $activity['type']=='loan' ? $activity->is_active : null,
-                    'returnedAt' => $activity['type']=='loan' ? optional($activity->returned_at)->format('d/m/Y') : null,
-                    'dueDate' => $activity['type']=='loan' ? $activity->due_date->format('d/m/Y') : null,
-                    'createdAt' => $activity->created_at->format('d/m/Y') ?? null,
-                    'overdue' => $activity['type']=='loan' ? $activity->is_active && Carbon::today() > $activity->due_date || $activity->returned_at > $activity->due_date : null,
-                    'author' => $activity->book->author ?? null,
-                    'type' => $activity->type ?? null,
-                ];
-            })
+            /** Analizar el tipo de dato primero y rellenar valores en funcion  de lo que sea poara poder tener un eleento unico */
+            return [
+                'title' => $activity->book->title ?? null,
+                'ISBN' => $activity->book->ISBN ?? null,
+                'imgURL' => $activity->book->getFirstMediaUrl('media') ?? null,
+                'isActive' => $activity['type'] == 'loan' ? $activity->is_active : null,
+                'returnedAt' => $activity['type'] == 'loan' ? optional($activity->returned_at)->format('d/m/Y') : null,
+                'dueDate' => $activity['type'] == 'loan' ? $activity->due_date->format('d/m/Y') : null,
+                'createdAt' => $activity->created_at->format('d/m/Y') ?? null,
+                'overdue' => $activity['type'] == 'loan' ? $activity->is_active && Carbon::today() > $activity->due_date || $activity->returned_at > $activity->due_date : null,
+                'author' => $activity->book->author ?? null,
+                'type' => $activity->type ?? null,
+            ];
+        })
             ->toArray();
 
-        return $activities;
+       return $activities;
     }
 }

@@ -22,12 +22,14 @@ return [
         'books' => 'Libros',
         'zones' => 'Zonas',
         'loans' => 'Préstamos',
+        'stats' => 'Estadísticas',
         'bookcases' => 'Estanterías',
         'reservations' => 'Reservas',
         'description' => [
             'users' => 'Gestiona los usuarios del sistema',
             'floors' => 'Gestiona los pisos y secciones del sistema',
             'books' => 'Gestiona los libros del sistema',
+        'stats' => 'Estadísticas de actividad',
             'zones' => 'Gestiona las zonas del sistema',
             'loans' => 'Gestiona los prestamos del sistema',
             'bookcases' => 'Gestiona las estanterías del sistema',
@@ -390,7 +392,7 @@ return [
         ],
         'filters' => [
             'capacity' => 'Capacidad Máxima',
-            'number' => 'Nú´mero',
+            'number' => 'Número',
             'genre' => "Género",
             'zone' => 'Zona',
             'floor' => 'Piso',
@@ -718,50 +720,40 @@ return [
         'placeholders' => [
             'book' => "Introduce el titulo del libro",
             'user' => "Introduce el email del usuario",
-            'booktitle' => "Book's Title",
             'queue' => 'Posición en cola',
-            'email' => "User's Email",
-            'status' => 'Status',
-        ],
-        'cards' => [
-            'create' => [
-                'title' => 'Create New Loan',
-                'description' => 'Enter the information to create a new loan in the system'
-            ],
-            'edit' => [
-                'title' => 'Edit Loan',
-                'description' => 'Enter the new information to edit this loan'
-                ]
         ],
         'buttons' => [
-            'new' => 'New Loan',
-            'edit' => 'Edit',
-            'save' => 'Save',
-            'update' => 'Update',
-            'cancel' => 'Cancel',
-            'delete' => 'Delete',
-            'deleting' => 'Deleting...',
-            'saving' => 'Saving...',
-            'retry' => 'Retry',
-            'return' => 'Return',
-            'delayOneWeek' => 'Delay due date by one week',
+            'delete' => 'Eliminar',
+            'deleting' => 'Eliminando...',
+            'saving' => 'Guardando...',
+            'retry' => 'Reintentar',
+            'return' => 'Volver',
         ],
         'delete' => [
             'title' => 'Are you sure?',
             'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
         ],
         'delete_dialog' => [
-            'title' => 'Are you sure?',
-            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
-            'success' => 'Successfully deleted ;)',
+            'title' => '¿Estás seguro?',
+            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el préstamo del sistema.',
+            'success' => 'Eliminado correctamente ;)',
         ],
-        'deleted_error' => 'Error deleting loan',
-        'no_results' => 'No results.',
-        'error_loading' => 'Error loading loans. Please try again.',
-        'showing_results' => 'Showing :from to :to of :total results',
+        'deleted_error' => 'Error al eliminar la reserva',
+        'no_results' => 'No hay resultados.',
+        'error_loading' => 'Error al cargar las reservas. Por favor, inténtalo de nuevo.',
+        'showing_results' => 'Mostrando :from a :to de :total resultados',
         'pagination' => [
-            'previous' => 'Previous',
-            'next' => 'Next',
+            'previous' => 'Anterior',
+            'next' => 'Siguiente',
         ],
     ],
+    'stats' => [
+        'reservations' => 'Reservas',
+        'zone' => 'Zona',
+        'floor' => 'Piso',
+        'loans' => 'Préstamos',
+        'topUsers' => 'Top Usuarios',
+        'topBooks' => 'Top Libros',
+        'topZones' => 'Top Zonas',
+    ]
 ];

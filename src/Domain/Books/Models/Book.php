@@ -57,6 +57,11 @@ class Book extends Model implements HasMedia
         return $this->hasMany(Loan::class);
     }
 
+    public function loansWithTrashed(): HasMany
+    {
+        return $this->hasMany(Loan::class)->withTrashed();
+    }
+
     public function activeLoan(): HasOne
     {
         return $this->hasOne(Loan::class)->where('is_active', true);
@@ -65,5 +70,10 @@ class Book extends Model implements HasMedia
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function reservationsWithTrashed(): HasMany
+    {
+        return $this->hasMany(Reservation::class)->withTrashed();
     }
 }

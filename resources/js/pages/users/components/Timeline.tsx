@@ -116,9 +116,9 @@ export default function Timeline({ activityList }: TimelineProps) {
                                             loan.overdue && loan.isActive
                                                 ? { background: 'rgb(210, 144, 0)', color: '#fff' }
                                                 : loan.overdue && !loan.isActive
-                                                  ? { background: 'rgb(210, 0, 0)', color: '#fff' }
+                                                  ? { background: '#d20000', color: '#fff' }
                                                   : !loan.overdue && !loan.isActive
-                                                    ? { background: 'rgb(4, 210, 0)', color: '#fff' }
+                                                    ? { background: '#04d200', color: '#fff' }
                                                     : { background: 'rgb(0, 193, 210)', color: '#fff' }
                                         }
                                         icon={
@@ -150,7 +150,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                                         contentStyle={{
                                             background: 'rgba(49, 49, 49, 0.8)',
                                             color: 'rgb(189, 150, 210)',
-                                            borderTop: '7px solid rgb(150, 0, 210)',
+                                            borderTop: '7px solid #9600d2',
                                             borderTopLeftRadius: '0.5rem',
                                             borderTopRightRadius: '0.5rem',
                                         }}

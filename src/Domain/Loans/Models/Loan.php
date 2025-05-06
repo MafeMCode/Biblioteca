@@ -2,17 +2,25 @@
 
 namespace Domain\Loans\Models;
 
+use Database\Factories\LoanFactory;
 use Domain\Books\Models\Book;
 use Domain\Users\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Loan extends Model
 {
-    use HasUuids, SoftDeletes;
-
+    use HasUuids, SoftDeletes, HasFactory;
+/**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory()
+    {
+        return LoanFactory::new();
+    }
     protected $fillable = [
         'id',
         'user_id',

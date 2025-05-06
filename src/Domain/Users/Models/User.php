@@ -83,6 +83,11 @@ class User extends Authenticatable
         return $this->hasMany(Loan::class);
     }
 
+    public function loansWithTrashed()
+    {
+        return $this->hasMany(Loan::class)->withTrashed();
+    }
+
     public function activeLoans(): HasMany
     {
         return $this->hasMany(Loan::class)->where('active', true);
@@ -91,5 +96,10 @@ class User extends Authenticatable
     public function reservations(): HasMany
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function reservationsWithTrashed()
+    {
+        return $this->hasMany(Reservation::class)->withTrashed();
     }
 }

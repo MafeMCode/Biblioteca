@@ -1,6 +1,8 @@
 <?php
 
-use Domain\Stats\Actions\StatsAction;
+use Domain\Stats\Actions\bookStatsAction;
+use Domain\Stats\Actions\userStatsAction;
+use Domain\Stats\Actions\zoneStatsAction;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -9,9 +11,11 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('stats', function (StatsAction $action) {
-        $data = $action();
-        return Inertia::render('stats', ['data' => $data]);
+    Route::get('stats', function (userStatsAction $action1, bookStatsAction $action2, zoneStatsAction $action3) {
+        $userdata = $action1();
+        $bookdata = $action2();
+        $zonedata = $action3();
+        return Inertia::render('stats', ['userdata' => $userdata, 'bookdata' => $bookdata, 'zonedata' => $zonedata]);
     })->name('stats');
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');

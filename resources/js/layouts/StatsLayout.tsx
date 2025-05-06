@@ -38,12 +38,12 @@ export function StatsLayout({ title, children }: StatsLayout) {
             href: '/dashboard',
         },
         {
-            title: t('ui.stats.title'),
+            title: t('ui.dashboard.stats'),
             href: '/stats',
         },
     ];
 
-    if (title !== t('ui.stats.title')) {
+    if (title !== t('ui.dashboard.stats')) {
         breadcrumbs.push({
             title,
             href: '#',

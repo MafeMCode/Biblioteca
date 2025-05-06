@@ -22,12 +22,14 @@ return [
         'books' => 'Books',
         'zones' => 'Zones',
         'loans' => 'Loans',
+        'stats' => 'Stats',
         'bookcases' => 'Bookcases',
         'reservations' => 'Reservations',
         'description' => [
             'users' => 'Manage all users in the system',
             'floors' => 'Manage all floors and sections in the system',
             'books' => 'Manage all books in the system',
+            'stats' => 'Activity statistics',
             'zones' => 'Manage all zones in the system',
             'loans' => 'Manage all loans in the system',
             'bookcases' => 'Manage all bookcases in the system',
@@ -762,4 +764,13 @@ return [
                 'next' => 'Next',
             ],
         ],
+    'stats' => [
+        'reservations' => 'Reservations',
+        'loans' => 'Loans',
+        'zone' => 'Zone',
+        'floor' => 'Floor',
+        'topUsers' => 'Top Users',
+        'topBooks' => 'Top Books',
+        'topZones' => 'Top Zones',
+    ]
 ];
