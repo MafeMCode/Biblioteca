@@ -637,6 +637,7 @@ return [
             'hours' => 'hours',
             'minutes' => 'minutes',
         ],
+<<<<<<< HEAD
         'filters' => [
             'book' => "Book's Title",
             'email' => "User's Email",
@@ -765,6 +766,8 @@ return [
             'next' => 'Next',
         ],
     ],
+=======
+>>>>>>> bacc062a3ee984c5bfe2d16cd520a3c214eeba7d
     'stats' => [
         'reservations' => 'Reservations',
         'loans' => 'Loans',
