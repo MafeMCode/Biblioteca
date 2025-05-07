@@ -14,6 +14,7 @@ return [
             'reservations' => 'Reservations',
             'repository' => 'Repository',
             'documentation' => 'Documentation',
+            'stats' => 'Stats'
         ],
     ],
     'dashboard' => [
@@ -22,12 +23,14 @@ return [
         'books' => 'Books',
         'zones' => 'Zones',
         'loans' => 'Loans',
+        'stats' => 'Stats',
         'bookcases' => 'Bookcases',
         'reservations' => 'Reservations',
         'description' => [
             'users' => 'Manage all users in the system',
             'floors' => 'Manage all floors and sections in the system',
             'books' => 'Manage all books in the system',
+            'stats' => 'Activity statistics',
             'zones' => 'Manage all zones in the system',
             'loans' => 'Manage all loans in the system',
             'bookcases' => 'Manage all bookcases in the system',
@@ -107,20 +110,20 @@ return [
         ],
     ],
     'validation' => [
-           'required' => 'The :attribute field is required.',
-            'email' => 'The :attribute field must be a valid email address.',
-            'userEmail' => 'The :attribute field must be a valid email of an active user in the system.',
-            'min' => [
-                'string' => 'The :attribute field must be at least :min characters.',
-            ],
-            'max' => [
-                'string' => 'The :attribute field must not be greater than :max characters.',
-            ],
-            'unique' => 'The :attribute has already been taken.',
-            'confirmed' => 'The :attribute confirmation does not match.',
-            'pastDueDate' => 'The :attribute cannot be a past date or today.',
-            'sunday' => 'The :attribute cannot be a Sunday.',
-            'positive' => 'The :attribute must be positive and greater than 0.',
+        'required' => 'The :attribute field is required.',
+        'email' => 'The :attribute field must be a valid email address.',
+        'userEmail' => 'The :attribute field must be a valid email of an active user in the system.',
+        'min' => [
+            'string' => 'The :attribute field must be at least :min characters.',
+        ],
+        'max' => [
+            'string' => 'The :attribute field must not be greater than :max characters.',
+        ],
+        'unique' => 'The :attribute has already been taken.',
+        'confirmed' => 'The :attribute confirmation does not match.',
+        'pastDueDate' => 'The :attribute cannot be a past date or today.',
+        'sunday' => 'The :attribute cannot be a Sunday.',
+        'positive' => 'The :attribute must be positive and greater than 0.',
     ],
     'common' => [
         'buttons' => [
@@ -128,7 +131,7 @@ return [
             'delete' => 'Delete',
             'close' => 'Close',
         ],
-        'filters'=> [
+        'filters' => [
             'title' => 'Filters',
             'clear' => 'Clear',
             'results' => ':attribute results found.',
@@ -604,162 +607,171 @@ return [
             'Cyberpunk' => 'Cyberpunk',
             'Poetry' => 'Poetry',
         ]
+    ],
+    'loans' => [
+        'title' => 'Loans',
+        'create' => 'Create Loan',
+        'edit' => 'Edit Loan',
+        'fields' => [
+            'book' => "Book's UUID",
+            'user' => "User's Email",
+            'duedate' => 'Due Date'
         ],
-'loans' => [
-            'title' => 'Loans',
-            'create' => 'Create Loan',
-            'edit' => 'Edit Loan',
-            'fields' => [
-                'book' => "Book's UUID",
-                'user' => "User's Email",
-                'duedate' => 'Due Date'
-            ],
-            'columns' => [
-                'book' => "Book's Title",
-                'email' => "User's Email",
-                'status' => 'Status',
-                'remaining' => 'Remaining',
-                'duedate' => 'Due Date',
-                'created_at' => 'Starting Date',
-                'actions' => 'Actions',
-            ],
-            'utils' => [
-                'remaining' => ' remaining',
-                'overdue' => ' overdue',
-                'finished' => 'Finished',
-                'inProgress' => 'In progress',
-                'pickDate' => 'Pick a date',
-                'returned' => 'Returned',
-                'days' => 'days',
-                'hours' => 'hours',
-                'minutes' => 'minutes',
-            ],
-            'filters' => [
-                'book' => "Book's Title",
-                'email' => "User's Email",
-                'status' => 'Status',
-                'start_date' => 'Start date',
-                'due_date' => 'Due date',
-            ],
-            'placeholders' => [
-                'book' => "Enter the book's UUID",
-                'user' => "Enter the user's email",
-                'booktitle' => "Book's Title",
-                'email' => "User's Email",
-                'status' => 'Status',
-                'start_date' => 'Start date',
-                'due_date' => 'Due date',
-            ],
-            'cards' => [
-                'create' => [
-                    'title' => 'Create New Loan',
-                    'description' => 'Enter the information to create a new loan in the system'
-                ],
-                'edit' => [
-                    'title' => 'Edit Loan',
-                    'description' => 'Enter the new information to edit this loan'
-                    ]
-            ],
-            'buttons' => [
-                'new' => 'New Loan',
-                'edit' => 'Edit',
-                'save' => 'Save',
-                'update' => 'Update',
-                'cancel' => 'Cancel',
-                'delete' => 'Delete',
-                'deleting' => 'Deleting...',
-                'saving' => 'Saving...',
-                'retry' => 'Retry',
-                'return' => 'Return',
-                'delayOneWeek' => 'Delay due date by one week',
-            ],
-            'delete' => [
-                'title' => 'Are you sure?',
-                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
-            ],
-            'delete_dialog' => [
-                'title' => 'Are you sure?',
-                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
-                'success' => 'Successfully deleted ;)',
-            ],
-            'deleted_error' => 'Error deleting loan',
-            'no_results' => 'No results.',
-            'error_loading' => 'Error loading loans. Please try again.',
-            'showing_results' => 'Showing :from to :to of :total results',
-            'pagination' => [
-                'previous' => 'Previous',
-                'next' => 'Next',
-            ],
+        'columns' => [
+            'book' => "Book's Title",
+            'email' => "User's Email",
+            'status' => 'Status',
+            'remaining' => 'Remaining',
+            'duedate' => 'Due Date',
+            'created_at' => 'Starting Date',
+            'actions' => 'Actions',
         ],
-'reservations' => [
-            'title' => 'Reservations',
-            'columns' => [
-                'book_id' => "Book's Title",
-                'user_id' => "User's Email",
-                'puesto' => "Position in Queue",
-                'created_at' => 'Created At',
-                'actions' => 'Actions',
-            ],
-            'utils' => [
-                'title' => 'Make a reservation',
-                'description' => 'Input the email of the user that wants to be notified when the book becomes available.',
-                'book' => 'Book',
-                'email' => 'User Email',
-                'confirm' => 'Confirm',
-            ],
-            'filters' => [
-                'book' => "Book's Title",
-                'email' => "User's Email",
-                'status' => 'Status',
-                'queue' => 'Place in queue',
-            ],
-            'placeholders' => [
-                'book' => "Enter the book's Title",
-                'user' => "Enter the user's email",
-                'booktitle' => "Book's Title",
-                'email' => "User's Email",
-                'status' => 'Status',
-                'queue' => 'Place in queue',
-            ],
-            'cards' => [
-                'create' => [
-                    'title' => 'Create New Loan',
-                    'description' => 'Enter the information to create a new loan in the system'
-                ],
-                'edit' => [
-                    'title' => 'Edit Loan',
-                    'description' => 'Enter the new information to edit this loan'
-                    ]
-            ],
-            'buttons' => [
-                'new' => 'New Loan',
-                'edit' => 'Edit',
-                'save' => 'Save',
-                'update' => 'Update',
-                'cancel' => 'Cancel',
-                'delete' => 'Delete',
-                'deleting' => 'Deleting...',
-                'saving' => 'Saving...',
-                'retry' => 'Retry',
-                'return' => 'Return',
-                'delayOneWeek' => 'Delay due date by one week',
-            ],
-            'delete' => [
-                'title' => 'Are you sure?',
-                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
-            ],
-            'delete_dialog' => [
-                'title' => 'Are you sure?',
-                'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
-                'success' => 'Successfully deleted ;)',
-            ],
-            'deleted_error' => 'Error deleting loan',
-            'no_results' => 'No results.',
-            'error_loading' => 'Error loading loans. Please try again.',
-            'showing_results' => 'Showing :from to :to of :total results',
-            'pagination' => [
-                'previous' => 'Previous',
-                'next' => 'Next',
-            ],
+        'utils' => [
+            'remaining' => ' remaining',
+            'overdue' => ' overdue',
+            'finished' => 'Finished',
+            'inProgress' => 'In progress',
+            'pickDate' => 'Pick a date',
+            'returned' => 'Returned',
+            'days' => 'days',
+            'hours' => 'hours',
+            'minutes' => 'minutes',
         ],
+        'filters' => [
+            'book' => "Book's Title",
+            'email' => "User's Email",
+            'status' => 'Status',
+            'start_date' => 'Start date',
+            'due_date' => 'Due date',
+        ],
+        'placeholders' => [
+            'book' => "Enter the book's UUID",
+            'user' => "Enter the user's email",
+            'booktitle' => "Book's Title",
+            'email' => "User's Email",
+            'status' => 'Status',
+            'start_date' => 'Start date',
+            'due_date' => 'Due date',
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Loan',
+                'description' => 'Enter the information to create a new loan in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Loan',
+                'description' => 'Enter the new information to edit this loan'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'New Loan',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+            'return' => 'Return',
+            'delayOneWeek' => 'Delay due date by one week',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+        ],
+        'delete_dialog' => [
+            'title' => 'Are you sure?',
+            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            'success' => 'Successfully deleted ;)',
+        ],
+        'deleted_error' => 'Error deleting loan',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading loans. Please try again.',
+        'showing_results' => 'Showing :from to :to of :total results',
+        'pagination' => [
+            'previous' => 'Previous',
+            'next' => 'Next',
+        ],
+    ],
+    'reservations' => [
+        'title' => 'Reservations',
+        'columns' => [
+            'book_id' => "Book's Title",
+            'user_id' => "User's Email",
+            'puesto' => "Position in Queue",
+            'created_at' => 'Created At',
+            'actions' => 'Actions',
+        ],
+        'utils' => [
+            'title' => 'Make a reservation',
+            'description' => 'Input the email of the user that wants to be notified when the book becomes available.',
+            'book' => 'Book',
+            'email' => 'User Email',
+            'confirm' => 'Confirm',
+        ],
+        'filters' => [
+            'book' => "Book's Title",
+            'email' => "User's Email",
+            'status' => 'Status',
+            'queue' => 'Place in queue',
+        ],
+        'placeholders' => [
+            'book' => "Enter the book's Title",
+            'user' => "Enter the user's email",
+            'booktitle' => "Book's Title",
+            'email' => "User's Email",
+            'status' => 'Status',
+            'queue' => 'Place in queue',
+        ],
+        'cards' => [
+            'create' => [
+                'title' => 'Create New Loan',
+                'description' => 'Enter the information to create a new loan in the system'
+            ],
+            'edit' => [
+                'title' => 'Edit Loan',
+                'description' => 'Enter the new information to edit this loan'
+            ]
+        ],
+        'buttons' => [
+            'new' => 'New Loan',
+            'edit' => 'Edit',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'delete' => 'Delete',
+            'deleting' => 'Deleting...',
+            'saving' => 'Saving...',
+            'retry' => 'Retry',
+            'return' => 'Return',
+            'delayOneWeek' => 'Delay due date by one week',
+        ],
+        'delete' => [
+            'title' => 'Are you sure?',
+            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+        ],
+        'delete_dialog' => [
+            'title' => 'Are you sure?',
+            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            'success' => 'Successfully deleted ;)',
+        ],
+        'deleted_error' => 'Error deleting loan',
+        'no_results' => 'No results.',
+        'error_loading' => 'Error loading loans. Please try again.',
+        'showing_results' => 'Showing :from to :to of :total results',
+        'pagination' => [
+            'previous' => 'Previous',
+            'next' => 'Next',
+        ],
+    ],
+    'stats' => [
+        'reservations' => 'Reservations',
+        'loans' => 'Loans',
+        'zone' => 'Zone',
+        'floor' => 'Floor',
+        'topUsers' => 'Top Users',
+        'topBooks' => 'Top Books',
+        'topZones' => 'Top Zones',
+    ]
 ];
