@@ -36,12 +36,40 @@ class userStatsAction
             'Reservations' => $user->Reservations,
             'total' => $user->Loans + $user->Reservations
         ];
-    })
+    });
+
+    $zonesByTotal = $users
     ->sortByDesc('total')
     ->take(10)
     ->values()
+    ->map(function ($zone, $index) {
+        $zone['index'] = $index + 1; // index starts from 1
+        return $zone;
+    })
     ->toArray();
 
-    return $users;
+    $zonesByLoans = $users
+    ->sortByDesc('Loans')
+    ->take(10)
+    ->values()
+    ->map(function ($zone, $index) {
+        $zone['index'] = $index + 1; // index starts from 1
+        return $zone;
+    })
+    ->toArray();
+
+    $zonesByReservations = $users
+    ->sortByDesc('Reservations')
+    ->take(10)
+    ->values()
+    ->map(function ($zone, $index) {
+        $zone['index'] = $index + 1; // index starts from 1
+        return $zone;
+    })
+    ->toArray();
+
+    $res = ['total' => $zonesByTotal, 'loans' => $zonesByLoans, 'reservations' => $zonesByReservations];
+
+    return $res;
     }
 }

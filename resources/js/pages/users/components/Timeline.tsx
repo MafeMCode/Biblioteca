@@ -1,7 +1,12 @@
 import HeadingSmall from '@/components/heading-small';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Label } from '@/components/ui/label';
+import { format } from 'date-fns';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslations } from '@/hooks/use-translations';
-import { Book, CircleSlash2, ClipboardList, ClockAlertIcon, FileQuestion, Frown, Smile } from 'lucide-react';
+import { Book, CalendarIcon, Clapperboard, ClipboardList, ClockAlertIcon, Frown, Smile } from 'lucide-react';
 import { useState } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -12,7 +17,7 @@ interface ActivityHistoryItem {
     isActive: boolean;
     returnedAt: string | null;
     dueDate: string | null;
-    createdAt: string | null;
+    createdAt: Date | null;
     overdue: boolean;
     author: string | null;
     imgURL: string | null;
@@ -26,42 +31,102 @@ interface TimelineProps {
 export default function Timeline({ activityList }: TimelineProps) {
     const { t } = useTranslations();
     const [selectedFilter, setselectedFilter] = useState<string>('all');
-    const loanCount = activityList.filter(item => item.type === 'loan').length;
-    const reservationCount = activityList.filter(item => item.type === 'reservation').length;
+    const loanCount = activityList.filter((item) => item.type === 'loan').length;
+    const reservationCount = activityList.filter((item) => item.type === 'reservation').length;
 
+    const [selectedStart, setSelectedStart] = useState<Date | undefined>(undefined);
+    const [selectedEnd, setSelectedEnd] = useState<Date | undefined>(undefined);
 
     const filterMap = {
-        'all' : activityList.length,
-        'loans' : loanCount,
-        'reservations' : reservationCount,
+        all: activityList.length,
+        loans: loanCount,
+        reservations: reservationCount,
     };
     const handleFilterChange = (filter: string) => {
         setselectedFilter(filter);
     };
 
+    const handleClearStart = (pop: any) => {
+        setSelectedStart(pop);
+        console.log(selectedStart);
+    };
+
+    const handleClearEnd = (pop: any) => {
+        setSelectedStart(pop);
+    };
 
     return (
         <div className="mx-auto flex w-4/5 flex-col items-center space-y-6">
             <div className="text-center">
                 <HeadingSmall title={t('ui.settings.profile.timeline.title')} description={t('ui.settings.profile.timeline.description')} />
             </div>
-            {activityList.length != 0  && (<Select value={selectedFilter} onValueChange={(value) => handleFilterChange(value)}>
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue/>
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="all">{t('ui.common.filters.all')}</SelectItem>
-                    <SelectItem value="reservations">{t('ui.reservations.title')}</SelectItem>
-                    <SelectItem value="loans">{t('ui.loans.title')}</SelectItem>
-                </SelectContent>
-            </Select>)}
-            {(activityList.length > 0 && filterMap[selectedFilter] !== 0) ? (
-            <div className="border-primary rounded-xl border-6 bg-neutral-700">
+            {activityList.length != 0 && (
+                <div className='flex gap-6'>
+                    {/* <div className="flex flex-col">
+                        <Label className="p-2">Fecha inicio busqueda</Label>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button variant={'outline'} className="w-[240px] justify-start text-left font-normal">
+                                    <CalendarIcon />
+                                    {selectedStart ? format(selectedStart, 'PPP') : <span>{t('ui.loans.utils.pickDate')}</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    mode="single"
+                                    disabled={[{ after: new Date() }]}
+                                    timeZone="Europe/Madrid"
+                                    selected={selectedStart}
+                                    onSelect={(value) => setSelectedStart(value)}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                        <Button onClick={(e) => handleClearStart(undefined)}>
+                            <Clapperboard/>
+                        </Button>
+                    </div> */}
+                    <Select value={selectedFilter} onValueChange={(value) => handleFilterChange(value)}>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">{t('ui.common.filters.all')}</SelectItem>
+                            <SelectItem value="reservations">{t('ui.reservations.title')}</SelectItem>
+                            <SelectItem value="loans">{t('ui.loans.title')}</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    {/* <div className="flex flex-col">
+                        <Label className="p-2">Fecha fin busqueda</Label>
+                        <Popover>
+                            <PopoverTrigger asChild>
+                                <Button variant={'outline'} className="w-[240px] justify-start text-left font-normal">
+                                    <CalendarIcon />
+                                    {selectedEnd ? format(selectedEnd, 'PPP') : <span>{t('ui.loans.utils.pickDate')}</span>}
+                                </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                                <Calendar
+                                    animate
+                                    mode="single"
+                                    disabled={[{ after: new Date() }]}
+                                    timeZone="Europe/Madrid"
+                                    selected={selectedEnd}
+                                    onSelect={(value) => setSelectedEnd(value)}
+                                />
+                            </PopoverContent>
+                        </Popover>
+                        <Button onClick={(e) =>(handleClearStart(undefined))}>
+                            <Clapperboard/>
+                        </Button>
+                    </div> */}
+                </div>
+            )}
+            {activityList.length > 0 && filterMap[selectedFilter] !== 0 ? (
+                <div className="border-primary rounded-xl border-6 bg-neutral-700">
                     <div className="border-secondary rounded-xl border-3">
-
                         <VerticalTimeline layout={'1-column-left'} lineColor="var(--primary)">
                             {activityList.map((loan, index) =>
-                                (loan.type == 'loan' && (selectedFilter=='all' || selectedFilter=='loans')) ? (
+                                (loan.type == 'loan' && (selectedFilter == 'all' || selectedFilter == 'loans')) ? (
                                     <VerticalTimelineElement
                                         key={index + loan.type}
                                         contentStyle={{
@@ -144,7 +209,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                                             </div>
                                         </div>
                                     </VerticalTimelineElement>
-                                ) : (loan.type == 'reservation' && (selectedFilter=='all' || selectedFilter=='reservations')) ? (
+                                ) : loan.type == 'reservation' && (selectedFilter == 'all' || selectedFilter == 'reservations') ? (
                                     <VerticalTimelineElement
                                         key={index + loan.type}
                                         contentStyle={{
@@ -170,13 +235,25 @@ export default function Timeline({ activityList }: TimelineProps) {
                                             </div>
                                         </div>
                                     </VerticalTimelineElement>
-                                ) : '',
+                                ) : (
+                                    ''
+                                ),
                             )}
                         </VerticalTimeline>
-                        </div>
-                        </div>
-            ) :                     <iframe width="420" height="240" src="https://www.youtube.com/embed/LLRmBWP2ob4" title="&quot;THERE&#39;S NOTHING HERE&quot;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-}
-            </div>
+                    </div>
+                </div>
+            ) : (
+                <iframe
+                    width="420"
+                    height="240"
+                    src="https://www.youtube.com/embed/LLRmBWP2ob4"
+                    title='"THERE&#39;S NOTHING HERE"'
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                ></iframe>
+            )}
+        </div>
     );
 }

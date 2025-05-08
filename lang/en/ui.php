@@ -26,6 +26,7 @@ return [
         'stats' => 'Stats',
         'bookcases' => 'Bookcases',
         'reservations' => 'Reservations',
+        'userUI' => 'Virtual Visit',
         'description' => [
             'users' => 'Manage all users in the system',
             'floors' => 'Manage all floors and sections in the system',
@@ -34,6 +35,7 @@ return [
             'zones' => 'Manage all zones in the system',
             'loans' => 'Manage all loans in the system',
             'bookcases' => 'Manage all bookcases in the system',
+            'userUI' => 'Take a virtual walk through the library',
             'reservations' => 'Manage all reservations in the system',
         ]
     ],
@@ -637,7 +639,6 @@ return [
             'hours' => 'hours',
             'minutes' => 'minutes',
         ],
-<<<<<<< HEAD
         'filters' => [
             'book' => "Book's Title",
             'email' => "User's Email",
@@ -766,11 +767,9 @@ return [
             'next' => 'Next',
         ],
     ],
-=======
->>>>>>> bacc062a3ee984c5bfe2d16cd520a3c214eeba7d
     'stats' => [
-        'reservations' => 'Reservations',
-        'loans' => 'Loans',
+        'Reservations' => 'Reservations',
+        'Loans' => 'Loans',
         'zone' => 'Zone',
         'floor' => 'Floor',
         'topUsers' => 'Top Users',

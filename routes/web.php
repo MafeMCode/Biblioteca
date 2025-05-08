@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
     Route::resource('users', \App\Users\Controllers\UserController::class);
+    Route::resource('userUI', \App\UserUI\Controllers\UserUIController::class);
     Route::resource('floors', \App\Floors\Controllers\FloorController::class);
     Route::resource('zones', \App\Zones\Controllers\ZoneController::class);
     Route::resource('bookcases', \App\Bookcases\Controllers\BookcaseController::class);

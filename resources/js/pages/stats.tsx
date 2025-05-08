@@ -46,7 +46,12 @@ export default function Stats({ userdata, bookdata, zonedata }: dataProps) {
     const [selectedStart, setSelectedStart] = useState<Date | undefined>(undefined);
     const [selectedEnd, setSelectedEnd] = useState<Date | undefined>(undefined);
 
-    console.log(zonedata);
+
+  let inputLabels = [
+    { key: "Loans", color: "#378235" },
+    { key: "Reservations", color: "#9600d2" },
+  ];
+
     return (
         <StatsLayout title={t('ui.dashboard.stats')}>
             <div className="mx-auto flex w-4/5 flex-col items-center space-y-6">
@@ -102,13 +107,13 @@ export default function Stats({ userdata, bookdata, zonedata }: dataProps) {
 
             <div className="mx-auto flex w-4/5 flex-col items-center space-y-6">
                 <ResponsiveContainer className={`${selectedStat === 'top-users' ? 'block' : 'hidden'}`}>
-                    <MixedBar data={userdata} />
+                    <MixedBar  data={userdata['total']} totaldata={userdata['total']} loandata={userdata['loans']} reservationdata={userdata['reservations']} labels={inputLabels}/>
                 </ResponsiveContainer>
                 <ResponsiveContainer className={`${selectedStat === 'top-books' ? 'block' : 'hidden'}`}>
-                    <MixedBar data={bookdata} />
+                    <MixedBar  data={bookdata['total']} totaldata={bookdata['total']} loandata={bookdata['loans']} reservationdata={bookdata['reservations']} labels={inputLabels} />
                 </ResponsiveContainer>
                 <ResponsiveContainer className={`${selectedStat === 'top-zones' ? 'block' : 'hidden'}`}>
-                    <MixedBar data={zonedata} />
+                    <MixedBar data={zonedata['total']} totaldata={zonedata['total']} loandata={zonedata['loans']} reservationdata={zonedata['reservations']} labels={inputLabels} />
                 </ResponsiveContainer>
             </div>
         </StatsLayout>

@@ -38,7 +38,7 @@ class UserLoanHistoryAction
                 'isActive' => $activity['type'] == 'loan' ? $activity->is_active : null,
                 'returnedAt' => $activity['type'] == 'loan' ? optional($activity->returned_at)->format('d/m/Y') : null,
                 'dueDate' => $activity['type'] == 'loan' ? $activity->due_date->format('d/m/Y') : null,
-                'createdAt' => $activity->created_at->format('d/m/Y') ?? null,
+                'createdAt' => $activity->created_at ?? null,
                 'overdue' => $activity['type'] == 'loan' ? $activity->is_active && Carbon::today() > $activity->due_date || $activity->returned_at > $activity->due_date : null,
                 'author' => $activity->book->author ?? null,
                 'type' => $activity->type ?? null,

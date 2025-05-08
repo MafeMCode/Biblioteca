@@ -15,6 +15,7 @@ class bookStatsAction
     {
         $books = Book::withCount([
             'loansWithTrashed as Loans',
+            'reservationsWithTrashed as Reservations',
         ])
         ->get()
         ->map(function ($book) {
@@ -22,14 +23,58 @@ class bookStatsAction
                 'name' => $book->title,
                 'Loans' => $book->Loans,
                 'ISBN' => $book->ISBN,
-                'total' => $book->Loans
+                'Reservations' => $book->Reservations,
+                'total' => $book->Loans+$book->Reservations
             ];
         })
+        ->groupBy('ISBN')
+        ->map(function ($books) {
+            $totalLoans = $books->sum(function ($book) {
+                return $book['Loans'];
+            });
+            $totalReservations = $books->sum(function ($book) {
+                return $book['Reservations'];
+            });
+            $representativeBook = $books->first();
+            $result = $representativeBook;
+            $result['Loans'] = $totalLoans;
+            $result['Reservations'] = $totalReservations;
+            $result['total'] = $totalLoans + $totalReservations;
+            return $result;
+        });
+
+        $zonesByTotal = $books
         ->sortByDesc('total')
         ->take(10)
         ->values()
+        ->map(function ($zone, $index) {
+            $zone['index'] = $index + 1; // index starts from 1
+            return $zone;
+        })
         ->toArray();
 
-    return $books;
+        $zonesByLoans = $books
+        ->sortByDesc('Loans')
+        ->take(10)
+        ->values()
+        ->map(function ($zone, $index) {
+            $zone['index'] = $index + 1; // index starts from 1
+            return $zone;
+        })
+        ->toArray();
+
+        $zonesByReservations = $books
+        ->sortByDesc('Reservations')
+        ->take(10)
+        ->values()
+        ->map(function ($zone, $index) {
+            $zone['index'] = $index + 1; // index starts from 1
+            return $zone;
+        })
+        ->toArray();
+
+        $res = ['total' => $zonesByTotal, 'loans' => $zonesByLoans, 'reservations' => $zonesByReservations];
+
+        return $res;
     }
 }

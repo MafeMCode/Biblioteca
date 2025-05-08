@@ -34,13 +34,13 @@ export default function CreateUser({ activityList, user }: UserProps) {
 
     return (
         <UserLayout title={t('ui.users.show')}>
-            <div className="mx-auto flex w-4/5 flex-col items-center space-y-6">
-                <Card className="m-4 w-1/4 p-4 text-center text-xl shadow-lg dark:shadow-xs dark:shadow-white">
-                    <CardHeader>
-                        <CardTitle>{user.name}</CardTitle>
-                        <CardDescription>{user.email}</CardDescription>
-                    </CardHeader>
-                </Card>
+            <div className="mx-auto flex w-full max-w-6xl flex-col items-center space-y-6 px-4">
+    <Card className="w-full sm:w-3/4 md:w-2/4 lg:w-1/4 p-4 text-center text-xl shadow-lg dark:shadow-xs dark:shadow-white">
+        <CardHeader>
+            <CardTitle>{user.name}</CardTitle>
+            <CardDescription>{user.email}</CardDescription>
+        </CardHeader>
+    </Card>
                 <Timeline activityList={activityList}/>
             </div>
         </UserLayout>

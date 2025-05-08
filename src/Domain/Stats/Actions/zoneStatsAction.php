@@ -33,13 +33,40 @@ class zoneStatsAction
                     'Reservations' => $totalReservations,
                     'total' => $totalActivity
                 ];
-            })
-            ->sortByDesc('total')
-            ->take(10)
-            ->values()
-            ->toArray();
+            });
 
+        $zonesByTotal = $zones
+        ->sortByDesc('total')
+        ->take(10)
+        ->values()
+        ->map(function ($zone, $index) {
+            $zone['index'] = $index + 1; // index starts from 1
+            return $zone;
+        })
+        ->toArray();
 
-        return $zones;
+        $zonesByLoans = $zones
+        ->sortByDesc('Loans')
+        ->take(10)
+        ->values()
+        ->map(function ($zone, $index) {
+            $zone['index'] = $index + 1; // index starts from 1
+            return $zone;
+        })
+        ->toArray();
+
+        $zonesByReservations = $zones
+        ->sortByDesc('Reservations')
+        ->take(10)
+        ->values()
+        ->map(function ($zone, $index) {
+            $zone['index'] = $index + 1; // index starts from 1
+            return $zone;
+        })
+        ->toArray();
+
+        $res = ['total' => $zonesByTotal, 'loans' => $zonesByLoans, 'reservations' => $zonesByReservations];
+
+        return $res;
     }
 }

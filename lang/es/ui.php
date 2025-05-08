@@ -25,12 +25,14 @@ return [
         'loans' => 'Préstamos',
         'stats' => 'Estadísticas',
         'bookcases' => 'Estanterías',
+        'userUI' => 'Visita Virtual',
         'reservations' => 'Reservas',
         'description' => [
             'users' => 'Gestiona los usuarios del sistema',
             'floors' => 'Gestiona los pisos y secciones del sistema',
             'books' => 'Gestiona los libros del sistema',
         'stats' => 'Estadísticas de actividad',
+        'userUI' => 'Toma un paseo virtual por la biblioteca',
             'zones' => 'Gestiona las zonas del sistema',
             'loans' => 'Gestiona los prestamos del sistema',
             'bookcases' => 'Gestiona las estanterías del sistema',
@@ -377,6 +379,7 @@ return [
             'floor' => 'Piso',
             'zones' => 'Zona',
             'zone' => 'Zona',
+            'capacity' => 'Capacidad Máxima',
             'created_at' => 'Fecha de creación',
             'actions' => 'Acciones',
             'rolPpal' => 'Rol Principal',
@@ -407,7 +410,7 @@ return [
         ],
         'cards' => [
             'create' => [
-                'title' => 'Crear Nuevo Piso',
+                'title' => 'Crear Nueva Estantería',
                 'description' => 'Ingresa la información para crear una nueva estantería en el sistema'
             ],
             'edit' => [
@@ -749,10 +752,10 @@ return [
         ],
     ],
     'stats' => [
-        'reservations' => 'Reservas',
+        'Reservations' => 'Reservas',
         'zone' => 'Zona',
         'floor' => 'Piso',
-        'loans' => 'Préstamos',
+        'Loans' => 'Préstamos',
         'topUsers' => 'Top Usuarios',
         'topBooks' => 'Top Libros',
         'topZones' => 'Top Zonas',
