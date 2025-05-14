@@ -9,6 +9,7 @@ import { CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { ResponsiveContainer } from 'recharts';
 import MixedBar from './stats/components/MixedBar';
+import { es } from 'date-fns/locale';
 
 interface dataProps {
     userdata: {
@@ -64,10 +65,10 @@ export default function Stats({ userdata, bookdata, zonedata }: dataProps) {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
-                            animate
                             mode="single"
                             disabled={[{ after: new Date() }, new Date()]}
                             timeZone="Europe/Madrid"
+                            locale={es}
                             selected={selectedStart}
                             onSelect={(value) => setSelectedStart(value)}
                         />
@@ -94,7 +95,6 @@ export default function Stats({ userdata, bookdata, zonedata }: dataProps) {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
-                            animate
                             mode="single"
                             disabled={[{after: new Date() }, new Date()]}
                             timeZone="Europe/Madrid"

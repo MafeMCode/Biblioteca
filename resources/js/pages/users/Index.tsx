@@ -15,9 +15,18 @@ import { FiltersTable, FilterConfig } from "@/components/stack-table/FiltersTabl
 import { toast } from "sonner";
 import { ColumnDef, Row } from "@tanstack/react-table";
 
+interface PageProps {
+    auth: {
+        user: any;
+        permissions: string[];
+    };
+}
 export default function UsersIndex() {
   const { t } = useTranslations();
   const { url } = usePage();
+
+    const page = usePage<{ props: PageProps }>();
+    const auth = page.props.auth;
 
   // Obtener los parámetros de la URL actual
   const urlParams = new URLSearchParams(url.split('?')[1] || '');
@@ -69,7 +78,7 @@ export default function UsersIndex() {
     }
   };
 
-  const columns = useMemo(() => ([
+  let columns = useMemo(() => ([
     createTextColumn<User>({
       id: "name",
       header: t("ui.users.columns.name") || "Name",
@@ -84,51 +93,54 @@ export default function UsersIndex() {
       id: "created_at",
       header: t("ui.users.columns.created_at") || "Created At",
       accessorKey: "created_at",
-    }),
-    createActionsColumn<User>({
-      id: "actions",
-      header: t("ui.users.columns.actions") || "Actions",
-      renderActions: (user) => (
-        <>
-          <Link href={`/users/${user.id}/edit?page=${currentPage}&perPage=${perPage}`}>
-            <Button variant="outline" size="icon" title={t("ui.users.buttons.edit") || "Edit user"}>
-              <PencilIcon className="h-4 w-4" />
-            </Button>
-          </Link>
-          <DeleteDialog
-            id={user.id}
-            onDelete={handleDeleteUser}
-            title={t("ui.users.delete.title") || "Delete user"}
-            description={t("ui.users.delete.description") || "Are you sure you want to delete this user? This action cannot be undone."}
-            trigger={
-              <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" title={t("ui.users.buttons.delete") || "Delete user"}>
-                <TrashIcon className="h-4 w-4" />
-              </Button>
-
-            }
-          />
-          <Link href={`/users/${user.id}`}>
-            <Button variant="outline" size="icon" title={t("ui.users.buttons.show") || "Show user"}>
-              <Eye className="h-4 w-4" />
-            </Button>
-          </Link>
-        </>
-      ),
-    }),
+    })
   ] as ColumnDef<User>[]), [t, handleDeleteUser]);
 
+  if(auth.permissions.includes('users.edit')){
+    columns.push(
+        createActionsColumn<User>({
+          id: "actions",
+          header: t("ui.users.columns.actions") || "Actions",
+          renderActions: (user) => (
+            <>
+              <Link href={`/users/${user.id}/edit?page=${currentPage}&perPage=${perPage}`}>
+                <Button variant="outline" size="icon" title={t("ui.users.buttons.edit") || "Edit user"}>
+                  <PencilIcon className="h-4 w-4" />
+                </Button>
+              </Link>
+              <DeleteDialog
+                id={user.id}
+                onDelete={handleDeleteUser}
+                title={t("ui.users.delete.title") || "Delete user"}
+                description={t("ui.users.delete.description") || "Are you sure you want to delete this user? This action cannot be undone."}
+                trigger={
+                  <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" title={t("ui.users.buttons.delete") || "Delete user"}>
+                    <TrashIcon className="h-4 w-4" />
+                  </Button>
+
+                }
+              />
+              <Link href={`/users/${user.id}`}>
+                <Button variant="outline" size="icon" title={t("ui.users.buttons.show") || "Show user"}>
+                  <Eye className="h-4 w-4" />
+                </Button>
+              </Link>
+            </>
+          ),
+        }))
+  };
   return (
       <UserLayout title={t('ui.users.title')}>
           <div className="p-6">
               <div className="space-y-6">
                   <div className="flex items-center justify-between">
                       <h1 className="text-3xl font-bold">{t('ui.users.title')}</h1>
-                      <Link href="/users/create">
+                      {auth.permissions.includes('users.edit') && (<Link href="/users/create">
                           <Button>
                               <PlusIcon className="mr-2 h-4 w-4" />
                               {t('ui.users.buttons.new')}
                           </Button>
-                      </Link>
+                      </Link>)}
                   </div>
                   <div></div>
 

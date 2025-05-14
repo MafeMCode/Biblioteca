@@ -327,6 +327,9 @@ return [
             'title' => 'Enter the Title...',
             'author' => 'Enter the Author...',
             'ISBN' => 'Enter the ISBN...',
+            'search' => 'Search...',
+            'selectAll' => '(Select All)',
+            'empty' => 'No results found',
             'genres' => 'Enter the Genre/s...',
             'publisher' => 'Enter the Publisher...',
             'available' => 'Availability',
@@ -775,5 +778,9 @@ return [
         'topUsers' => 'Top Users',
         'topBooks' => 'Top Books',
         'topZones' => 'Top Zones',
+    ],
+    'userUI' => [
+        'bookcase' => 'Bookcase',
+        'zone' => 'Zone'
     ]
 ];

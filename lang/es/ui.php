@@ -320,6 +320,9 @@ return [
             'title' => 'Ingrese el Título',
             'author' => 'Ingrese el Autor',
             'ISBN' => 'Ingrese el ISBN',
+            'search' => 'Buscar...',
+            'selectAll' => '(Seleccionar Todos)',
+            'empty' => 'Sin resultados',
             'genres' => 'Ingrese los Géneros',
             'publisher' => 'Ingrese la Editorial',
             'pages' => 'Ingrese el número de Páginas',
@@ -759,5 +762,9 @@ return [
         'topUsers' => 'Top Usuarios',
         'topBooks' => 'Top Libros',
         'topZones' => 'Top Zonas',
+    ],
+    'userUI' => [
+        'bookcase' => 'Estantería',
+        'zone' => 'Zona'
     ]
 ];

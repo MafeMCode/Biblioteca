@@ -14,7 +14,7 @@ class BookcaseSeeder extends Seeder
     {
         // Insert specific data
 
-        Bookcase::factory(100)->create();
+        Bookcase::factory(50)->create();
 
 
     }

@@ -46,6 +46,7 @@ class UserLoanHistoryAction
         })
             ->toArray();
 
+
        return $activities;
     }
 }

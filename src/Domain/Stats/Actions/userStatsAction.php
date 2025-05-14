@@ -38,9 +38,19 @@ class userStatsAction
         ];
     });
 
-    $zonesByTotal = $users
-    ->sortByDesc('total')
+    $usersByTotal = $users
+    ->sortBy([
+        ['total', 'desc'],
+        ['Loans', 'desc'],
+        ['created_at', 'asc'],
+        ['name', 'asc'],
+    ])
     ->take(10)
+    ->map(function ($zone) {
+        if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+            return $zone;
+        }
+    })
     ->values()
     ->map(function ($zone, $index) {
         $zone['index'] = $index + 1; // index starts from 1
@@ -48,9 +58,20 @@ class userStatsAction
     })
     ->toArray();
 
-    $zonesByLoans = $users
-    ->sortByDesc('Loans')
+    $usersByTotal = array_filter($usersByTotal);
+
+    $usersByLoans = $users
+    ->sortBy([
+        ['Loans', 'desc'],
+        ['created_at', 'asc'],
+        ['name', 'asc'],
+    ])
     ->take(10)
+    ->map(function ($zone) {
+        if ($zone['Loans'] > 0) {
+            return $zone;
+        }
+    })
     ->values()
     ->map(function ($zone, $index) {
         $zone['index'] = $index + 1; // index starts from 1
@@ -58,9 +79,20 @@ class userStatsAction
     })
     ->toArray();
 
-    $zonesByReservations = $users
-    ->sortByDesc('Reservations')
+    $usersByLoans = array_filter($usersByLoans);
+
+    $usersByReservations = $users
+    ->sortBy([
+        ['Reservations', 'desc'],
+        ['created_at', 'asc'],
+        ['name', 'asc'],
+    ])
     ->take(10)
+    ->map(function ($zone) {
+        if ($zone['Reservations'] > 0) {
+            return $zone;
+        }
+    })
     ->values()
     ->map(function ($zone, $index) {
         $zone['index'] = $index + 1; // index starts from 1
@@ -68,7 +100,9 @@ class userStatsAction
     })
     ->toArray();
 
-    $res = ['total' => $zonesByTotal, 'loans' => $zonesByLoans, 'reservations' => $zonesByReservations];
+    $usersByReservations = array_filter($usersByReservations);
+
+    $res = ['total' => $usersByTotal, 'loans' => $usersByLoans, 'reservations' => $usersByReservations];
 
     return $res;
     }

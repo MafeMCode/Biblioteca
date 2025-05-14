@@ -43,37 +43,68 @@ class bookStatsAction
             return $result;
         });
 
-        $zonesByTotal = $books
-        ->sortByDesc('total')
+        $booksByTotal = $books
+        ->sortBy([
+            ['total', 'desc'],
+            ['Loans', 'desc'],
+            ['created_at', 'asc'],
+            ['name', 'asc'],
+        ])
         ->take(10)
+        ->map(function ($zone) {
+            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+                return $zone;
+            }
+        })
         ->values()
         ->map(function ($zone, $index) {
             $zone['index'] = $index + 1; // index starts from 1
             return $zone;
         })
         ->toArray();
+        $booksByTotal = array_filter($booksByTotal);
 
-        $zonesByLoans = $books
-        ->sortByDesc('Loans')
+        $booksByLoans = $books
+        ->sortBy([
+            ['Loans', 'desc'],
+            ['created_at', 'asc'],
+            ['name', 'asc'],
+        ])
         ->take(10)
+        ->map(function ($zone) {
+            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+                return $zone;
+            }
+        })
         ->values()
         ->map(function ($zone, $index) {
             $zone['index'] = $index + 1; // index starts from 1
             return $zone;
         })
         ->toArray();
+        $booksByLoans = array_filter($booksByLoans);
 
-        $zonesByReservations = $books
-        ->sortByDesc('Reservations')
+        $booksByReservations = $books
+        ->sortBy([
+            ['Reservations', 'desc'],
+            ['created_at', 'asc'],
+            ['name', 'asc'],
+        ])
         ->take(10)
+        ->map(function ($zone) {
+            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+                return $zone;
+            }
+        })
         ->values()
         ->map(function ($zone, $index) {
             $zone['index'] = $index + 1; // index starts from 1
             return $zone;
         })
         ->toArray();
+        $booksByReservations = array_filter($booksByReservations);
 
-        $res = ['total' => $zonesByTotal, 'loans' => $zonesByLoans, 'reservations' => $zonesByReservations];
+        $res = ['total' => $booksByTotal, 'loans' => $booksByLoans, 'reservations' => $booksByReservations];
 
         return $res;
     }

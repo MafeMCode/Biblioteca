@@ -36,34 +36,65 @@ class zoneStatsAction
             });
 
         $zonesByTotal = $zones
-        ->sortByDesc('total')
+        ->sortBy([
+            ['total', 'desc'],
+            ['Loans', 'desc'],
+            ['created_at', 'asc'],
+            ['zonename', 'asc'],
+        ])
         ->take(10)
+        ->map(function ($zone) {
+            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+                return $zone;
+            }
+        })
         ->values()
         ->map(function ($zone, $index) {
             $zone['index'] = $index + 1; // index starts from 1
             return $zone;
         })
         ->toArray();
+        $zonesByTotal = array_filter($zonesByTotal);
 
         $zonesByLoans = $zones
-        ->sortByDesc('Loans')
+        ->sortBy([
+            ['Loans', 'desc'],
+            ['created_at', 'asc'],
+            ['zonename', 'asc'],
+        ])
         ->take(10)
+        ->map(function ($zone) {
+            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+                return $zone;
+            }
+        })
         ->values()
         ->map(function ($zone, $index) {
             $zone['index'] = $index + 1; // index starts from 1
             return $zone;
         })
         ->toArray();
+        $zonesByLoans = array_filter($zonesByLoans);
 
         $zonesByReservations = $zones
-        ->sortByDesc('Reservations')
+        ->sortBy([
+            ['Reservations', 'desc'],
+            ['created_at', 'asc'],
+            ['zonename', 'asc'],
+        ])
         ->take(10)
+        ->map(function ($zone) {
+            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+                return $zone;
+            }
+        })
         ->values()
         ->map(function ($zone, $index) {
             $zone['index'] = $index + 1; // index starts from 1
             return $zone;
         })
         ->toArray();
+        $zonesByReservations = array_filter($zonesByReservations);
 
         $res = ['total' => $zonesByTotal, 'loans' => $zonesByLoans, 'reservations' => $zonesByReservations];
 

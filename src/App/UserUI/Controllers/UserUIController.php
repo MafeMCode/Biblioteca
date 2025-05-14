@@ -31,6 +31,7 @@ class UserUIController extends Controller
             }])->withCount('bookcases');;
         }])
             ->withCount('zones')
+            ->orderBy('story')
             ->get();
 
             $floors->each(function ($floor) {

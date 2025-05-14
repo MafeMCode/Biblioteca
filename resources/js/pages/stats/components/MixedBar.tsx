@@ -85,6 +85,7 @@ const MixedBar: React.FC<MixedBarProps> = (props) => {
     };
 
     const selectBar = (e) => {
+        setSelectedData([]);
         const toggledKey = e.dataKey;
         const toggledValue = !barProps[toggledKey];
 
@@ -95,20 +96,25 @@ const MixedBar: React.FC<MixedBarProps> = (props) => {
         };
 
         setBarProps(newBarProps);
-
+        setTimeout(() => {
         if (!newBarProps['Loans'] && !newBarProps['Reservations']) {
             setSelectedData(totaldata);
             setYMaxRange(evenDataMax(totaldata[0].total));
         } else if ((!toggledValue && toggledKey === 'Reservations') || (toggledValue && toggledKey === 'Loans')) {
             setSelectedData(reservationdata);
-            setYMaxRange(evenDataMax(reservationdata[0].total));
+            setYMaxRange(evenDataMax(reservationdata[0].Reservations));
 
         } else if ((!toggledValue && toggledKey === 'Loans') || (toggledValue && toggledKey === 'Reservations')) {
             setSelectedData(loandata);
-            setYMaxRange(evenDataMax(loandata[0].total));
+            setYMaxRange(evenDataMax(loandata[0].Loans));
 
-        }
+        }}, 0);
     };
+
+    const delayMap = {
+        'Loans' : 0,
+        'Reservations' : 500
+    }
 
     const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
@@ -145,7 +151,10 @@ const MixedBar: React.FC<MixedBarProps> = (props) => {
                         dataKey={label.key}
                         name={t(`ui.stats.${label.key}`)}
                         fill={label.color}
-                        stackId="a"
+                        animationBegin={(selectedData==reservationdata) ? 0 : delayMap[label.key]}
+                        animationDuration={500}
+                        animationEasing='linear'
+                        stackId='a'
                         hide={barProps[label.key] === true}
                         fillOpacity={Number(barProps.hover === label.key || !barProps.hover ? 1 : 0.6)}
                     />

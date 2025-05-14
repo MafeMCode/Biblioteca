@@ -12,6 +12,7 @@ class FloorFactory extends Factory
     {
         return [
             'story'=>fake()->unique()->numberBetween($min=1, $max=10),
+            'capacity'=>fake()->numberBetween($min=1, $max=20)
         ];
     }
 }

@@ -34,8 +34,9 @@ export default function Timeline({ activityList }: TimelineProps) {
     const loanCount = activityList.filter((item) => item.type === 'loan').length;
     const reservationCount = activityList.filter((item) => item.type === 'reservation').length;
 
-    const [selectedStart, setSelectedStart] = useState<Date | undefined>(undefined);
+    const [selectedStart, setSelectedStart] = useState<Date | undefined>(new Date());
     const [selectedEnd, setSelectedEnd] = useState<Date | undefined>(undefined);
+
 
     const filterMap = {
         all: activityList.length,
@@ -62,7 +63,7 @@ export default function Timeline({ activityList }: TimelineProps) {
             </div>
             {activityList.length != 0 && (
                 <div className='flex gap-6'>
-                    {/* <div className="flex flex-col">
+                    <div className="flex flex-col">
                         <Label className="p-2">Fecha inicio busqueda</Label>
                         <Popover>
                             <PopoverTrigger asChild>
@@ -77,14 +78,17 @@ export default function Timeline({ activityList }: TimelineProps) {
                                     disabled={[{ after: new Date() }]}
                                     timeZone="Europe/Madrid"
                                     selected={selectedStart}
-                                    onSelect={(value) => setSelectedStart(value)}
+                                    onSelect={(value) => {
+                                        console.log(value)
+                                        console.log(selectedStart)
+                                        setSelectedStart(value)}}
                                 />
                             </PopoverContent>
                         </Popover>
                         <Button onClick={(e) => handleClearStart(undefined)}>
                             <Clapperboard/>
                         </Button>
-                    </div> */}
+                    </div>
                     <Select value={selectedFilter} onValueChange={(value) => handleFilterChange(value)}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue />
@@ -95,7 +99,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                             <SelectItem value="loans">{t('ui.loans.title')}</SelectItem>
                         </SelectContent>
                     </Select>
-                    {/* <div className="flex flex-col">
+                    <div className="flex flex-col">
                         <Label className="p-2">Fecha fin busqueda</Label>
                         <Popover>
                             <PopoverTrigger asChild>
@@ -118,7 +122,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                         <Button onClick={(e) =>(handleClearStart(undefined))}>
                             <Clapperboard/>
                         </Button>
-                    </div> */}
+                    </div>
                 </div>
             )}
             {activityList.length > 0 && filterMap[selectedFilter] !== 0 ? (
@@ -126,7 +130,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                     <div className="border-secondary rounded-xl border-3">
                         <VerticalTimeline layout={'1-column-left'} lineColor="var(--primary)">
                             {activityList.map((loan, index) =>
-                                (loan.type == 'loan' && (selectedFilter == 'all' || selectedFilter == 'loans')) ? (
+                                ((loan.type == 'loan' && new Date(loan.createdAt) >= new Date(selectedStart)) && (selectedFilter == 'all' || selectedFilter == 'loans')) ? (
                                     <VerticalTimelineElement
                                         key={index + loan.type}
                                         contentStyle={{
@@ -224,7 +228,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                                         iconStyle={{ background: 'rgb(150, 0, 210)', color: '#fff' }}
                                         icon={<ClipboardList strokeWidth={2} />}
                                     >
-                                        <div className="flex w-full items-center justify-between">
+                                        <div className="flex w-full items-center justify-center">
                                             <div className="w-4/5">
                                                 <h3 className="mb-2 text-3xl font-semibold">{loan.title}</h3>
                                                 <h4 className="mb-4 text-xl text-gray-300">{loan.author}</h4>
