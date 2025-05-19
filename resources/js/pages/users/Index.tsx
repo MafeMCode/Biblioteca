@@ -95,14 +95,15 @@ export default function UsersIndex() {
       accessorKey: "created_at",
     })
   ] as ColumnDef<User>[]), [t, handleDeleteUser]);
+              {auth.permissions.includes('users.edit') && (
 
-  if(auth.permissions.includes('users.edit')){
     columns.push(
         createActionsColumn<User>({
           id: "actions",
           header: t("ui.users.columns.actions") || "Actions",
           renderActions: (user) => (
             <>
+                <div>
               <Link href={`/users/${user.id}/edit?page=${currentPage}&perPage=${perPage}`}>
                 <Button variant="outline" size="icon" title={t("ui.users.buttons.edit") || "Edit user"}>
                   <PencilIcon className="h-4 w-4" />
@@ -112,6 +113,7 @@ export default function UsersIndex() {
                 id={user.id}
                 onDelete={handleDeleteUser}
                 title={t("ui.users.delete.title") || "Delete user"}
+                successMessage={t('messages.users.deleted')}
                 description={t("ui.users.delete.description") || "Are you sure you want to delete this user? This action cannot be undone."}
                 trigger={
                   <Button variant="outline" size="icon" className="text-destructive hover:text-destructive" title={t("ui.users.buttons.delete") || "Delete user"}>
@@ -120,22 +122,22 @@ export default function UsersIndex() {
 
                 }
               />
+
               <Link href={`/users/${user.id}`}>
                 <Button variant="outline" size="icon" title={t("ui.users.buttons.show") || "Show user"}>
                   <Eye className="h-4 w-4" />
                 </Button>
-              </Link>
+              </Link> </div>
             </>
           ),
-        }))
-  };
+        })))};
   return (
       <UserLayout title={t('ui.users.title')}>
           <div className="p-6">
               <div className="space-y-6">
                   <div className="flex items-center justify-between">
                       <h1 className="text-3xl font-bold">{t('ui.users.title')}</h1>
-                      {auth.permissions.includes('users.edit') && (<Link href="/users/create">
+                      {auth.permissions.includes('users.create') && (<Link href="/users/create">
                           <Button>
                               <PlusIcon className="mr-2 h-4 w-4" />
                               {t('ui.users.buttons.new')}

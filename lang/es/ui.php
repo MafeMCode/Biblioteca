@@ -14,7 +14,8 @@ return [
             'reservations' => 'Reservas',
             'repository' => 'Repositorio',
             'documentation' => 'Documentación',
-            'stats' => 'Estadísticas'
+            'stats' => 'Estadísticas',
+            'userUI' => 'Visita Virtual'
         ],
     ],
     'dashboard' => [
@@ -76,6 +77,9 @@ return [
                 'inProgress' => 'En préstamo',
                 'returned' => 'Devuelto',
                 'dueDate' => 'Fecha límite: ',
+                'filter_start' => 'Desde...',
+                'filter_end' => 'Hasta...',
+                'filter_type' => 'Tipo',
                 'unknown' => 'Libro desconocido',
                 'overdue' => '(Retrasado)',
                 'isOverdue' => 'Llevas retraso en tu fecha de entrega.',
@@ -114,6 +118,7 @@ return [
     'validation' => [
             'required' => 'El campo :attribute es obligatorio.',
             'email' => 'El campo :attribute debe ser una dirección de correo válida.',
+            'usedEmail' => 'El :attribute ya está en uso.',
             'userEmail' => 'El campo :attribute debe ser una dirección de correo válida de un usuario activo en el sistema.',
             'min' => [
                 'string' => 'El campo :attribute debe tener al menos :min caracteres.',
@@ -143,7 +148,7 @@ return [
 
         ],
         'delete_dialog' => [
-            'success' => 'Usuario eliminado correctamente',
+            'success' => 'Objeto eliminado correctamente',
         ],
         'showing_results' => 'Mostrando :from a :to de :total resultados',
         'pagination' => [
@@ -158,7 +163,7 @@ return [
     'users' => [
         'title' => 'Usuarios',
         'create' => 'Crear Usuario',
-        'show' => 'Datos del Usuario',
+        'show' => 'Detalles del Usuario',
         'edit' => 'Editar Usuario',
         'fields' => [
             'name' => 'Nombre',
@@ -248,6 +253,7 @@ return [
             'save' => 'Guardar',
             'update' => 'Actualizar',
             'cancel' => 'Cancelar',
+            'show' => 'Detalles',
             'delete' => 'Eliminar',
             'deleting' => 'Eliminando...',
             'saving' => 'Guardando...',
@@ -353,6 +359,7 @@ return [
             'retry' => 'Reintentar',
             'loan' => 'Prestar',
             'queue' => 'Reservar',
+            'clone' => 'Crear una copia',
         ],
         'delete' => [
             'title' => '¿Estás seguro?',
@@ -765,6 +772,7 @@ return [
     ],
     'userUI' => [
         'bookcase' => 'Estantería',
-        'zone' => 'Zona'
+        'zone' => 'Zona',
+        'floor' => 'Piso',
     ]
 ];

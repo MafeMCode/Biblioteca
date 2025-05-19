@@ -11,6 +11,7 @@ use Domain\Floors\Models\Floor;
 use Domain\Genres\Models\Genre;
 use Domain\Zones\Models\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -22,12 +23,16 @@ class BookcaseController extends Controller
      */
     public function index()
     {
-        $floor_numbers = Floor::all()->pluck('story')->map(function ($story) {
+        Gate::authorize('reports.view');
+        $floor_numbers = Floor::orderBy('story')
+        ->pluck('story')
+        ->map(function ($story) {
             return [
                 'label' => $story,
                 'value' => $story,
             ];
-        })->toArray();
+        })
+        ->toArray();
         $zone_numbers = Zone::orderBy('number')->distinct()->pluck('number')->map(function ($number) {
             return [
                 'label' => $number,
@@ -43,6 +48,7 @@ class BookcaseController extends Controller
      */
     public function create()
     {
+        Gate::authorize('reports.view');
         $zones = Zone::withCount('bookcases')->get()->toArray();
         $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
 
@@ -56,6 +62,7 @@ class BookcaseController extends Controller
      */
     public function store(Request $request, BookcaseStoreAction $action)
     {
+        Gate::authorize('reports.view');
 
         $validator = Validator::make($request->all(), [
             'number' => [
@@ -84,6 +91,7 @@ class BookcaseController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -92,6 +100,7 @@ class BookcaseController extends Controller
      */
     public function edit(Request $request, Bookcase $bookcase)
     {
+        Gate::authorize('reports.view');
         $zones = Zone::withCount('bookcases')->get()->toArray();
         $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
@@ -112,6 +121,7 @@ class BookcaseController extends Controller
      */
     public function update(Request $request, Bookcase $bookcase, BookcaseUpdateAction $action)
     {
+        Gate::authorize('reports.view');
         $validator = Validator::make($request->all(), [
             'number' => [
                 'required',
@@ -150,6 +160,7 @@ class BookcaseController extends Controller
      */
     public function destroy(Bookcase $bookcase, BookcaseDestroyAction $action)
     {
+        Gate::authorize('reports.view');
         $action($bookcase);
 
         return redirect()->route('bookcases.index')

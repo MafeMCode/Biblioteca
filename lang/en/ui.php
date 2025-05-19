@@ -14,7 +14,8 @@ return [
             'reservations' => 'Reservations',
             'repository' => 'Repository',
             'documentation' => 'Documentation',
-            'stats' => 'Stats'
+            'stats' => 'Stats',
+            'userUI' => 'Virtual Visit'
         ],
     ],
     'dashboard' => [
@@ -76,6 +77,9 @@ return [
                 'inProgress' => 'Currently lend',
                 'returned' => 'Returned',
                 'unknown' => 'Unknown book',
+                'filter_start' => 'From...',
+                'filter_end' => 'To...',
+                'filter_type' => 'Type',
                 'dueDate' => 'Due date: ',
                 'overdue' => '(Overdue)',
                 'isOverdue' => 'You are overdue your return date.',
@@ -114,6 +118,7 @@ return [
     'validation' => [
         'required' => 'The :attribute field is required.',
         'email' => 'The :attribute field must be a valid email address.',
+        'usedEmail' => 'The :attribute is already in use.',
         'userEmail' => 'The :attribute field must be a valid email of an active user in the system.',
         'min' => [
             'string' => 'The :attribute field must be at least :min characters.',
@@ -141,7 +146,7 @@ return [
             'all' => 'All'
         ],
         'delete_dialog' => [
-            'success' => 'User deleted successfully',
+            'success' => 'Object deleted successfully',
         ],
         'showing_results' => 'Showing :from to :to of :total results',
         'pagination' => [
@@ -250,6 +255,7 @@ return [
         'buttons' => [
             'new' => 'New User',
             'edit' => 'Edit',
+            'show' => 'Details',
             'save' => 'Save',
             'update' => 'Update',
             'cancel' => 'Cancel',
@@ -360,15 +366,16 @@ return [
             'retry' => 'Retry',
             'loan' => 'Lend',
             'queue' => 'Make a reservation',
+            'clone' => 'Create a copy',
 
         ],
         'delete' => [
             'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'description' => 'This action cannot be undone. The book will be permanently deleted from the system.',
         ],
         'delete_dialog' => [
             'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'description' => 'This action cannot be undone. The book will be permanently deleted from the system.',
             'success' => 'Deleted successfully ;)',
         ],
         'deleted_error' => 'Error trying to delete the book',
@@ -438,11 +445,11 @@ return [
         ],
         'delete' => [
             'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'description' => 'This action cannot be undone. The bookcase will be permanently deleted from the system.',
         ],
         'delete_dialog' => [
             'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el usuario del sistema.',
+            'description' => 'This action cannot be undone. The bookcase will be permanently deleted from the system.',
             'success' => 'Deleted successfully ;)',
         ],
         'deleted_error' => 'Error trying to delete the book',
@@ -501,11 +508,11 @@ return [
         ],
         'delete' => [
             'title' => 'Are you sure?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
+            'description' => 'This action cannot be undone. The floor will be permanently deleted from the system.',
         ],
         'delete_dialog' => [
             'title' => '¿Estás seguro?',
-            'description' => 'Esta acción no se puede deshacer. Se eliminará permanentemente el piso del sistema.',
+            'description' => 'This action cannot be undone. The floor will be permanently deleted from the system.',
             'success' => 'Eliminado correctamente ;)',
         ],
         'deleted_error' => 'Error al eliminar el usuario',
@@ -731,16 +738,16 @@ return [
         ],
         'cards' => [
             'create' => [
-                'title' => 'Create New Loan',
-                'description' => 'Enter the information to create a new loan in the system'
+                'title' => 'Create New Reservation',
+                'description' => 'Enter the information to create a new reservation in the system'
             ],
             'edit' => [
-                'title' => 'Edit Loan',
-                'description' => 'Enter the new information to edit this loan'
+                'title' => 'Edit Reservation',
+                'description' => 'Enter the new information to edit this reservation'
             ]
         ],
         'buttons' => [
-            'new' => 'New Loan',
+            'new' => 'New Reservation',
             'edit' => 'Edit',
             'save' => 'Save',
             'update' => 'Update',
@@ -754,16 +761,16 @@ return [
         ],
         'delete' => [
             'title' => 'Are you sure?',
-            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            'description' => 'This action cannot be undone. The reservation will be permanently deleted from the system.',
         ],
         'delete_dialog' => [
             'title' => 'Are you sure?',
-            'description' => 'This action cannot be undone. The loan will be permanently deleted from the system.',
+            'description' => 'This action cannot be undone. The reservation will be permanently deleted from the system.',
             'success' => 'Successfully deleted ;)',
         ],
-        'deleted_error' => 'Error deleting loan',
+        'deleted_error' => 'Error deleting reservation',
         'no_results' => 'No results.',
-        'error_loading' => 'Error loading loans. Please try again.',
+        'error_loading' => 'Error loading reservations. Please try again.',
         'showing_results' => 'Showing :from to :to of :total results',
         'pagination' => [
             'previous' => 'Previous',
@@ -781,6 +788,7 @@ return [
     ],
     'userUI' => [
         'bookcase' => 'Bookcase',
-        'zone' => 'Zone'
+        'zone' => 'Zone',
+        'floor' => 'Floor',
     ]
 ];

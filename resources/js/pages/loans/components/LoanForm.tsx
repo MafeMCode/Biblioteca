@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -57,6 +58,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, email
 
     const comprobanteButton = bookIDButton !== null;
     const comprobanteEmail = usermail !== undefined;
+    const [popOpen, popSetOpen] = React.useState(false);
 
     let fecha: Date;
 
@@ -186,7 +188,36 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, email
                                         {t('ui.loans.fields.user')}
                                     </div>
                                 </Label>
-                                <Input
+                            <Popover open={popOpen} onOpenChange={popSetOpen} modal={true}>
+                                        <PopoverTrigger asChild className="w-full">
+                                            <Button variant="outline" className="w-full justify-start">
+                                                {field.state.value ? <>{field.state.value}</> : <>Email</>}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="p-0" side="bottom" align="start">
+                                            <Command>
+                                                <CommandInput placeholder="Email..." />
+                                                <CommandList>
+                                                    <CommandEmpty>No results found.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        {emailList.map((email) => (
+                                                            <CommandItem
+                                                                key={email}
+                                                                value={email}
+                                                                onSelect={(value) => {
+                                                                    field.handleChange(value);
+                                                                    popSetOpen(false);
+                                                                }}
+                                                            >
+                                                                {email}
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                {/* <Input
                                     id={field.name}
                                     name={field.name}
                                     type="text"
@@ -197,7 +228,7 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, email
                                     disabled={comprobanteEmail || form.state.isSubmitting}
                                     required={false}
                                     autoComplete="off"
-                                />
+                                /> */}
                                 <FieldInfo field={field} />
                             </>
                         )}
@@ -239,7 +270,6 @@ export function LoanForm({ initialData, page, perPage, bookIDButton, lang, email
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0" align="start">
                                         <Calendar
-                                    animate
                                     mode="single"
                                     locale={langMap[lang]}
                                     disabled={[{ before: new Date() }, new Date(), isSunday]}

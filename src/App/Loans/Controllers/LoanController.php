@@ -10,6 +10,7 @@ use Domain\Loans\Models\Loan;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -21,6 +22,7 @@ class LoanController extends Controller
      */
     public function index()
     {
+        Gate::authorize('reports.view');
         $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
 
         return Inertia::render('loans/Index', ['lang' => $lang]);
@@ -31,6 +33,7 @@ class LoanController extends Controller
      */
     public function create()
     {
+        Gate::authorize('reports.view');
         $email_list = User::all()->pluck('email');
         $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
         return Inertia::render('loans/Create', ['lang'=>$lang, 'emailList' => $email_list]);
@@ -41,6 +44,7 @@ class LoanController extends Controller
      */
     public function store(Request $request, LoanStoreAction $action)
     {
+        Gate::authorize('reports.view');
         $validator = Validator::make($request->all(), [
             'book' => ['required', 'string'],
             'user' => ['required', 'string'],
@@ -62,6 +66,7 @@ class LoanController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -70,6 +75,7 @@ class LoanController extends Controller
      */
     public function edit(Request $request, Loan $loan)
     {
+        Gate::authorize('reports.view');
         $email_list = User::all()->pluck('email');
         $usermail = $loan->user->email;
         $bookUUID = $loan->book->id;
@@ -97,6 +103,7 @@ class LoanController extends Controller
      */
     public function update(Request $request, Loan $loan, LoanUpdateAction $action)
     {
+        Gate::authorize('reports.view');
 
         if(isset($request['dueDate'])){
             $request['newDueDate'] = Carbon::parse($request['dueDate'])->format('d/m/Y, H:i:s');
@@ -135,6 +142,7 @@ class LoanController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 }

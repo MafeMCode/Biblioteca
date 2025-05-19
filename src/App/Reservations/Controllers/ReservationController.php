@@ -7,6 +7,7 @@ use Domain\Reservations\Actions\ReservationStoreAction;
 use Domain\Users\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -18,6 +19,7 @@ class ReservationController extends Controller
      */
     public function index()
     {
+        Gate::authorize('reports.view');
         $lang = Auth::user()->settings ? Auth::user()->settings->preferences['locale'] : 'en';
 
         return Inertia::render('reservations/Index', ['lang' => $lang]);
@@ -28,6 +30,7 @@ class ReservationController extends Controller
      */
     public function create()
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -36,6 +39,7 @@ class ReservationController extends Controller
      */
     public function store(Request $request, ReservationStoreAction $action)
     {
+        Gate::authorize('reports.view');
 
         $user_id = User::where('email', 'like', $request['userMail'])->first()->id;
 
@@ -61,7 +65,7 @@ class ReservationController extends Controller
         $action($validator->validated());
 
         return redirect()->route('books.index')
-            ->with('success', __('messages.reservation.created'));
+            ->with('success', __('messages.reservations.created'));
     }
 
     /**
@@ -69,6 +73,7 @@ class ReservationController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -77,6 +82,7 @@ class ReservationController extends Controller
      */
     public function edit(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -85,6 +91,7 @@ class ReservationController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -93,6 +100,7 @@ class ReservationController extends Controller
      */
     public function destroy(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 }

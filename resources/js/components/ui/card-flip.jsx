@@ -3,7 +3,7 @@ import { motion } from "motion/react"
 import "../../../css/components/card-flip.css"
 
 const CardFlip = ({ contentFront, contentBack }) => {
-    const [isFlipped, setIsFlipped] = useState(false)
+    const [isFlipped, setIsFlipped] = useState(true)
     const [isAnimating, setIsAnimating] = useState(false)
     const [cardHeight, setCardHeight] = useState('auto')
     const frontRef = useRef(null)
@@ -35,7 +35,7 @@ const CardFlip = ({ contentFront, contentBack }) => {
 
     return (
         <div className="flex items-center justify-center w-full h-full cursor-pointer border-[1px] rounded-lg" style={{ minHeight: cardHeight }}>
-            <div className="flip-card w-full " style={{ minHeight: cardHeight }} onClick={handleFlip} onMouseEnter={handleFlip} onMouseLeave={handleFlip}>
+            <div className="flip-card w-full " style={{ minHeight: cardHeight }} onClick={handleFlip}>
                 <motion.div
                     className="flip-card-inner w-full"
                     style={{ minHeight: cardHeight }}

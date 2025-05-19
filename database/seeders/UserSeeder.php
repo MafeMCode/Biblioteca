@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
                 'name' => 'Test User',
                 'email' => 'admin@example.com',
             ]);
+
         }
 
 

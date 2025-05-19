@@ -7,6 +7,7 @@ use Domain\Books\Actions\BookStoreAction;
 use Domain\Books\Actions\BookUpdateAction;
 use Domain\Books\Models\Book;
 use Domain\Bookcases\Models\Bookcase;
+use Domain\Books\Actions\BookCloneAction;
 use Domain\Books\Actions\BookDestroyAction;
 use Domain\Books\Actions\ISBNGeneration;
 use Domain\Floors\Models\Floor;
@@ -14,6 +15,7 @@ use Domain\Genres\Models\Genre;
 use Domain\Users\Models\User;
 use Domain\Zones\Models\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -25,15 +27,16 @@ class BookController extends Controller
      */
     public function index()
     {
+        Gate::authorize('products.view');
 
-        $emailList = User::all()->pluck('email')->map(function ($email) {
+        $emailList = User::orderBy('email')->pluck('email')->map(function ($email) {
             return [
                 'label' => $email,
                 'value' => $email,
             ];
         })->toArray();
 
-        $floor_numbers = Floor::all()->pluck('story')->map(function ($story) {
+        $floor_numbers = Floor::orderBy('story')->pluck('story')->map(function ($story) {
             return [
                 'label' => $story,
                 'value' => $story,
@@ -60,6 +63,7 @@ class BookController extends Controller
      */
     public function create()
     {
+        Gate::authorize('products.edit');
         $floors = Floor::select('id', 'story')->orderBy('story', 'asc')->get()->toArray();
         $zones = Zone::select('id', 'number', 'genreName', 'floor_id')->orderBy('genreName', 'asc')->get()->toArray();
         $bookcases = Bookcase::withCount('books')->get()->toArray();
@@ -75,6 +79,7 @@ class BookController extends Controller
 
     public function store(Request $request, BookStoreAction $action, ISBNGeneration $ISBNG)
     {
+        Gate::authorize('products.edit');
 
         $request['ISBN'] = $ISBNG($request['title'], $request['author'], $request['editor']);
 
@@ -99,11 +104,52 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Clone a book.
      */
     public function show(string $id)
     {
-        //
+        Gate::authorize('products.edit');
+
+        $book = Book::find($id);
+
+        $genreArray = explode(', ', $book->genres);
+
+        $foundBookcase = Bookcase::with(['zone'])
+            ->withCount('books')
+            ->whereHas('zone', function ($query) use ($genreArray) {
+                $query->whereIn('genreName', $genreArray);
+            })
+            ->get()
+            ->filter(function ($bks) {
+                return $bks->books_count < $bks->capacity;
+            })
+            ->pluck('id')
+            ->random();
+
+        if($foundBookcase!=null) {
+
+        $clone = Book::create([
+            'title' => $book->title,
+            'ISBN' => $book->ISBN,
+            'author' => $book->author,
+            'editor' => $book->editor,
+            'length' => $book->length,
+            'bookcase_id' => $foundBookcase,
+            'genres' => $book->genres,
+        ]);
+
+        $elfoton = $book->getMedia('media')[0];
+
+        // dd($elfoton);
+
+        $copiadelfoton = $elfoton->copy($clone, 'media');
+
+        return redirect()->route('books.index')
+            ->with('success', __('messages.books.created'));
+        } else {
+        return redirect()->route('books.index')
+            ->with('destructive', __('messages.books.cloneError'));
+        }
     }
 
     /**
@@ -111,6 +157,7 @@ class BookController extends Controller
      */
     public function edit(Request $request, Book $book)
     {
+        Gate::authorize('products.edit');
         $genres = Genre::select('name')->get()->map(function ($genre) {
             return [
                 'value' => $genre->name,
@@ -145,6 +192,7 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book, BookUpdateAction $action, ISBNGeneration $ISBNG)
     {
+        Gate::authorize('products.edit');
 
         $title = $request['title'] ? $request['title'] : $book->title;
         $author = $request['author'] ? $request['author'] : $book->author;
@@ -187,6 +235,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book, BookDestroyAction $action)
     {
+        Gate::authorize('products.edit');
         $action($book);
 
         return redirect()->route('books.index')

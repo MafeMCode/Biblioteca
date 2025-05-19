@@ -487,14 +487,14 @@ export function BookForm({ initialData, page, perPage, genres, explosion, floors
                 <div>
                     <form.Field
                         name="imagen"
-                        // validators={{
-                        //     onChangeAsync: async ({ value }) => {
-                        //         await new Promise((resolve) => setTimeout(resolve, 500));
-                        //         return !value
-                        //             ? t('ui.validation.required', { attribute: t('ui.books.fields.editor').toLowerCase() })
-                        //             : undefined;
-                        //     },
-                        // }}
+                        validators={{
+                                    onChangeAsync: async (value) => {
+                                        await new Promise((resolve) => setTimeout(resolve, 500));
+                                        return value.value == undefined && !imgPreviaUrl
+                                            ? t('ui.validation.required', { attribute: t('ui.books.fields.image').toLowerCase() })
+                                            : null;
+                                    },
+                                }}
                     >
                         {(field) => (
                             <>

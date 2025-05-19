@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslations } from '@/hooks/use-translations';
-import { Book, CalendarIcon, Clapperboard, ClipboardList, ClockAlertIcon, Frown, Smile } from 'lucide-react';
+import { Book, CalendarIcon, CalendarX2, Clapperboard, ClipboardList, ClockAlertIcon, FileQuestion, Frown, Smile } from 'lucide-react';
 import { useState } from 'react';
 import { VerticalTimeline, VerticalTimelineElement } from 'react-vertical-timeline-component';
 import 'react-vertical-timeline-component/style.min.css';
@@ -34,26 +34,46 @@ export default function Timeline({ activityList }: TimelineProps) {
     const loanCount = activityList.filter((item) => item.type === 'loan').length;
     const reservationCount = activityList.filter((item) => item.type === 'reservation').length;
 
-    const [selectedStart, setSelectedStart] = useState<Date | undefined>(new Date());
+    const [selectedStart, setSelectedStart] = useState<Date | undefined>(undefined);
     const [selectedEnd, setSelectedEnd] = useState<Date | undefined>(undefined);
 
+function formatDate(isoDate: string): string {
+  const date = new Date(isoDate);
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = date.getUTCFullYear();
 
+  return `${day}/${month}/${year}`;
+}
+
+function comprobanteFechaGrupal(array: ActivityHistoryItem[]): boolean {
+
+    let res = false;
+
+    array.map((element) => {
+        if(((new Date(element.createdAt) >= new Date(selectedStart)) || selectedStart==undefined) && ((new Date(element.createdAt) <= new Date(selectedEnd)) || selectedEnd==undefined)){
+            res = true;
+        }
+    })
+
+    return res;
+}
     const filterMap = {
         all: activityList.length,
         loans: loanCount,
         reservations: reservationCount,
     };
+
     const handleFilterChange = (filter: string) => {
         setselectedFilter(filter);
     };
 
     const handleClearStart = (pop: any) => {
         setSelectedStart(pop);
-        console.log(selectedStart);
     };
 
     const handleClearEnd = (pop: any) => {
-        setSelectedStart(pop);
+        setSelectedEnd(pop);
     };
 
     return (
@@ -62,9 +82,9 @@ export default function Timeline({ activityList }: TimelineProps) {
                 <HeadingSmall title={t('ui.settings.profile.timeline.title')} description={t('ui.settings.profile.timeline.description')} />
             </div>
             {activityList.length != 0 && (
-                <div className='flex gap-6'>
+                <div className='grid grid-cols-3 gap-6 justify-center'>
                     <div className="flex flex-col">
-                        <Label className="p-2">Fecha inicio busqueda</Label>
+                        <Label className="p-2">{t('ui.settings.profile.timeline.filter_start')}</Label>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button variant={'outline'} className="w-[240px] justify-start text-left font-normal">
@@ -86,11 +106,15 @@ export default function Timeline({ activityList }: TimelineProps) {
                             </PopoverContent>
                         </Popover>
                         <Button onClick={(e) => handleClearStart(undefined)}>
-                            <Clapperboard/>
+                            <CalendarX2/>
                         </Button>
                     </div>
+                                        <div className="flex flex-col">
+
+                    <Label className="p-2">{t('ui.settings.profile.timeline.filter_type')}</Label>
+
                     <Select value={selectedFilter} onValueChange={(value) => handleFilterChange(value)}>
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="w-[240]">
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -99,8 +123,9 @@ export default function Timeline({ activityList }: TimelineProps) {
                             <SelectItem value="loans">{t('ui.loans.title')}</SelectItem>
                         </SelectContent>
                     </Select>
+                    </div>
                     <div className="flex flex-col">
-                        <Label className="p-2">Fecha fin busqueda</Label>
+                        <Label className="p-2">{t('ui.settings.profile.timeline.filter_end')}</Label>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button variant={'outline'} className="w-[240px] justify-start text-left font-normal">
@@ -110,7 +135,6 @@ export default function Timeline({ activityList }: TimelineProps) {
                             </PopoverTrigger>
                             <PopoverContent className="w-auto p-0" align="start">
                                 <Calendar
-                                    animate
                                     mode="single"
                                     disabled={[{ after: new Date() }]}
                                     timeZone="Europe/Madrid"
@@ -118,19 +142,19 @@ export default function Timeline({ activityList }: TimelineProps) {
                                     onSelect={(value) => setSelectedEnd(value)}
                                 />
                             </PopoverContent>
-                        </Popover>
-                        <Button onClick={(e) =>(handleClearStart(undefined))}>
-                            <Clapperboard/>
+                        <Button onClick={(e) =>(handleClearEnd(undefined))}>
+                            <CalendarX2/>
                         </Button>
+                        </Popover>
                     </div>
                 </div>
             )}
-            {activityList.length > 0 && filterMap[selectedFilter] !== 0 ? (
+            {((activityList.length > 0 && filterMap[selectedFilter] !== 0) && comprobanteFechaGrupal(activityList)) ? (
                 <div className="border-primary rounded-xl border-6 bg-neutral-700">
                     <div className="border-secondary rounded-xl border-3">
                         <VerticalTimeline layout={'1-column-left'} lineColor="var(--primary)">
                             {activityList.map((loan, index) =>
-                                ((loan.type == 'loan' && new Date(loan.createdAt) >= new Date(selectedStart)) && (selectedFilter == 'all' || selectedFilter == 'loans')) ? (
+                                ((loan.type == 'loan' && (((new Date(loan.createdAt) >= new Date(selectedStart)) || selectedStart==undefined) && ((new Date(loan.createdAt) <= new Date(selectedEnd)) || selectedEnd==undefined))) && (selectedFilter == 'all' || selectedFilter == 'loans')) ? (
                                     <VerticalTimelineElement
                                         key={index + loan.type}
                                         contentStyle={{
@@ -213,7 +237,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                                             </div>
                                         </div>
                                     </VerticalTimelineElement>
-                                ) : loan.type == 'reservation' && (selectedFilter == 'all' || selectedFilter == 'reservations') ? (
+                                ) : ((loan.type == 'reservation' && (selectedFilter == 'all' || selectedFilter == 'reservations')) && (((new Date(loan.createdAt) >= new Date(selectedStart)) || selectedStart==undefined) && ((new Date(loan.createdAt) <= new Date(selectedEnd)) || selectedEnd==undefined))) ? (
                                     <VerticalTimelineElement
                                         key={index + loan.type}
                                         contentStyle={{
@@ -224,7 +248,7 @@ export default function Timeline({ activityList }: TimelineProps) {
                                             borderTopRightRadius: '0.5rem',
                                         }}
                                         contentArrowStyle={{ borderRight: '7px solid  rgb(150, 0, 210)' }}
-                                        date={`${t('ui.reservations.columns.created_at')}: ${loan.createdAt}`}
+                                        date={`${t('ui.reservations.columns.created_at')}: ${formatDate(loan.createdAt)}`}
                                         iconStyle={{ background: 'rgb(150, 0, 210)', color: '#fff' }}
                                         icon={<ClipboardList strokeWidth={2} />}
                                     >
@@ -247,16 +271,17 @@ export default function Timeline({ activityList }: TimelineProps) {
                     </div>
                 </div>
             ) : (
-                <iframe
-                    width="420"
-                    height="240"
-                    src="https://www.youtube.com/embed/LLRmBWP2ob4"
-                    title='"THERE&#39;S NOTHING HERE"'
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
-                ></iframe>
+                // <iframe
+                //     width="420"
+                //     height="240"
+                //     src="https://www.youtube.com/embed/LLRmBWP2ob4"
+                //     title='"THERE&#39;S NOTHING HERE"'
+                //     frameborder="0"
+                //     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                //     referrerpolicy="strict-origin-when-cross-origin"
+                //     allowfullscreen
+                // ></iframe>
+                <p>{t('messages.timeline.nothing')}</p>
             )}
         </div>
     );

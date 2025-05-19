@@ -4,6 +4,7 @@ import { FilterConfig, FiltersTable } from '@/components/stack-table/FiltersTabl
 import { Table } from '@/components/stack-table/Table';
 import { TableSkeleton } from '@/components/stack-table/TableSkeleton';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu } from '@/components/ui/dropdown-menu';
 import { Loan, useDeleteLoan, useLoans } from '@/hooks/loans/useLoans';
 import { useTranslations } from '@/hooks/use-translations';
 import { LoanLayout } from '@/layouts/loans/LoanLayout';
@@ -222,6 +223,68 @@ export default function LoansIndex({lang}:IndexLoanProps) {
                     header: t('ui.loans.columns.actions') || 'Actions',
                     renderActions: (loan) => (
                         <>
+                            {/* <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                        <Menu className={`${book.hasActive ? 'text-orange-500' : 'text-green-500'} border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+`} />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className='w-56' align='end'>
+                                    <DropdownMenuLabel className='text-center'> {t('ui.books.columns.actions')}</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    {!book.hasActive && (
+                                        <DropdownMenuItem onClick={() => handleLoanButton(book.id)}>
+                                            <div className='flex gap-3 align-center'><Handshake className="text-green-500" />
+
+                                            {t('ui.books.buttons.loan')}</div>
+                                        </DropdownMenuItem>
+                                    )}{' '}
+                                    {book.hasActive && (
+                                        <DropdownMenuItem
+                                            onClick={() => {
+                                                setSelectedBook(book);
+                                                setOpen(true);
+                                            }}
+                                        >
+                                            <div className='flex gap-3 align-center'><ClipboardList className={`text-orange-500`} />
+                                            {t('ui.books.buttons.queue')}</div>
+                                        </DropdownMenuItem>
+                                    )}
+                                    <DropdownMenuItem>
+                                        <Link href={`/books/${book.id}`}>
+                                            <div className='flex gap-3 align-center'><CopyIcon className="h-4 w-4" />
+                                            {t('ui.books.buttons.clone') || 'Clone book'}</div>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
+                                            <div className='flex gap-3 align-center'><PencilIcon className="h-4 w-4" />
+                                            {t('ui.books.buttons.edit') || 'Edit book'}</div>
+                                        </Link>
+                                    </DropdownMenuItem>
+
+                                        <DeleteDialog
+                                            id={book.id}
+                                            onDelete={handleDeleteBook}
+                                            title={t('ui.books.delete.title') || 'Delete book'}
+                                            description={
+                                                t('ui.books.delete.description') ||
+                                                'Are you sure you want to delete this book? This action cannot be undone.'
+                                            }
+                                            successMessage={t('messages.books.deleted')}
+                                            trigger={
+                                    <div className={cn(
+                                            "hover:bg-accent hover:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none",
+                                          )}>
+
+                                                    <div className='flex gap-3 align-center'><TrashIcon className="text-destructive h-4 w-4" />
+                                                    {t('ui.users.buttons.delete') || 'Delete user'}</div>
+                                    </div>
+
+                                            }
+                                        />
+
+                                </DropdownMenuContent>
+                            </DropdownMenu> */}
                             <Button
                                 disabled={!loan.is_active}
                                 onClick={() => handleReturnButton(loan.id)}
@@ -247,6 +310,7 @@ export default function LoansIndex({lang}:IndexLoanProps) {
                             </Link>
                             <DeleteDialog
                                 id={loan.id}
+                                successMessage={t('messages.loans.deleted')}
                                 onDelete={handleDeleteLoan}
                                 title={t('ui.loans.delete.title') || 'Delete loan'}
                                 description={

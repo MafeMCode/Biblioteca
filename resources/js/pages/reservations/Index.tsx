@@ -107,6 +107,7 @@ export default function ReservationsIndex({lang}:IndexReservationProps) {
                             <DeleteDialog
                                 id={reservation.id}
                                 onDelete={handleDeleteReservation}
+                                successMessage={t('messages.reservations.deleted')}
                                 title={t('ui.reservations.delete.title') || 'Delete reservation'}
                                 description={
                                     t('ui.reservations.delete.description') ||

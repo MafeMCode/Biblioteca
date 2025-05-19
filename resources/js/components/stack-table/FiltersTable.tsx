@@ -37,6 +37,7 @@ dayjs.locale("es"); // Establecer español como idioma predeterminado
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command";
 
 /**
  * Tipos de filtros disponibles
@@ -167,6 +168,7 @@ export function FiltersTable({
 }: FiltersTableProps) {
   const { t } = useTranslations();
   const [open, setOpen] = useState(false);
+
   const [filterValues, setFilterValues] = useState<Record<string, any>>(
     initialValues || {}
   );
@@ -371,7 +373,38 @@ function renderFilterInput(
         />
       );
     case "select":
+  const [popOpen, popSetOpen] = useState(false);
+
       return (
+        // <Popover open={popOpen} onOpenChange={popSetOpen} modal={true}>
+        //                                         <PopoverTrigger asChild className="w-full">
+        //                                             <Button variant="outline" className="w-full justify-start">
+        //                                                 {field.value ? <>{field.value}</> : <>Email</>}
+        //                                             </Button>
+        //                                         </PopoverTrigger>
+        //                                         <PopoverContent className="p-0" side="bottom" align="start">
+        //                                             <Command>
+        //                                                 <CommandInput />
+        //                                                 <CommandList>
+        //                                                     <CommandEmpty>No results found.</CommandEmpty>
+        //                                                     <CommandGroup>
+        //                                                         {(filter as SelectFilterConfig).options.map((option) => (
+        //                                                             <CommandItem
+        //                                                                 key={option.value}
+        //                                                                 value={option.value}
+        //                                                                 onSelect={(value) => {
+        //                                                                     field.onChange(value);
+        //                                                                     popSetOpen(false);
+        //                                                                 }}
+        //                                                             >
+        //                                                                 {option.label}
+        //                                                             </CommandItem>
+        //                                                         ))}
+        //                                                     </CommandGroup>
+        //                                                 </CommandList>
+        //                                             </Command>
+        //                                         </PopoverContent>
+        //                                     </Popover>
         <Select
           value={field.value || ""}
           onValueChange={(value) => {

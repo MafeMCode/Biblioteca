@@ -64,14 +64,6 @@ export function AppSidebar() {
             });
         }
 
-        if (auth.permissions.includes('products.view')) {
-            items.push({
-                title: t('ui.navigation.items.books'),
-                url: '/books',
-                icon: BookMarked,
-            });
-        }
-
         if (auth.permissions.includes('reports.view')) {
             items.push(
                 {
@@ -88,7 +80,20 @@ export function AppSidebar() {
                     title: t('ui.navigation.items.bookcases'),
                     url: '/bookcases',
                     icon: ChartColumnStacked,
-                },
+                },)
+        }
+
+
+        if (auth.permissions.includes('products.view')) {
+            items.push({
+                title: t('ui.navigation.items.books'),
+                url: '/books',
+                icon: BookMarked,
+            });
+        }
+        if (auth.permissions.includes('reports.view')) {
+            items.push(
+
                 {
                     title: t('ui.navigation.items.loans'),
                     url: '/loans',
@@ -134,7 +139,6 @@ export function AppSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems(t)} className="mt-auto" />
                 <NavUser />
             </SidebarFooter>
         </Sidebar>

@@ -249,6 +249,8 @@ export function UserForm({ initialData, page, perPage, roles, emails, rolesConPe
                                             ? t('ui.validation.required', { attribute: t('ui.users.fields.email').toLowerCase() })
                                             : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
                                             ? t('ui.validation.email', { attribute: t('ui.users.fields.email').toLowerCase() })
+                                            : emails.includes(value) && initialData?.email!=value
+                                            ? t('ui.validation.usedEmail', { attribute: t('ui.users.fields.email').toLowerCase() })
                                             : undefined;
 
                                     },

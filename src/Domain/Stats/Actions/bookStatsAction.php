@@ -72,7 +72,7 @@ class bookStatsAction
         ])
         ->take(10)
         ->map(function ($zone) {
-            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+            if ($zone['Loans'] > 0) {
                 return $zone;
             }
         })
@@ -92,7 +92,7 @@ class bookStatsAction
         ])
         ->take(10)
         ->map(function ($zone) {
-            if ($zone['Loans'] > 0 || $zone['Reservations'] > 0) {
+            if ($zone['Reservations'] > 0) {
                 return $zone;
             }
         })

@@ -10,6 +10,7 @@ use Domain\Zones\Actions\ZoneStoreAction;
 use Domain\Zones\Actions\ZoneUpdateAction;
 use Domain\Zones\Models\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -21,8 +22,9 @@ class ZoneController extends Controller
      */
     public function index()
     {
+        Gate::authorize('reports.view');
 
-        $floor_numbers = Floor::all()->pluck('story')->map(function ($story) {
+        $floor_numbers = Floor::orderBy('story')->pluck('story')->map(function ($story) {
             return [
                 'label' => $story,
                 'value' => $story,
@@ -37,6 +39,7 @@ class ZoneController extends Controller
      */
     public function create()
     {
+        Gate::authorize('reports.view');
         $storyList = Floor::with('zones')->get()->groupBy('story')->map(function ($floors) {
             return $floors->flatMap(function ($floor) {
                 return $floor->zones->pluck('number');
@@ -53,6 +56,7 @@ class ZoneController extends Controller
      */
     public function store(Request $request, ZoneStoreAction $action)
     {
+        Gate::authorize('reports.view');
 
         $validator = Validator::make($request->all(), [
             'number' => [
@@ -81,6 +85,7 @@ class ZoneController extends Controller
      */
     public function show(string $id)
     {
+        Gate::authorize('reports.view');
         //
     }
 
@@ -89,6 +94,7 @@ class ZoneController extends Controller
      */
     public function edit(Request $request, Zone $zone)
     {
+        Gate::authorize('reports.view');
         $floors = Floor::select('id', 'story', 'capacity')->orderBy('story', 'asc')->withCount('zones')->get()->toArray();
         $genres = Genre::select('id', 'name')->get()->toArray();
         return Inertia::render('zones/Edit', [
@@ -105,6 +111,7 @@ class ZoneController extends Controller
      */
     public function update(Request $request, Zone $zone, ZoneUpdateAction $action)
     {
+        Gate::authorize('reports.view');
         $validator = Validator::make($request->all(), [
             'number' => [
                 'required',
@@ -142,6 +149,7 @@ class ZoneController extends Controller
      */
     public function destroy(Zone $zone, ZoneDestroyAction $action)
     {
+        Gate::authorize('reports.view');
         $action($zone);
 
         return redirect()->route('zones.index')

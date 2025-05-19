@@ -129,6 +129,7 @@ export default function BookcasesIndex({floor_list, zone_list}:BookcaseIndexProp
                             <DeleteDialog
                                 id={bookcase.id}
                                 onDelete={handleDeleteBookcase}
+                                successMessage={t('messages.bookcases.deleted')}
                                 title={t('ui.bookcases.delete.title') || 'Delete bookcase'}
                                 description={
                                     t('ui.bookcases.delete.description') ||

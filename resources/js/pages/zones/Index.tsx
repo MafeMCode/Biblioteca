@@ -123,6 +123,7 @@ export default function ZonesIndex({floor_list}:ZoneIndexProps) {
                             <DeleteDialog
                                 id={zone.id}
                                 onDelete={handleDeleteZone}
+                                successMessage={t('messages.zones.deleted')}
                                 title={t('ui.zones.delete.title') || 'Delete zone'}
                                 description={
                                     t('ui.zones.delete.description') || 'Are you sure you want to delete this zone? This action cannot be undone.'

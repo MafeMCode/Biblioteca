@@ -32,9 +32,11 @@ return [
         ],
     ],
     'books' => [
-        'created' => 'Libro creada correctamente',
-        'updated' => 'Libro actualizada correctamente',
-        'deleted' => 'Libro eliminada correctamente',
+        'created' => 'Libro creado correctamente',
+        'updated' => 'Libro actualizado correctamente',
+        'deleted' => 'Libro eliminado correctamente',
+        'cloneError' => 'No hay estanterías disponibles para la copia, cree una primero',
+
         'error' => [
             'create' => 'Error al crear el libro',
             'update' => 'Error al actualizar el libro',
@@ -61,4 +63,7 @@ return [
             'delete' => 'Error al eliminar la reserva',
         ],
     ],
+    'timeline' => [
+        'nothing' => 'No hay resultados'
+    ]
 ];

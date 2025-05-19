@@ -7,22 +7,30 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Book, useBooks, useDeleteBook } from '@/hooks/books/useBooks';
 import { useTranslations } from '@/hooks/use-translations';
 import { BookLayout } from '@/layouts/books/BookLayout';
+import { cn } from '@/lib/utils';
 import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Check, ChevronsUpDown, ClipboardList, Handshake, Image, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
+import { ClipboardList, CopyIcon, Handshake, Menu, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 interface Email {
-    label: string,
-    value: string,
+    label: string;
+    value: string;
 }
 
 interface PageProps {
@@ -32,18 +40,18 @@ interface PageProps {
     };
 }
 interface BookIndexProps {
-    floor_list: number[],
-    zone_list: number[],
-    bookcase_list: number[],
-    emailList: Email[],
+    floor_list: number[];
+    zone_list: number[];
+    bookcase_list: number[];
+    emailList: Email[];
 }
 
-export default function BooksIndex({floor_list, zone_list, bookcase_list, emailList}:BookIndexProps) {
+export default function BooksIndex({ floor_list, zone_list, bookcase_list, emailList }: BookIndexProps) {
     const { t } = useTranslations();
     const { url } = usePage();
 
-        const page = usePage<{ props: PageProps }>();
-        const auth = page.props.auth;
+    const page = usePage<{ props: PageProps }>();
+    const auth = page.props.auth;
     // Obtener los parámetros de la URL actual
     const urlParams = new URLSearchParams(url.split('?')[1] || '');
     const pageParam = urlParams.get('page');
@@ -54,6 +62,7 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
     const [perPage, setPerPage] = useState(perPageParam ? parseInt(perPageParam) : 10);
     const [filters, setFilters] = useState<Record<string, any>>({});
     const [open, setOpen] = useState(false);
+    const [openClone, setOpenClone] = useState(false);
     const [popOpen, popSetOpen] = useState(false);
     const [selectedBook, setSelectedBook] = useState<Book | null>(null);
     const [reserMail, setReserMail] = useState('');
@@ -93,7 +102,6 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
     }
 
     function HandleReservation(bookID: string, userMail: string) {
-
         const reservationData = new FormData();
         reservationData.append('bookID', bookID);
         reservationData.append('userMail', userMail);
@@ -103,13 +111,22 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
     }
 
     const handleFilterChange = (newFilters: Record<string, any>) => {
-        const filtersChanged = newFilters!==filters;
+        const filtersChanged = newFilters !== filters;
 
         if (filtersChanged) {
             setCurrentPage(1);
         }
         setFilters(newFilters);
-        };
+    };
+
+    function handleCloneBook(bookID: string, userMail: string) {
+        const reservationData = new FormData();
+        reservationData.append('bookID', bookID);
+        reservationData.append('userMail', userMail);
+
+        router.post('/reservations', reservationData);
+        // window.location.reload();
+    }
 
     const handlePerPageChange = (newPerPage: number) => {
         setPerPage(newPerPage);
@@ -140,7 +157,6 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
                     accessorKey: 'ISBN',
                     format: (value) => {
                         return value['number'] + ' - (' + value['loans'] + '/' + value['total'] + ')';
-
                     },
                 }),
                 createTextColumn<Book>({
@@ -151,30 +167,30 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
                         return !value ? t('ui.books.utils.available') : t('ui.books.utils.unavailable');
                     },
                 }),
-                createActionsColumn<Book>({
-                    id: 'imgUrl',
-                    header: t('ui.books.columns.image') || 'Image',
-                    accessorKey: 'imgUrl',
-                    renderActions(book) {
-                        return (
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <Image />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        {/* Check if URL exists */}
-                                        {book.imgUrl ? (
-                                            <img src={book.imgUrl} alt="Preview" style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
-                                        ) : (
-                                            <span>{book.imgUrl}</span> // Fallback message or image
-                                        )}
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                        );
-                    },
-                }),
+                // createActionsColumn<Book>({
+                //     id: 'imgUrl',
+                //     header: t('ui.books.columns.image') || 'Image',
+                //     accessorKey: 'imgUrl',
+                //     renderActions(book) {
+                //         return (
+                //             <TooltipProvider>
+                //                 <Tooltip>
+                //                     <TooltipTrigger>
+                //                         <Image />
+                //                     </TooltipTrigger>
+                //                     <TooltipContent>
+                //                         {/* Check if URL exists */}
+                //                         {book.imgUrl ? (
+                //                             <img src={book.imgUrl} alt="Preview" style={{ width: '200px', height: 'auto', marginTop: '10px' }} />
+                //                         ) : (
+                //                             <span>{book.imgUrl}</span> // Fallback message or image
+                //                         )}
+                //                     </TooltipContent>
+                //                 </Tooltip>
+                //             </TooltipProvider>
+                //         );
+                //     },
+                // }),
                 createTextColumn<Book>({
                     id: 'genres',
                     header: t('ui.books.columns.genres') || 'Genres',
@@ -234,7 +250,7 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
         [t, handleDeleteBook],
     );
 
-    if(auth.permissions.includes('products.edit')){
+    if (auth.permissions.includes('products.edit')) {
         columns.push(
             createActionsColumn<Book>({
                 id: 'actions',
@@ -242,59 +258,73 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
                 renderActions: (book) => {
                     return (
                         <>
-                            {!book.hasActive && (
-                                <Button
-                                    disabled={book.hasActive}
-                                    onClick={() => handleLoanButton(book.id)}
-                                    variant="outline"
-                                    size="icon"
-                                    title={t('ui.books.buttons.loan') || 'Loan book'}
-                                >
-                                    <Handshake className="h-4 w-4 text-green-500" />
-                                </Button>
-                            )}
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                        <Menu className={`${book.hasActive ? 'text-orange-500' : 'text-green-500'} border border-input bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+`} />
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className='w-56' align='end'>
+                                    <DropdownMenuLabel className='text-center'> {t('ui.books.columns.actions')}</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    {!book.hasActive && (
+                                        <DropdownMenuItem onClick={() => handleLoanButton(book.id)}>
+                                            <div className='flex gap-3 align-center'><Handshake className="text-green-500" />
 
-                            {book.hasActive && (
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    title={t('ui.books.buttons.queue') || 'Loan book'}
-                                    onClick={() => {
-                                        setSelectedBook(book);
-                                        setOpen(true);
-                                    }}
-                                >
-                                    <ClipboardList className="h-4 w-4 text-orange-500" />
-                                </Button>
-                            )}
+                                            {t('ui.books.buttons.loan')}</div>
+                                        </DropdownMenuItem>
+                                    )}{' '}
+                                    {book.hasActive && (
+                                        <DropdownMenuItem
+                                            onClick={() => {
+                                                setSelectedBook(book);
+                                                setOpen(true);
+                                            }}
+                                        >
+                                            <div className='flex gap-3 align-center'><ClipboardList className={`text-orange-500`} />
+                                            {t('ui.books.buttons.queue')}</div>
+                                        </DropdownMenuItem>
+                                    )}
+                                    <DropdownMenuItem>
+                                        <Link href={`/books/${book.id}`}>
+                                            <div className='flex gap-3 align-center'><CopyIcon className="h-4 w-4" />
+                                            {t('ui.books.buttons.clone') || 'Clone book'}</div>
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
+                                            <div className='flex gap-3 align-center'><PencilIcon className="h-4 w-4" />
+                                            {t('ui.books.buttons.edit') || 'Edit book'}</div>
+                                        </Link>
+                                    </DropdownMenuItem>
 
-                            <Link href={`/books/${book.id}/edit?page=${currentPage}&perPage=${perPage}`}>
-                                <Button variant="outline" size="icon" title={t('ui.books.buttons.edit') || 'Edit book'}>
-                                    <PencilIcon className="h-4 w-4" />
-                                </Button>
-                            </Link>
-                            <DeleteDialog
-                                id={book.id}
-                                onDelete={handleDeleteBook}
-                                title={t('ui.books.delete.title') || 'Delete book'}
-                                description={
-                                    t('ui.books.delete.description') || 'Are you sure you want to delete this book? This action cannot be undone.'
-                                }
-                                trigger={
-                                    <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="text-destructive hover:text-destructive"
-                                        title={t('ui.users.buttons.delete') || 'Delete user'}
-                                    >
-                                        <TrashIcon className="h-4 w-4" />
-                                    </Button>
-                                }
-                            />
+                                        <DeleteDialog
+                                            id={book.id}
+                                            onDelete={handleDeleteBook}
+                                            title={t('ui.books.delete.title') || 'Delete book'}
+                                            description={
+                                                t('ui.books.delete.description') ||
+                                                'Are you sure you want to delete this book? This action cannot be undone.'
+                                            }
+                                            successMessage={t('messages.books.deleted')}
+                                            trigger={
+                                    <div className={cn(
+                                            "hover:bg-accent hover:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none",
+                                          )}>
+
+                                                    <div className='flex gap-3 align-center'><TrashIcon className="text-destructive h-4 w-4" />
+                                                    {t('ui.users.buttons.delete') || 'Delete user'}</div>
+                                    </div>
+
+                                            }
+                                        />
+
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </>
                     );
                 },
-            }))
+            }),
+        );
     }
     return (
         <BookLayout title={t('ui.books.title')}>
@@ -302,104 +332,107 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
                 <div className="space-y-6">
                     <div className="flex items-center justify-between">
                         <h1 className="text-3xl font-bold">{t('ui.books.title')}</h1>
-                        {auth.permissions.includes('products.edit')&&(<Link href="/books/create">
-                            <Button>
-                                <PlusIcon className="mr-2 h-4 w-4" />
-                                {t('ui.books.buttons.new')}
-                            </Button>
-                        </Link>)}
+                        {auth.permissions.includes('products.edit') && (
+                            <Link href="/books/create">
+                                <Button>
+                                    <PlusIcon className="mr-2 h-4 w-4" />
+                                    {t('ui.books.buttons.new')}
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                     <div></div>
 
                     <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-1">
-      <AccordionTrigger className="text-center w-full justify-center cursor-pointer">
-      {t('ui.common.filters.trigger')}</AccordionTrigger>
-        <AccordionContent>
-                    <div className="space-y-4">
-                        <FiltersTable
-                            filters={
-                                [
-                                    {
-                                        id: 'title',
-                                        label: t('ui.books.filters.title') || 'Titulo',
-                                        type: 'text',
-                                        placeholder: t('ui.books.placeholders.title') || 'Titulo...',
-                                    },
-                                    {
-                                        id: 'ISBN',
-                                        label: t('ISBN') || 'ISBN',
-                                        type: 'text',
-                                        placeholder: t('ui.books.placeholders.ISBN') || 'ISBN...',
-                                    },
-                                    {
-                                        id: 'available',
-                                        label: t('ui.books.filters.available') || 'Disponible',
-                                        type: 'select',
-                                        options: [
-                                            {label: 'Disponible', value: 'true'},
-                                            {label: 'No disponible', value: 'false'},
-                                        ],
-                                        placeholder: t('ui.books.placeholders.available') || 'Disponible...',
-                                    },
-                                    {
-                                        id: 'genres',
-                                        label: t('ui.books.filters.genres') || 'Géneros',
-                                        type: 'text',
-                                        placeholder: t('ui.books.placeholders.genres') || 'Géneros...',
-                                    },
-                                    {
-                                        id: 'author',
-                                        label: t('ui.books.filters.author') || 'Autor',
-                                        type: 'text',
-                                        placeholder: t('ui.books.placeholders.author') || 'Autor...',
-                                    },
-                                    {
-                                        id: 'pages',
-                                        label: t('ui.books.filters.pages') || 'Páginas',
-                                        type: 'number',
-                                        placeholder: t('ui.books.placeholders.pages') || 'Páginas...',
-                                    },
-                                    {
-                                        id: 'publisher',
-                                        label: t('ui.books.filters.publisher') || 'Editorial',
-                                        type: 'text',
-                                        placeholder: t('ui.books.placeholders.publisher') || 'Editorial...',
-                                    },
-                                    {
-                                        id: 'floor',
-                                        label: t('ui.books.filters.floor') || 'Piso',
-                                        type: 'select',
-                                        options: floor_list,
-                                        placeholder: t('ui.books.placeholders.floor') || 'Piso...',
-                                    },
-                                    {
-                                        id: 'zone',
-                                        label: t('ui.books.filters.zone') || 'Zona',
-                                        type: 'select',
-                                        options: zone_list,
-                                        placeholder: t('ui.books.placeholders.zone') || 'Zona...',
-                                    },
-                                    {
-                                        id: 'bookcase',
-                                        label: t('ui.books.filters.bookcase') || 'Estantería',
-                                        type: 'select',
-                                        options: bookcase_list,
-                                        placeholder: t('ui.books.placeholders.bookcase') || 'Estantería...',
-                                    },
-                                ] as FilterConfig[]
-                            }
-                            onFilterChange={handleFilterChange}
-                            initialValues={filters}
-                            containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-4"
-                        />
+                        <AccordionItem value="item-1">
+                            <AccordionTrigger className="w-full cursor-pointer justify-center text-center">
+                                {t('ui.common.filters.trigger')}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className="space-y-4">
+                                    <FiltersTable
+                                        filters={
+                                            [
+                                                {
+                                                    id: 'title',
+                                                    label: t('ui.books.filters.title') || 'Titulo',
+                                                    type: 'text',
+                                                    placeholder: t('ui.books.placeholders.title') || 'Titulo...',
+                                                },
+                                                {
+                                                    id: 'ISBN',
+                                                    label: t('ISBN') || 'ISBN',
+                                                    type: 'text',
+                                                    placeholder: t('ui.books.placeholders.ISBN') || 'ISBN...',
+                                                },
+                                                {
+                                                    id: 'available',
+                                                    label: t('ui.books.filters.available') || 'Disponible',
+                                                    type: 'select',
+                                                    options: [
+                                                        { label: 'Disponible', value: 'true' },
+                                                        { label: 'No disponible', value: 'false' },
+                                                    ],
+                                                    placeholder: t('ui.books.placeholders.available') || 'Disponible...',
+                                                },
+                                                {
+                                                    id: 'genres',
+                                                    label: t('ui.books.filters.genres') || 'Géneros',
+                                                    type: 'text',
+                                                    placeholder: t('ui.books.placeholders.genres') || 'Géneros...',
+                                                },
+                                                {
+                                                    id: 'author',
+                                                    label: t('ui.books.filters.author') || 'Autor',
+                                                    type: 'text',
+                                                    placeholder: t('ui.books.placeholders.author') || 'Autor...',
+                                                },
+                                                {
+                                                    id: 'pages',
+                                                    label: t('ui.books.filters.pages') || 'Páginas',
+                                                    type: 'number',
+                                                    placeholder: t('ui.books.placeholders.pages') || 'Páginas...',
+                                                },
+                                                {
+                                                    id: 'publisher',
+                                                    label: t('ui.books.filters.publisher') || 'Editorial',
+                                                    type: 'text',
+                                                    placeholder: t('ui.books.placeholders.publisher') || 'Editorial...',
+                                                },
+                                                {
+                                                    id: 'floor',
+                                                    label: t('ui.books.filters.floor') || 'Piso',
+                                                    type: 'select',
+                                                    options: floor_list,
+                                                    placeholder: t('ui.books.placeholders.floor') || 'Piso...',
+                                                },
+                                                {
+                                                    id: 'zone',
+                                                    label: t('ui.books.filters.zone') || 'Zona',
+                                                    type: 'select',
+                                                    options: zone_list,
+                                                    placeholder: t('ui.books.placeholders.zone') || 'Zona...',
+                                                },
+                                                {
+                                                    id: 'bookcase',
+                                                    label: t('ui.books.filters.bookcase') || 'Estantería',
+                                                    type: 'select',
+                                                    options: bookcase_list,
+                                                    placeholder: t('ui.books.placeholders.bookcase') || 'Estantería...',
+                                                },
+                                            ] as FilterConfig[]
+                                        }
+                                        onFilterChange={handleFilterChange}
+                                        initialValues={filters}
+                                        containerClassName="grid w-full grid-cols-1 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-5 gap-4"
+                                    />
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                    <div className="mb-5 w-full justify-center text-center">
+                        {books?.meta.total !== undefined && <h2>{t('ui.common.filters.results', { attribute: books?.meta.total })}</h2>}
                     </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-    <div className="text-center w-full justify-center mb-5">
-    {books?.meta.total !== undefined && <h2>{t('ui.common.filters.results', {attribute: books?.meta.total})}</h2>}
-    </div>
 
                     <div className="w-full overflow-hidden">
                         {isLoading ? (
@@ -438,6 +471,9 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
                     </div>
                 </div>
             </div>
+
+            {/** Reservation Dialog */}
+
             <Dialog
                 open={open}
                 onOpenChange={(val) => {
@@ -457,47 +493,47 @@ export default function BooksIndex({floor_list, zone_list, bookcase_list, emailL
                         <div className="grid gap-4 py-4">
                             <div className="items-center gap-4">
                                 <Label htmlFor="name" className="text-right">
-                                {t('ui.reservations.utils.book')}
+                                    {t('ui.reservations.utils.book')}
                                 </Label>
                                 <Input disabled id="name" value={selectedBook.title} className="col-span-3" />
                             </div>
-                            <div className="items-center gap-4 w-full">
+                            <div className="w-full items-center gap-4">
                                 <Label htmlFor="username" className="text-right">
-                                {t('ui.reservations.utils.email')}
+                                    {t('ui.reservations.utils.email')}
                                 </Label>
                                 {/* popoverStyle */}
 
-                                <div className="flex items-center space-x-4 w-full">
-      <Popover open={popOpen} onOpenChange={popSetOpen}>
-        <PopoverTrigger asChild className='w-full'>
-          <Button variant="outline" className="w-full justify-start">
-            {reserMail ? <>{reserMail}</> : <>Email</>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="p-0" side="bottom" align="start">
-          <Command>
-            <CommandInput placeholder="Email..." />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup>
-                {emailList.map((email) => (
-                  <CommandItem
-                    key={email.value}
-                    value={email.value}
-                    onSelect={(value) => {
-                        setReserMail(value)
-                        popSetOpen(false)
-                    }}
-                  >
-                    {email.label}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+                                <div className="flex w-full items-center space-x-4">
+                                    <Popover open={popOpen} onOpenChange={popSetOpen} modal={true}>
+                                        <PopoverTrigger asChild className="w-full">
+                                            <Button variant="outline" className="w-full justify-start">
+                                                {reserMail ? <>{reserMail}</> : <>Email</>}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="p-0" side="bottom" align="start">
+                                            <Command>
+                                                <CommandInput placeholder="Email..." />
+                                                <CommandList>
+                                                    <CommandEmpty>No results found.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        {emailList.map((email) => (
+                                                            <CommandItem
+                                                                key={email.value}
+                                                                value={email.value}
+                                                                onSelect={(value) => {
+                                                                    setReserMail(value);
+                                                                    popSetOpen(false);
+                                                                }}
+                                                            >
+                                                                {email.label}
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </CommandList>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                                 {/* popoverStyle */}
 
                                 {/* <Input
