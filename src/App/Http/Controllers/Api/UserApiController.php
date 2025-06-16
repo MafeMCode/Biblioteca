@@ -78,4 +78,18 @@ class UserApiController extends Controller
             'message' => __('messages.users.deleted')
         ]);
     }
+    public function usercall(Request $request)
+    {
+        $query = User::query()
+        ->get()->map(function ($user) {
+            return [
+                'username' => $user->name,
+                'email' => $user->email,
+            ];;
+    });
+
+        return response()->json([
+            'users' => $query
+        ]);
+    }
 }

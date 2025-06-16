@@ -7,14 +7,13 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
     const { setOpen } = useSidebar();
     return (
         <SidebarGroup className="px-2 py-0">
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={item.url === page.url}>
-                            <Link 
-                                href={item.url} 
-                                prefetch 
+                            <Link
+                                href={item.url}
+                                prefetch
                                 onClick={() => setOpen(false)}
                             >
                                 {item.icon && <item.icon />}

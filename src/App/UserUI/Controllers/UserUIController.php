@@ -26,7 +26,7 @@ class UserUIController extends Controller
         $floors = Floor::with(['zones' => function ($query) {
             $query->orderBy('number', 'asc')->with(['bookcases' => function ($query) {
                 $query->orderBy('number', 'asc')->with(['books' => function ($query) {
-                    $query->orderBy('created_at');
+                    $query->orderBy('title');
                 }])->withCount('books');
             }])->withCount('bookcases');;
         }])

@@ -1,13 +1,14 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card } from '@/components/ui/card';
-import CardFlip from '@/components/ui/card-flip';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/hooks/use-translations';
 import { FloorLayout } from '@/layouts/floors/FloorLayout';
 import { cn } from '@/lib/utils';
 import { PageProps } from '@inertiajs/core';
 import { usePage } from '@inertiajs/react';
+import { Book, BookShelf } from './components';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { nightOwlTheme } from './utils/BookshelfThemes';
 
 interface Book {
     id: string;
@@ -53,27 +54,51 @@ export default function FloorsIndex({ floors }: IndexFloorProps) {
     const { url } = usePage();
 
     const genreColorMap: { [key: string]: string } = {
-        Fantasy: 'hover:bg-indigo-700',
-        Drama: 'hover:bg-purple-700',
-        Historical: 'hover:bg-yellow-800',
-        'Science Fiction': 'hover:bg-cyan-700',
-        Horror: 'hover:bg-red-900',
-        Mystery: 'hover:bg-slate-700',
-        Thriller: 'hover:bg-zinc-800',
-        Romance: 'hover:bg-pink-600',
-        Adventure: 'hover:bg-orange-600',
-        Dystopian: 'hover:bg-gray-800',
-        Gothic: 'hover:bg-neutral-900',
-        'Magical Realism': 'hover:bg-emerald-600',
-        Satire: 'hover:bg-lime-600',
-        Comedy: 'hover:bg-yellow-500',
-        Tragedy: 'hover:bg-rose-900',
-        'Crime Fiction': 'hover:bg-red-800',
-        Mythology: 'hover:bg-amber-700',
-        Western: 'hover:bg-amber-900',
-        Cyberpunk: 'hover:bg-fuchsia-800',
-        Poetry: 'hover:bg-sky-600',
+        Fantasy: 'bg-indigo-900 hover:bg-indigo-700',
+        Drama: 'bg-purple-900 hover:bg-purple-700',
+        Historical: 'bg-yellow-900 hover:bg-yellow-800',
+        'Science Fiction': 'bg-cyan-900 hover:bg-cyan-700',
+        Horror: 'bg-red-950 hover:bg-red-900',
+        Mystery: 'bg-slate-900 hover:bg-slate-700',
+        Thriller: 'bg-zinc-900 hover:bg-zinc-800',
+        Romance: 'bg-pink-800 hover:bg-pink-600',
+        Adventure: 'bg-orange-800 hover:bg-orange-600',
+        Dystopian: 'bg-gray-900 hover:bg-gray-800',
+        Gothic: 'bg-neutral-950 hover:bg-neutral-900',
+        'Magical Realism': 'bg-emerald-800 hover:bg-emerald-600',
+        Satire: 'bg-lime-800 hover:bg-lime-600',
+        Comedy: 'bg-yellow-700 hover:bg-yellow-500',
+        Tragedy: 'bg-rose-950 hover:bg-rose-900',
+        'Crime Fiction': 'bg-red-900 hover:bg-red-800',
+        Mythology: 'bg-amber-800 hover:bg-amber-700',
+        Western: 'bg-amber-950 hover:bg-amber-900',
+        Cyberpunk: 'bg-fuchsia-900 hover:bg-fuchsia-800',
+        Poetry: 'bg-sky-800 hover:bg-sky-600',
     };
+
+const genreHexColors = {
+        Fantasy: '#4338ca', // hover:bg-indigo-700
+        Drama: '#7e22ce', // hover:bg-purple-700
+        Historical: '#a16207', // hover:bg-yellow-800
+        'Science Fiction': '#0e7490', // hover:bg-cyan-700
+        Horror: '#7f1d1d', // hover:bg-red-900
+        Mystery: '#334155', // hover:bg-slate-700
+        Thriller: '#3f3f46', // hover:bg-zinc-800
+        Romance: '#db2777', // hover:bg-pink-600
+        Adventure: '#ea580c', // hover:bg-orange-600
+        Dystopian: '#1f2937', // hover:bg-gray-800
+        Gothic: '#171717', // hover:bg-neutral-900
+        'Magical Realism': '#059669', // hover:bg-emerald-600
+        Satire: '#65a30d', // hover:bg-lime-600
+        Comedy: '#eab308', // hover:bg-yellow-500
+        Tragedy: '#881337', // hover:bg-rose-900
+        'Crime Fiction': '#7f1d1d', // hover:bg-red-800
+        Mythology: '#b45309', // hover:bg-amber-700
+        Western: '#78350f', // hover:bg-amber-900
+        Cyberpunk: '#a21caf', // hover:bg-fuchsia-800
+        Poetry: '#0284c7', // hover:bg-sky-600
+    };
+
 
     return (
         <FloorLayout title={t('ui.floors.title')}>
@@ -124,7 +149,7 @@ export default function FloorsIndex({ floors }: IndexFloorProps) {
                                                         if (visualizeZone) {
                                                             return (
                                                                 <div key={zone.id}>
-                                                                    <div className="flex justify-center p-4 sm:h-[100px] sm:w-[200px]">
+                                                                    <div className="flex h-[100px] w-[200px] justify-center p-4">
                                                                         <Dialog>
                                                                             <DialogTrigger asChild className="w-full">
                                                                                 <Card
@@ -139,203 +164,71 @@ export default function FloorsIndex({ floors }: IndexFloorProps) {
                                                                                 </Card>
                                                                             </DialogTrigger>
 
-                                                                            <DialogContent>
-                                                                                <DialogDescription />
-
-                                                                                <div>
-                                                                                    <h1>
+                                                                            <DialogContent
+                                                                                className="flex !h-[80vh] !w-[40vw] flex-col overflow-auto p-0"
+                                                                                style={{ maxWidth: 'none', maxHeight: 'none' }}
+                                                                            >
+                                                                                {' '}
+                                                                                <DialogDescription>
+                                                                                    <h1 className='text-xl'>
                                                                                         {t('ui.userUI.zone')} {zone.number} -{' '}
                                                                                         {t(`ui.genres.names.${zone.genreName}`)}
                                                                                     </h1>
-                                                                                    <Accordion type="multiple">
-                                                                                        {zone.bookcases.map((bookcase) => {
-                                                                                            if (bookcase.books_count > 0) {
-                                                                                                return (
-                                                                                                    <div key={bookcase.id}>
-                                                                                                        <Dialog>
-                                                                                                            <DialogTrigger asChild className="w-full">
-                                                                                                                <Card className="btn text-primary hover:bg-secondary rounded shadow-[0_9px_0_rgb(0,0,0)] transition-all ease-out hover:cursor-pointer active:translate-y-1 active:shadow-[0_4px_0px_rgb(0,0,0)]">
-                                                                                                                    <DialogTitle className="justify-center">
-                                                                                                                        {t('ui.userUI.bookcase')}{' '}
-                                                                                                                        {bookcase.number} -{' '}
-                                                                                                                        {t('ui.books.title')}:{' '}
-                                                                                                                        {bookcase.books_count}
-                                                                                                                    </DialogTitle>{' '}
-                                                                                                                </Card>
-                                                                                                            </DialogTrigger>
-                                                                                                            <DialogContent>
-                                                                                                                <DialogDescription />
-                                                                                                                <div>
-                                                                                                                    <h1 className="text-center text-xl">
-                                                                                                                        {t('ui.userUI.bookcase')}{' '}
-                                                                                                                        {bookcase.number} -{' '}
-                                                                                                                        {t(
-                                                                                                                            `ui.genres.names.${zone.genreName}`,
-                                                                                                                        )}
-                                                                                                                    </h1>
-                                                                                                                    <br />
-                                                                                                                    <Separator />
-                                                                                                                    <Accordion
-                                                                                                                        type="multiple"
-                                                                                                                        className="w-full"
-                                                                                                                    >
-                                                                                                                        {bookcase.books.map(
-                                                                                                                            (book) => {
-                                                                                                                                let StringGenres = '';
-                                                                                                                                let aux;
-                                                                                                                                let res: string[] =
-                                                                                                                                    [];
-                                                                                                                                if (
-                                                                                                                                    book.genres.includes(
-                                                                                                                                        ',',
-                                                                                                                                    )
-                                                                                                                                ) {
-                                                                                                                                    aux =
-                                                                                                                                        book.genres.split(
-                                                                                                                                            ', ',
-                                                                                                                                        );
-                                                                                                                                    aux.map(
-                                                                                                                                        (genre) => {
-                                                                                                                                            genre = t(
-                                                                                                                                                `ui.genres.names.${genre}`,
-                                                                                                                                            );
-                                                                                                                                            res.push(
-                                                                                                                                                genre,
-                                                                                                                                            );
-                                                                                                                                        },
-                                                                                                                                    );
-                                                                                                                                    aux =
-                                                                                                                                        res.join(
-                                                                                                                                            ', ',
-                                                                                                                                        );
-                                                                                                                                    StringGenres =
-                                                                                                                                        aux;
-                                                                                                                                } else {
-                                                                                                                                    StringGenres = t(
-                                                                                                                                        `ui.genres.names.${book.genres}`,
-                                                                                                                                    );
-                                                                                                                                }
-                                                                                                                                return (
-                                                                                                                                    <AccordionItem
-                                                                                                                                        value={
-                                                                                                                                            book.id
-                                                                                                                                        }
-                                                                                                                                        key={book.id}
-                                                                                                                                        className="w-full"
-                                                                                                                                    >
-                                                                                                                                        <AccordionTrigger className="justify-center text-xl hover:cursor-pointer hover:no-underline">
-                                                                                                                                            <p>
-                                                                                                                                                {
-                                                                                                                                                    book.title
-                                                                                                                                                }
-                                                                                                                                            </p>
-                                                                                                                                        </AccordionTrigger>
-                                                                                                                                        <AccordionContent className="w-full">
-                                                                                                                                            <div className="grid w-full grid-cols-1 justify-center md:grid-cols-2 absolute top-1">
-                                                                                                                                                {/* <div className="grid w-full grid-cols-1 text-center">
-                                                                                                                                                    <p>
-                                                                                                                                                        {t(
-                                                                                                                                                            'ui.books.fields.author',
-                                                                                                                                                        )}
+                                                                                    </DialogDescription>
+                                                                                <div className="h-full w-full">
+                                                                                    <ScrollArea>
+                                                                                    <BookShelf key={zone.bookcases[0].id} >
+                                                                                        {zone.bookcases[0].books.map((book) => {
+                                                                                            const orientationDeterminator = Math.floor(
+                                                                                                Math.random() * (10 - 1 + 1) + 1,
+                                                                                            );
+                                                                                            let orientation =
+                                                                                                orientationDeterminator == 10 && book.length<400 ? 'tilted' : '';
 
-                                                                                                                                                        :{' '}
-                                                                                                                                                        {
-                                                                                                                                                            book.author
-                                                                                                                                                        }
-                                                                                                                                                    </p>
-                                                                                                                                                    <p>
-                                                                                                                                                        {t(
-                                                                                                                                                            'ui.books.fields.length',
-                                                                                                                                                        )}
+                                                                                            const designDeterminator = Math.floor(
+                                                                                                Math.random() * (5 - 1 + 1) + 1,
+                                                                                            );
+                                                                                            let design =
+                                                                                                designDeterminator == 5
+                                                                                                    ? 'split bands'
+                                                                                                    : designDeterminator == 4
+                                                                                                      ? 'dual top bands'
+                                                                                                      : designDeterminator == 3
+                                                                                                        ? 'colored spine'
+                                                                                                        : '';
 
-                                                                                                                                                        :{' '}
-                                                                                                                                                        {
-                                                                                                                                                            book.length
-                                                                                                                                                        }
-                                                                                                                                                    </p>
-                                                                                                                                                    <p>
-                                                                                                                                                        {t(
-                                                                                                                                                            'ui.books.fields.genres',
-                                                                                                                                                        )}
+                                                                                            const bookgenres = book.genres.split(', ');
+                                                                                            const colorDeterminator = Math.floor(
+                                                                                                Math.random() * (bookgenres.length - 0) + 0,
+                                                                                            );
+                                                                                            let colorCode = bookgenres[colorDeterminator];
 
-                                                                                                                                                        :{' '}
-                                                                                                                                                        {
-                                                                                                                                                            StringGenres
-                                                                                                                                                        }
-                                                                                                                                                    </p>
-                                                                                                                                                    <p>
-                                                                                                                                                        {t(
-                                                                                                                                                            'ui.books.fields.editor',
-                                                                                                                                                        )}
-
-                                                                                                                                                        :{' '}
-                                                                                                                                                        {
-                                                                                                                                                            book.editor
-                                                                                                                                                        }
-                                                                                                                                                    </p>
-                                                                                                                                                    <p>
-                                                                                                                                                        ISBN:{' '}
-                                                                                                                                                        {
-                                                                                                                                                            book.ISBN
-                                                                                                                                                        }
-                                                                                                                                                    </p>
-                                                                                                                                                </div>
-                                                                                                                                                <br />
-                                                                                                                                                <div>
-                                                                                                                                                    <img
-                                                                                                                                                        className='hover:cursor-grab active:cursor-grabbing'
-                                                                                                                                                        src={
-                                                                                                                                                            book.imgURL
-                                                                                                                                                        }
-                                                                                                                                                        alt="Preview"
-                                                                                                                                                    />
-                                                                                                                                                </div> */}
-                                                                                                                                                <CardFlip
-                                                                                                                                                    contentFront={
-                                                                                                                                                        <div className="grid grid-cols-2 hover:cursor-grab active:cursor-grabbing">
-                                                                                                                                                    <img
-                                                                                                                                                        className=''
-                                                                                                                                                        src={
-                                                                                                                                                            book.imgURL
-                                                                                                                                                        }
-                                                                                                                                                        alt="Preview"
-                                                                                                                                                    />
-                                                                                                                                                            <div>
-                                                                                                                                                                {book.title}
-                                                                                                                                                            </div>
-                                                                                                                                                        </div>
-                                                                                                                                                    }
-                                                                                                                                                    contentBack={
-                                                                                                                                                        <div className="flex h-full w-full items-center gap-4 hover:cursor-grab active:cursor-grabbing">
-                                                                                                                                                    <img
-                                                                                                                                                        className='hover:cursor-grab active:cursor-grabbing'
-                                                                                                                                                        draggable
-                                                                                                                                                        src={
-                                                                                                                                                            book.imgURL
-                                                                                                                                                        }
-                                                                                                                                                        alt="Preview"
-                                                                                                                                                    />
-                                                                                                                                                            <div>
-                                                                                                                                                                {book.title}
-                                                                                                                                                            </div>
-                                                                                                                                                        </div>
-                                                                                                                                                    }
-                                                                                                                                                />
-                                                                                                                                            </div>
-                                                                                                                                        </AccordionContent>
-                                                                                                                                    </AccordionItem>
-                                                                                                                                );
-                                                                                                                            },
-                                                                                                                        )}
-                                                                                                                    </Accordion>
-                                                                                                                </div>
-                                                                                                            </DialogContent>
-                                                                                                        </Dialog>
-                                                                                                    </div>
-                                                                                                );
+                                                                                            function handleBookClick(orientation: string) {
+                                                                                                if (orientation == 'onDisplay') {
+                                                                                                    orientation = '';
+                                                                                                } else {
+                                                                                                    orientation = 'onDisplay';
+                                                                                                }
                                                                                             }
+                                                                                            return (
+                                                                                                <div
+                                                                                                    className="cursor-pointer"
+                                                                                                    onClick={(e) => handleBookClick(orientation)}
+                                                                                                >
+                                                                                                    <Book
+                                                                                                        key={book.id}
+                                                                                                        title={book.title}
+                                                                                                        subtitle={book.author}
+                                                                                                        orientation={orientation}
+                                                                                                        design={design}
+                                                                                                        color={genreHexColors[colorCode]}
+                                                                                                        width={book.length}
+                                                                                                    ></Book>
+                                                                                                </div>
+                                                                                            );
                                                                                         })}
-                                                                                    </Accordion>
+                                                                                    </BookShelf>
+                                                                                    </ScrollArea>
                                                                                 </div>
                                                                             </DialogContent>
                                                                         </Dialog>

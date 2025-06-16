@@ -12,7 +12,15 @@ class BookcaseSeeder extends Seeder
 {
     public function run()
     {
-        // Insert specific data
+        $zones = Zone::all(['id']); // Get all genre records
+
+        foreach ($zones as $zone) {
+            Bookcase::factory()->create([
+            'number'=>1,
+            'capacity' => fake()->numberBetween(20,30),
+            'zone_id'=> $zone->id,
+        ]);
+        }
 
         Bookcase::factory(50)->create();
 

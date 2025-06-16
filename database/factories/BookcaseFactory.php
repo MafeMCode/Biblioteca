@@ -15,7 +15,7 @@ class BookcaseFactory extends Factory
         $randomzone = Zone::all()->random()->id;
 
         return [
-            'number'=>fake()->unique()->numberBetween($min=1, $max=100),
+            'number'=>fake()->unique()->numberBetween($min=1, $max=500),
             'capacity' => fake()->numberBetween(20,30),
             'zone_id'=> $randomzone,
         ];

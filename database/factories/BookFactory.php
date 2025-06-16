@@ -7,6 +7,7 @@ use Domain\Books\Models\Book;
 use Domain\Genres\Models\Genre;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Domain\Books\Actions\ISBNGeneration;
+use Domain\Zones\Models\Zone;
 
 class BookFactory extends Factory
 {
@@ -14,10 +15,15 @@ class BookFactory extends Factory
 
     public function definition()
     {
-        $genres = Genre::all()->pluck('name')->toArray();
+        $genres = Genre::all()->pluck('name');
         $genresArray = fake()->randomElements($array = $genres, $count = fake()->numberBetween(1, 2));
+        $zonesInGenre = Zone::where('genreName', 'ILIKE', $genresArray[0])->pluck('id');
 
-        $bookcase = Bookcase::all()->random()->id;
+        $bookcase = Bookcase::query()
+        ->whereIn('zone_id', $zonesInGenre)
+    ->get()
+    ->first()
+        ->id;
 
         $title = $this->faker->streetName;
         $Otitle = $title;

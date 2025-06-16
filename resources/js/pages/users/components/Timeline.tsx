@@ -82,7 +82,7 @@ function comprobanteFechaGrupal(array: ActivityHistoryItem[]): boolean {
                 <HeadingSmall title={t('ui.settings.profile.timeline.title')} description={t('ui.settings.profile.timeline.description')} />
             </div>
             {activityList.length != 0 && (
-                <div className='grid grid-cols-3 gap-6 justify-center'>
+                <div className='grid grid-cols-1 md:grid-cols-3  gap-6 justify-center'>
                     <div className="flex flex-col">
                         <Label className="p-2">{t('ui.settings.profile.timeline.filter_start')}</Label>
                         <Popover>

@@ -11,12 +11,12 @@ class BookSeeder extends Seeder
     {
         // Insert specific data
 
-        Book::factory(50)->create();
+        Book::factory(350)->create();
 
         $books = Book::all();
 
         foreach ($books as $book) {
-            $book->addMediaFromUrl('https://img.freepik.com/free-vector/abstract-elegant-winter-book-cover_23-2148798745.jpg')->toMediaCollection('media');
+            // $book->addMediaFromUrl('https://img.freepik.com/free-vector/abstract-elegant-winter-book-cover_23-2148798745.jpg')->toMediaCollection('media');
         }
 
     }

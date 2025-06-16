@@ -39,7 +39,7 @@ class ZoneController extends Controller
      */
     public function create()
     {
-        Gate::authorize('reports.view');
+        Gate::authorize('reports.publish');
         $storyList = Floor::with('zones')->get()->groupBy('story')->map(function ($floors) {
             return $floors->flatMap(function ($floor) {
                 return $floor->zones->pluck('number');

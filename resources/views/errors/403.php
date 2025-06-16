@@ -13,7 +13,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color:rgb(53, 53, 53);
+      background: url('https://wallpapers.com/images/hd/yaranaika-face-on-rainbow-meme-zfdoqbhvmhi387jq.jpg') no-repeat center center fixed;
+    background-size: cover;
     }
 
     .gif-container {
@@ -45,6 +46,7 @@
       margin-top: 20px;
       font-size: 1.2em;
       color: white;
+      background-color: black;
       text-align: center;
     }
   </style>
@@ -57,10 +59,5 @@
   <div class="text-below">
     ¿Dónde vas guachín? Pa tu casa anda.
   </div>
-  <Link href="http://biblioteca.test/">
-  <Button>
-    Perdón, ya me voy
-  </Button>
-</Link>
 </body>
 </html>
